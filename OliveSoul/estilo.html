@@ -17,6 +17,9 @@
       --muted: rgba(245,240,232,0.6);
       --line:  rgba(245,240,232,0.2);
       --font:  'Canela', 'Cormorant Garamond', Georgia, serif;
+      --terracota: #C4714A;
+      --terracota-muted: rgba(196,113,74,0.10);
+      --olive-muted: rgba(107,123,58,0.10);
     }
 
     html { scroll-behavior: auto; }
@@ -69,19 +72,34 @@
 
     /* ——— HERO ——— */
     .hero {
-      padding: 5rem 8vw 1vh;
-      border-bottom: 1px solid var(--line);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 8vw 5rem;
+      position: relative;
+      background: #0a0a0a;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      background: var(--olive);
+      opacity: 0.3;
     }
     .page-label {
       display: block;
       font-size: 0.68rem;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.5);
-      margin-bottom: 1rem;
+      color: var(--olive);
+      margin-bottom: 1.2rem;
     }
     .page-heading {
-      font-size: clamp(3rem, 6vw, 6.5rem);
+      font-size: clamp(6rem, 10vw, 11rem);
       font-weight: 300;
       line-height: 0.92;
       letter-spacing: -0.025em;
@@ -95,40 +113,38 @@
       margin-right: 0.15em;
     }
     .page-heading .word span { display: inline-block; }
+    .page-subtitle {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
 
     /* ——— CONTENT SECTIONS ——— */
-    .content-section {
-      padding: 10vh 8vw;
-      border-bottom: 1px solid var(--line);
-    }
-    .section-grid {
-      display: grid;
-      grid-template-columns: 45% 55%;
-      gap: 6vw;
-      align-items: center;
-    }
-    .section-grid.reverse {
-      direction: rtl;
-    }
-    .section-grid.reverse > * {
-      direction: ltr;
-    }
+    .content-section { padding: 10vh 8vw; }
 
-    .section-text {}
+    /* ——— SECTION ELEMENTS ——— */
     .section-label {
       display: block;
       font-size: 0.65rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(245,240,232,0.45);
+      color: var(--olive);
       margin-bottom: 1.8rem;
-    }
-    .section-heading {
-      font-size: clamp(2.2rem, 3.5vw, 4rem);
-      font-weight: 300;
-      line-height: 1.02;
-      letter-spacing: -0.015em;
-      margin-bottom: 2rem;
+      border-left: 2px solid var(--olive);
+      padding-left: 0.8rem;
     }
     .section-body {
       font-size: clamp(0.95rem, 1vw, 1.05rem);
@@ -137,21 +153,41 @@
       font-weight: 300;
     }
 
-    .section-image {
-      overflow: hidden;
-      aspect-ratio: 4/3;
+    /* ——— INTRO GRID ——— */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6vw;
+      align-items: start;
     }
-    .section-image img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      transition: transform .6s ease;
+
+    /* ——— FEATURE LIST ——— */
+    .feature-list { list-style: none; margin: 2rem 0 1rem; }
+    .feature-list li {
+      font-size: clamp(1rem, 1.1vw, 1.15rem);
+      color: rgba(245,240,232,0.85);
+      padding: 1.2rem 0 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      font-weight: 300;
+      line-height: 1.5;
     }
-    .section-image:hover img { transform: scale(1.03); }
+    .feature-list li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--olive);
+      font-size: 1rem;
+    }
+
+    /* ——— EXPERIENCE GRID ——— */
+    .exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 4vw;
+    }
 
     /* ——— LANG SWITCHER ——— */
-    .lang-switcher {
-      display: flex; align-items: center; gap: 0.4rem;
-    }
+    .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
     .lang-btn {
       background: none; border: none;
       color: var(--muted);
@@ -164,24 +200,6 @@
     .lang-btn.active, .lang-btn:hover { color: var(--text); }
     .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
 
-    /* ——— FEATURE LIST ——— */
-    .feature-list { list-style: none; margin: 2rem 0 1rem; max-width: 640px; }
-    .feature-list li {
-      font-size: clamp(0.92rem, 1vw, 1rem);
-      color: rgba(245,240,232,0.85);
-      padding: 0.75rem 0 0.75rem 1.6rem;
-      border-bottom: 1px solid rgba(245,240,232,0.10);
-      position: relative;
-      font-weight: 300;
-      line-height: 1.5;
-    }
-    .feature-list li::before {
-      content: '—';
-      position: absolute; left: 0;
-      color: var(--olive);
-      font-size: 0.75rem;
-    }
-
     /* ——— FOOTER ——— */
     .page-footer {
       padding: 3rem 8vw;
@@ -192,16 +210,17 @@
       font-weight: 300;
     }
 
+    /* ——— CTA ——— */
+    .cta-whatsapp:hover { opacity: 0.85; }
+    .cta-section button:hover { border-color: rgba(196,113,74,0.8); }
+
     /* ——— MOBILE ——— */
     @media (max-width: 768px) {
-      .hero { padding: 8vh 6vw 3vh; }
+      .hero { padding: 8vh 6vw 5rem; }
       .page-heading { font-size: clamp(3rem, 12vw, 6rem); }
+      .page-subtitle { font-size: clamp(1.5rem, 8vw, 3rem); }
       .content-section { padding: 8vh 6vw; }
-      .section-grid, .section-grid.reverse {
-        grid-template-columns: 1fr;
-        direction: ltr;
-      }
-      .section-image { order: -1; }
+      .intro-grid, .exp-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -230,29 +249,56 @@
 
   <!-- HERO -->
   <div class="hero">
+    <div style="width:2px;height:60px;background:var(--olive);margin-bottom:1.5rem"></div>
     <span class="page-label" data-i18n="pg_label">009 / Estilo de Vida</span>
     <h1 class="page-heading">
-      <div class="word"><span data-i18n="pg_heading1">Slow living</span></div><br>
-      <div class="word"><span data-i18n="pg_heading2">mediterráneo</span></div>
+      <div class="word"><span data-i18n="pg_heading1">Slow living</span></div>
     </h1>
+    <p class="page-subtitle" data-i18n="pg_heading2">mediterráneo</p>
+    <div class="scroll-indicator">↓ scroll</div>
   </div>
 
-  <!-- SECTION 1 — INTRO -->
-  <div class="content-section" data-section="1">
-    <div class="section-text" style="max-width:680px">
-      <p class="section-body" data-i18n="sl_intro">Vivir en Olive Soul es recuperar el ritmo natural. Es seguir el ciclo de las estaciones y de la cosecha. Es producir aceite propio prensado en frío. Es participar en la destilación artesanal de esencias aromáticas. Es caminar rutas temáticas entre olivos milenarios. Es encontrar espacios de meditación en antiguas construcciones de piedra seca.</p>
+  <!-- QUOTE -->
+  <div style="background:var(--terracota-muted);border-left:3px solid var(--terracota);padding:10vh 8vw">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:1rem;display:block"><ellipse cx="12" cy="8" rx="4" ry="6" fill="rgba(107,123,58,0.8)" transform="rotate(-15 12 8)"/><line x1="12" y1="2" x2="12" y2="22" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><ellipse cx="9" cy="13" rx="3" ry="5" fill="rgba(107,123,58,0.4)" transform="rotate(20 9 13)"/></svg>
+    <p style="font-style:italic;font-size:1.6rem;color:var(--text);line-height:1.7;max-width:720px">"El lujo no es ostentación. Es tiempo, silencio y autenticidad."</p>
+    <p style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-top:1.5rem">Olive Soul</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="content-section" style="background:#0a0a0a">
+    <div class="intro-grid">
+      <div>
+        <span data-i18n="pg_label" style="display:block;font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--olive);margin-bottom:1.5rem">009 / Estilo de Vida</span>
+        <p class="section-body" data-i18n="sl_intro">Vivir en Olive Soul es recuperar el ritmo natural. Es seguir el ciclo de las estaciones y de la cosecha. Es producir aceite propio prensado en frío. Es participar en la destilación artesanal de esencias aromáticas. Es caminar rutas temáticas entre olivos milenarios. Es encontrar espacios de meditación en antiguas construcciones de piedra seca.</p>
+      </div>
+      <div style="aspect-ratio:3/4;border:1px solid var(--line);background:rgba(107,123,58,0.06);display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
+        <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)">Imagen próximamente</p>
+      </div>
     </div>
   </div>
 
-  <!-- SECTION 2 — EXPERIENCIAS -->
-  <div class="content-section" data-section="2">
-    <div class="section-text">
-      <span class="section-label" data-i18n="sl_exp_label">Experiencias</span>
+  <!-- SEPARATOR -->
+  <div style="display:flex;align-items:center;gap:1.5rem;margin:0 8vw">
+    <div style="flex:1;height:1px;background:var(--line)"></div>
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><circle cx="6" cy="6" r="2" fill="rgba(107,123,58,0.5)"/></svg>
+    <div style="flex:1;height:1px;background:var(--line)"></div>
+  </div>
+
+  <!-- EXPERIENCES -->
+  <div class="content-section" style="background:var(--olive-muted)">
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="8" rx="4" ry="6" fill="rgba(107,123,58,0.8)" transform="rotate(-15 12 8)"/><line x1="12" y1="2" x2="12" y2="22" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><ellipse cx="9" cy="13" rx="3" ry="5" fill="rgba(107,123,58,0.4)" transform="rotate(20 9 13)"/></svg>
+      <span class="section-label" data-i18n="sl_exp_label" style="border-left:none;padding-left:0;margin-bottom:0">Experiencias</span>
+    </div>
+    <div class="exp-grid">
       <ul class="feature-list">
         <li data-i18n="sl_f1">Producción de aceite virgen extra propio, prensado en frío</li>
         <li data-i18n="sl_f2">Rutas culturales entre olivos milenarios y centenarios</li>
         <li data-i18n="sl_f3">Gastronomía mediterránea de proximidad: aceite, pescado, vinos de la comarca</li>
         <li data-i18n="sl_f4">Espacios de meditación en construcciones de piedra seca ancestral</li>
+      </ul>
+      <ul class="feature-list">
         <li data-i18n="sl_f5">Destilación artesanal de esencias aromáticas</li>
         <li data-i18n="sl_f6">Eventos gastronómicos y culturales del territorio</li>
         <li data-i18n="sl_f7">Programas de crecimiento personal y arte terapia</li>
@@ -261,16 +307,22 @@
     </div>
   </div>
 
-  <!-- SECTION 3 — CIERRE -->
-  <div class="content-section" data-section="3">
-    <div class="section-text" style="max-width:680px">
-      <p class="section-body" data-i18n="sl_closing">Olive Soul no es únicamente un lugar para residir. Es un espacio para reconectar con la familia, con uno mismo y con una comunidad selecta e internacional.</p>
-    </div>
+  <!-- SEPARATOR -->
+  <div style="display:flex;align-items:center;gap:1.5rem;margin:0 8vw">
+    <div style="flex:1;height:1px;background:var(--line)"></div>
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><circle cx="6" cy="6" r="2" fill="rgba(107,123,58,0.5)"/></svg>
+    <div style="flex:1;height:1px;background:var(--line)"></div>
   </div>
 
-  <div class="cta-section" style="padding:8vh 8vw;border-top:1px solid var(--line);display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
-    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);text-decoration:none;border-bottom:1px solid var(--olive);padding-bottom:0.25rem;transition:color .3s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
-    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);transition:color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
+  <!-- CLOSING -->
+  <div class="content-section" style="background:#0a0a0a;text-align:center">
+    <p class="section-body" data-i18n="sl_closing" style="font-style:italic;font-size:1.3rem;max-width:600px;margin:0 auto;line-height:1.8">Olive Soul no es únicamente un lugar para residir. Es un espacio para reconectar con la familia, con uno mismo y con una comunidad selecta e internacional.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section" style="background:linear-gradient(135deg,rgba(107,123,58,0.08),rgba(196,113,74,0.08));border-top:1px solid rgba(196,113,74,0.3);padding:8vh 8vw;display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
+    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0a;text-decoration:none;background:var(--olive);padding:1rem 2.5rem;border:none;font-family:var(--font);transition:opacity .2s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
+    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);background:transparent;border:1px solid var(--terracota);padding:1rem 2.5rem;cursor:pointer;font-family:var(--font);transition:border-color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
   </div>
 
   <footer class="page-footer">© Olive Soul · Bajo Maestrazgo, España</footer>

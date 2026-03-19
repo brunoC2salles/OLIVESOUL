@@ -17,6 +17,9 @@
       --muted: rgba(245,240,232,0.6);
       --line:  rgba(245,240,232,0.2);
       --font:  'Canela', 'Cormorant Garamond', Georgia, serif;
+      --terracota: #C4714A;
+      --terracota-muted: rgba(196,113,74,0.10);
+      --olive-muted: rgba(107,123,58,0.10);
     }
 
     html { scroll-behavior: auto; }
@@ -82,7 +85,7 @@
       margin-bottom: 1rem;
     }
     .page-heading {
-      font-size: clamp(3rem, 6vw, 6.5rem);
+      font-size: clamp(5rem, 8vw, 9rem);
       font-weight: 300;
       line-height: 0.92;
       letter-spacing: -0.025em;
@@ -135,9 +138,9 @@
     }
     .feature-list { list-style: none; margin-top: 3rem; max-width: 640px; }
     .feature-list li {
-      font-size: 1rem;
+      font-size: clamp(1rem, 1.1vw, 1.15rem);
       color: var(--muted);
-      padding: 0.8rem 0 0.8rem 1.6rem;
+      padding: 1rem 0 1rem 1.6rem;
       border-bottom: 1px solid rgba(245,240,232,0.12);
       position: relative;
       font-weight: 300;
@@ -146,8 +149,8 @@
     .feature-list li::before {
       content: '—';
       position: absolute; left: 0;
-      color: rgba(245,240,232,0.35);
-      font-size: 0.75rem;
+      color: var(--olive);
+      font-size: 1rem;
     }
 
     /* ——— FOOTER ——— */
@@ -176,6 +179,10 @@
     }
     .lang-btn.active, .lang-btn:hover { color: var(--text); }
     .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
+
+    /* ——— CTA HOVER ——— */
+    .cta-whatsapp:hover { opacity: 0.85; }
+    .cta-section button:hover { border-color: rgba(196,113,74,0.8); }
 
     /* ——— MOBILE ——— */
     @media (max-width: 768px) {
@@ -211,6 +218,10 @@
 
   <!-- HERO -->
   <div class="hero">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+      <div style="width:2px;height:50px;background:var(--olive)"></div>
+      <div style="width:80px;height:1px;background:var(--olive);opacity:0.4"></div>
+    </div>
     <span class="page-label" data-i18n="pg_label">008 / Ubicación</span>
     <h1 class="page-heading">
       <div class="word"><span data-i18n="pg_heading1">Entre el Mediterráneo</span></div><br>
@@ -218,14 +229,33 @@
     </h1>
   </div>
 
+  <!-- STATS -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:4vh 8vw;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4vh 0;text-align:center">
+    <div>
+      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">4.670</span>
+      <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Olivos monumentales</span>
+    </div>
+    <div>
+      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">5</span>
+      <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Parques naturales</span>
+    </div>
+    <div>
+      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">15'</span>
+      <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Del Mediterráneo</span>
+    </div>
+  </div>
+
   <!-- MAP -->
+  <p style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);margin-bottom:1rem;padding:0 8vw">Sant Mateu · Canet lo Roig · Traiguera</p>
   <div class="map-wrap">
+    <div style="border:1px solid rgba(107,123,58,0.3);padding:3px;margin-top:2vh;height:calc(100% - 2vh)">
     <iframe
       src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50000!2d-0.17!3d40.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1"
       allowfullscreen loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
       title="Mapa Olive Soul — Bajo Maestrazgo">
     </iframe>
+    </div>
   </div>
 
   <!-- DESCRIPTION -->
@@ -251,9 +281,9 @@
     </ul>
   </div>
 
-  <div class="cta-section" style="padding:8vh 8vw;border-top:1px solid var(--line);display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
-    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);text-decoration:none;border-bottom:1px solid var(--olive);padding-bottom:0.25rem;transition:color .3s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
-    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);transition:color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
+  <div class="cta-section" style="background:linear-gradient(135deg,rgba(107,123,58,0.08),rgba(196,113,74,0.08));border-top:1px solid rgba(196,113,74,0.3);padding:8vh 8vw;display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
+    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0a;text-decoration:none;background:var(--olive);padding:1rem 2.5rem;border:none;font-family:var(--font);transition:opacity .2s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
+    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);background:transparent;border:1px solid var(--terracota);padding:1rem 2.5rem;cursor:pointer;font-family:var(--font);transition:border-color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
   </div>
 
   <footer class="page-footer">© Olive Soul · Bajo Maestrazgo, España</footer>
