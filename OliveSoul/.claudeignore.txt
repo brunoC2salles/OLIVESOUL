@@ -1,0 +1,6 @@
+frames/
+frames_novos/
+*.jpg
+*.png
+*.mp4
+*.MP4

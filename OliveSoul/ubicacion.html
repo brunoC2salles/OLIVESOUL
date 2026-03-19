@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ubicación — Olive Soul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:    #0a0a0a;
+      --olive: #6B7B3A;
+      --text:  #f5f0e8;
+      --muted: rgba(245,240,232,0.6);
+      --line:  rgba(245,240,232,0.2);
+      --font:  'Canela', 'Cormorant Garamond', Georgia, serif;
+    }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+    }
+
+    /* ——— CURSOR ——— */
+    #cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--olive);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: width .3s ease, height .3s ease, background .3s ease, border .3s ease;
+      will-change: left, top;
+    }
+    #cursor.expand {
+      width: 36px; height: 36px;
+      background: transparent;
+      border: 1px solid rgba(107,123,58,0.7);
+    }
+
+    /* ——— BACK BUTTON ——— */
+    .back-btn {
+      position: fixed; top: 2rem; left: 4vw; z-index: 100;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color .3s; font-family: var(--font); font-weight: 300;
+    }
+    .back-btn:hover { color: white; }
+
+    /* ——— HEADER ——— */
+    .page-header {
+      position: fixed; top: 0; right: 5vw;
+      z-index: 100; padding: 2rem 0;
+      font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--muted); font-weight: 300;
+    }
+
+    /* ——— HERO ——— */
+    .hero {
+      padding: 5rem 8vw 1vh;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .page-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 1rem;
+    }
+    .page-heading {
+      font-size: clamp(3rem, 6vw, 6.5rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    .page-heading .word {
+      display: inline-block;
+      overflow: hidden;
+      line-height: 1.05;
+      margin-right: 0.15em;
+    }
+    .page-heading .word span { display: inline-block; }
+
+    /* ——— MAP ——— */
+    .map-wrap {
+      width: calc(100% + 16vw);
+      margin-left: -8vw;
+      height: 60vh;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 4vh;
+    }
+    .map-wrap iframe {
+      width: 100%; height: 100%; border: 0; display: block;
+    }
+
+    /* ——— DESCRIPTION ——— */
+    .description {
+      padding: 0 8vw 10vh;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .desc-eyebrow {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+    .desc-body {
+      font-size: clamp(1rem, 1.1vw, 1.15rem);
+      line-height: 1.85;
+      color: rgba(245,240,232,0.85);
+      font-weight: 300;
+      max-width: 720px;
+      margin-bottom: 1.4rem;
+    }
+    .feature-list { list-style: none; margin-top: 3rem; max-width: 640px; }
+    .feature-list li {
+      font-size: 1rem;
+      color: var(--muted);
+      padding: 0.8rem 0 0.8rem 1.6rem;
+      border-bottom: 1px solid rgba(245,240,232,0.12);
+      position: relative;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .feature-list li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: rgba(245,240,232,0.35);
+      font-size: 0.75rem;
+    }
+
+    /* ——— FOOTER ——— */
+    .page-footer {
+      padding: 3rem 8vw;
+      border-top: 1px solid var(--line);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ——— LANG SWITCHER ——— */
+    .lang-switcher {
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .lang-btn {
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      cursor: none; font-family: var(--font);
+      font-weight: 300;
+      transition: color .3s;
+      padding: 0 2px;
+    }
+    .lang-btn.active, .lang-btn:hover { color: var(--text); }
+    .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
+
+    /* ——— MOBILE ——— */
+    @media (max-width: 768px) {
+      .hero { padding: 8vh 6vw 2vh; }
+      .page-heading { font-size: clamp(3rem, 12vw, 6rem); }
+      .map-wrap { width: calc(100% + 12vw); margin-left: -6vw; height: 45vh; }
+      .description { padding: 0 6vw 8vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+
+  <a href="index.html" class="back-btn">← Olive Soul</a>
+  <div class="page-header" style="display:flex;align-items:center;gap:2rem;">
+    <span style="font-size:0.75rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);font-weight:300;">Olive Soul</span>
+    <nav style="display:flex;gap:1.8rem;">
+      <a href="proyectos.html" data-i18n="nav_proyectos" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Proyectos</a>
+      <a href="arquitectura.html" data-i18n="nav_arquitectura" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Arquitectura</a>
+      <a href="estilo.html" data-i18n="nav_estilo" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Estilo</a>
+    </nav>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="es">ES</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="it">IT</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="fr">FR</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="page-label" data-i18n="pg_label">008 / Ubicación</span>
+    <h1 class="page-heading">
+      <div class="word"><span data-i18n="pg_heading1">Entre el Mediterráneo</span></div><br>
+      <div class="word"><span data-i18n="pg_heading2">y la montaña</span></div>
+    </h1>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-wrap">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50000!2d-0.17!3d40.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1"
+      allowfullscreen loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa Olive Soul — Bajo Maestrazgo">
+    </iframe>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="description">
+    <span class="desc-eyebrow" data-i18n="ub_eyebrow">Bajo Maestrazgo — Sant Mateu · Canet lo Roig · Traiguera</span>
+    <p class="desc-body" data-i18n="ub_p1">
+      Olive Soul se sitúa en el norte de la Comunitat Valenciana, en el corazón del Bajo Maestrazgo — entre Sant Mateu, Canet lo Roig y Traiguera. Un territorio declarado patrimonio UNESCO por su extraordinaria concentración de olivos milenarios monumentales, con más de 4.670 ejemplares únicos en Europa.
+    </p>
+    <p class="desc-body" data-i18n="ub_p2">
+      Un lugar que muchos definen como la otra Toscana o la Provenza valenciana. Un enclave que formó parte de la Vía Augusta romana y que ha sido punto de paso de distintas civilizaciones.
+    </p>
+    <p class="desc-body" style="font-style:italic;color:var(--olive);margin-top:0.5rem" data-i18n="ub_p3">Privacidad sin aislamiento. Naturaleza sin desconexión del mundo.</p>
+    <ul class="feature-list">
+      <li data-i18n="ub_f1">15 min del mar Mediterráneo</li>
+      <li data-i18n="ub_f2">Rodeado de 5 parques naturales</li>
+      <li data-i18n="ub_f3">9 puertos deportivos a menos de 50 km</li>
+      <li data-i18n="ub_f4">Campo de golf a 7 km / otros 5 campos a menos de 100 km</li>
+      <li data-i18n="ub_f5">40 min del aeropuerto de Castellón</li>
+      <li data-i18n="ub_f6">105 km del aeropuerto de Reus</li>
+      <li data-i18n="ub_f7">150 km del aeropuerto de Valencia</li>
+      <li data-i18n="ub_f8">197 km del aeropuerto de Barcelona</li>
+      <li data-i18n="ub_f9">Acceso directo a la autopista AP-7 gratuita</li>
+    </ul>
+  </div>
+
+  <div class="cta-section" style="padding:8vh 8vw;border-top:1px solid var(--line);display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
+    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);text-decoration:none;border-bottom:1px solid var(--olive);padding-bottom:0.25rem;transition:color .3s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
+    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);transition:color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
+  </div>
+
+  <footer class="page-footer">© Olive Soul · Bajo Maestrazgo, España</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+  (function () {
+
+    /* ——— TRANSLATIONS ——— */
+    const T = {
+      es: {
+        nav_proyectos: 'Proyectos', nav_arquitectura: 'Arquitectura', nav_estilo: 'Estilo de vida',
+        pg_label: '008 / Ubicación', pg_heading1: 'Entre el Mediterráneo', pg_heading2: 'y la montaña',
+        ub_eyebrow: 'Bajo Maestrazgo — Sant Mateu · Canet lo Roig · Traiguera',
+        ub_p1: 'Olive Soul se sitúa en el norte de la Comunitat Valenciana, en el corazón del Bajo Maestrazgo — entre Sant Mateu, Canet lo Roig y Traiguera. Un territorio declarado patrimonio UNESCO por su extraordinaria concentración de olivos milenarios monumentales, con más de 4.670 ejemplares únicos en Europa.',
+        ub_p2: 'Un lugar que muchos definen como la otra Toscana o la Provenza valenciana. Un enclave que formó parte de la Vía Augusta romana y que ha sido punto de paso de distintas civilizaciones.',
+        ub_p3: 'Privacidad sin aislamiento. Naturaleza sin desconexión del mundo.',
+        ub_f1: '15 min del mar Mediterráneo', ub_f2: 'Rodeado de 5 parques naturales',
+        ub_f3: '9 puertos deportivos a menos de 50 km', ub_f4: 'Campo de golf a 7 km / otros 5 campos a menos de 100 km',
+        ub_f5: '40 min del aeropuerto de Castellón', ub_f6: '105 km del aeropuerto de Reus',
+        ub_f7: '150 km del aeropuerto de Valencia', ub_f8: '197 km del aeropuerto de Barcelona',
+        ub_f9: 'Acceso directo a la autopista AP-7 gratuita',
+        cta_whatsapp: 'Hablar con nuestro equipo',
+        cta_dossier: 'Recibir el Dossier Completo',
+      },
+      en: {
+        nav_proyectos: 'Projects', nav_arquitectura: 'Architecture', nav_estilo: 'Lifestyle',
+        pg_label: '008 / Location', pg_heading1: 'Between the Mediterranean', pg_heading2: 'and the mountains',
+        ub_eyebrow: 'Bajo Maestrazgo — Sant Mateu · Canet lo Roig · Traiguera',
+        ub_p1: 'Olive Soul is located in the north of the Valencian Community, in the heart of Bajo Maestrazgo — between Sant Mateu, Canet lo Roig and Traiguera. A territory declared UNESCO heritage for its extraordinary concentration of monumental millenary olive trees, with more than 4,670 unique specimens in Europe.',
+        ub_p2: 'A place many define as the other Tuscany or the Valencian Provence. An enclave that was part of the Roman Via Augusta and has been a crossroads of different civilisations.',
+        ub_p3: 'Privacy without isolation. Nature without disconnection from the world.',
+        ub_f1: '15 min from the Mediterranean Sea', ub_f2: 'Surrounded by 5 natural parks',
+        ub_f3: '9 marinas within 50 km', ub_f4: 'Golf course 7 km / 5 more courses within 100 km',
+        ub_f5: '40 min from Castellón airport', ub_f6: '105 km from Reus airport',
+        ub_f7: '150 km from Valencia airport', ub_f8: '197 km from Barcelona airport',
+        ub_f9: 'Direct access to the free AP-7 motorway',
+        cta_whatsapp: 'Talk to our team',
+        cta_dossier: 'Receive the Full Dossier',
+      },
+      it: {
+        nav_proyectos: 'Progetti', nav_arquitectura: 'Architettura', nav_estilo: 'Stile di vita',
+        pg_label: '008 / Posizione', pg_heading1: 'Tra il Mediterraneo', pg_heading2: 'e la montagna',
+        ub_eyebrow: 'Bajo Maestrazgo — Sant Mateu · Canet lo Roig · Traiguera',
+        ub_p1: 'Olive Soul si trova nel nord della Comunitat Valenciana, nel cuore del Bajo Maestrazgo — tra Sant Mateu, Canet lo Roig e Traiguera. Un territorio dichiarato patrimonio UNESCO per la sua straordinaria concentrazione di ulivi millenari monumentali, con più di 4.670 esemplari unici in Europa.',
+        ub_p2: 'Un luogo che molti definiscono come l\'altra Toscana o la Provenza valenciana. Un enclave che faceva parte della Via Augusta romana e che è stato crocevia di diverse civiltà.',
+        ub_p3: 'Privacy senza isolamento. Natura senza disconnessione dal mondo.',
+        ub_f1: '15 min dal Mar Mediterraneo', ub_f2: 'Circondato da 5 parchi naturali',
+        ub_f3: '9 porti sportivi entro 50 km', ub_f4: 'Campo da golf a 7 km / altri 5 campi entro 100 km',
+        ub_f5: '40 min dall\'aeroporto di Castellón', ub_f6: '105 km dall\'aeroporto di Reus',
+        ub_f7: '150 km dall\'aeroporto di Valencia', ub_f8: '197 km dall\'aeroporto di Barcellona',
+        ub_f9: 'Accesso diretto all\'autostrada AP-7 gratuita',
+        cta_whatsapp: 'Parla con il nostro team',
+        cta_dossier: 'Ricevi il Dossier Completo',
+      },
+      fr: {
+        nav_proyectos: 'Projets', nav_arquitectura: 'Architecture', nav_estilo: 'Style de vie',
+        pg_label: '008 / Localisation', pg_heading1: 'Entre la Méditerranée', pg_heading2: 'et la montagne',
+        ub_eyebrow: 'Bajo Maestrazgo — Sant Mateu · Canet lo Roig · Traiguera',
+        ub_p1: 'Olive Soul est situé dans le nord de la Communauté valencienne, au cœur du Bajo Maestrazgo — entre Sant Mateu, Canet lo Roig et Traiguera. Un territoire déclaré patrimoine UNESCO pour son extraordinaire concentration d\'oliviers millénaires monumentaux, avec plus de 4 670 spécimens uniques en Europe.',
+        ub_p2: 'Un lieu que beaucoup définissent comme l\'autre Toscane ou la Provence valencienne. Une enclave qui faisait partie de la Via Augusta romaine et qui a été un carrefour de différentes civilisations.',
+        ub_p3: 'Intimité sans isolement. Nature sans déconnexion du monde.',
+        ub_f1: '15 min de la mer Méditerranée', ub_f2: 'Entouré de 5 parcs naturels',
+        ub_f3: '9 marinas à moins de 50 km', ub_f4: 'Terrain de golf à 7 km / 5 autres terrains à moins de 100 km',
+        ub_f5: '40 min de l\'aéroport de Castellón', ub_f6: '105 km de l\'aéroport de Reus',
+        ub_f7: '150 km de l\'aéroport de Valence', ub_f8: '197 km de l\'aéroport de Barcelone',
+        ub_f9: 'Accès direct à l\'autoroute AP-7 gratuite',
+        cta_whatsapp: 'Parler à notre équipe',
+        cta_dossier: 'Recevoir le Dossier Complet',
+      }
+    };
+
+    const WA_URLS = {
+      es: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul',
+      en: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience',
+      it: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul',
+      fr: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul',
+    };
+
+    let currentLang = 'es';
+    function switchLang(lang) {
+      currentLang = lang;
+      const tr = T[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (tr[key] !== undefined) el.textContent = tr[key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang)
+      );
+      const waEl = document.querySelector('.cta-whatsapp');
+      if (waEl) waEl.href = WA_URLS[lang];
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn =>
+      btn.addEventListener('click', () => switchLang(btn.dataset.lang))
+    );
+
+    /* ——— CURSOR ——— */
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    });
+
+    /* ——— ENTRY ANIMATIONS ——— */
+    gsap.from('.page-label', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' });
+    gsap.from('.page-heading .word span', {
+      y: '110%', duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.3
+    });
+    gsap.from('.map-wrap', { opacity: 0, y: 40, duration: 1.0, delay: 0.8, ease: 'power3.out' });
+    gsap.from('.desc-eyebrow', { opacity: 0, y: 20, duration: 0.8, delay: 1.0, ease: 'power3.out' });
+    gsap.from('.desc-body', { opacity: 0, y: 30, duration: 0.9, stagger: 0.15, delay: 1.1, ease: 'power3.out' });
+    gsap.from('.feature-list li', { opacity: 0, y: 20, duration: 0.7, stagger: 0.1, delay: 1.3, ease: 'power2.out' });
+
+  })();
+  </script>
+  <script src="modal-dossier.js"></script>
+
+</body>
+</html>

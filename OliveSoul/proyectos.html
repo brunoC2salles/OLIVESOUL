@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos — Olive Soul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:    #0a0a0a;
+      --olive: #6B7B3A;
+      --text:  #f5f0e8;
+      --muted: rgba(245,240,232,0.6);
+      --line:  rgba(245,240,232,0.2);
+      --font:  'Canela', 'Cormorant Garamond', Georgia, serif;
+    }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+    }
+
+    /* ——— CURSOR ——— */
+    #cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--olive);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: width .3s ease, height .3s ease, background .3s ease, border .3s ease;
+      will-change: left, top;
+    }
+    #cursor.expand {
+      width: 36px; height: 36px;
+      background: transparent;
+      border: 1px solid rgba(107,123,58,0.7);
+    }
+
+    /* ——— LANG SWITCHER ——— */
+    .lang-switcher {
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .lang-btn {
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      cursor: none; font-family: var(--font);
+      font-weight: 300;
+      transition: color .3s;
+      padding: 0 2px;
+    }
+    .lang-btn.active, .lang-btn:hover { color: var(--text); }
+    .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
+
+    /* ——— BACK BUTTON ——— */
+    .back-btn {
+      position: fixed; top: 2rem; left: 4vw; z-index: 100;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color .3s; font-family: var(--font); font-weight: 300;
+    }
+    .back-btn:hover { color: white; }
+
+    /* ——— HEADER ——— */
+    .page-header {
+      position: fixed; top: 0; right: 5vw;
+      z-index: 100; padding: 2rem 0;
+      display: flex; align-items: center; gap: 2rem;
+    }
+    .page-header-brand {
+      font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--muted); font-weight: 300;
+    }
+
+    /* ——— HERO ——— */
+    .hero {
+      padding: 5rem 8vw 2vh;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .page-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 1rem;
+    }
+    .page-heading {
+      font-size: clamp(3rem, 6vw, 6.5rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    .page-heading .word {
+      display: inline-block;
+      overflow: hidden;
+      line-height: 1.05;
+      margin-right: 0.15em;
+    }
+    .page-heading .word span { display: inline-block; }
+
+    /* ——— PROJECT SECTIONS ——— */
+    .project-section {
+      padding: 10vh 8vw;
+      border-top: 1px solid var(--line);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .project-section:last-of-type { border-bottom: 1px solid var(--line); }
+
+    .project-number {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--olive);
+      margin-bottom: 1.2rem;
+    }
+    .project-heading {
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .project-sub {
+      font-size: clamp(1rem, 1.4vw, 1.3rem);
+      font-style: italic;
+      color: rgba(245,240,232,0.65);
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6vw;
+      align-items: start;
+    }
+    .project-text {}
+    .project-body {
+      font-size: clamp(0.95rem, 1.05vw, 1.1rem);
+      line-height: 1.9;
+      color: rgba(245,240,232,0.82);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .feature-list { list-style: none; margin: 0 0 1rem; }
+    .feature-list li {
+      font-size: clamp(0.88rem, 0.95vw, 0.98rem);
+      color: rgba(245,240,232,0.80);
+      padding: 0.7rem 0 0.7rem 1.6rem;
+      border-bottom: 1px solid rgba(245,240,232,0.10);
+      position: relative;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .feature-list li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--olive);
+      font-size: 0.75rem;
+    }
+
+    /* ——— IMAGE PLACEHOLDER ——— */
+    .project-image-wrap {
+      position: relative;
+    }
+    .project-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: rgba(245,240,232,0.04);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+      text-align: center;
+    }
+    .placeholder-icon {
+      font-size: 2rem;
+      color: var(--olive);
+      opacity: 0.5;
+    }
+    .placeholder-text {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .placeholder-credit {
+      font-size: 0.68rem;
+      font-style: italic;
+      color: rgba(245,240,232,0.35);
+      margin-top: 0.5rem;
+    }
+
+    /* ——— DIVIDER ——— */
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--line);
+      margin: 3rem 0;
+    }
+
+    /* ——— FOOTER ——— */
+    .page-footer {
+      padding: 3rem 8vw;
+      border-top: 1px solid var(--line);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ——— MOBILE ——— */
+    @media (max-width: 768px) {
+      .hero { padding: 8vh 6vw 2vh; }
+      .page-heading { font-size: clamp(3rem, 12vw, 6rem); }
+      .project-section { padding: 8vh 6vw; }
+      .project-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+
+  <a href="index.html" class="back-btn">← Olive Soul</a>
+  <div class="page-header">
+    <span class="page-header-brand">Olive Soul</span>
+    <nav style="display:flex;gap:1.8rem;">
+      <a href="arquitectura.html" data-i18n="nav_arquitectura" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Arquitectura</a>
+      <a href="ubicacion.html" data-i18n="nav_ubicacion" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Ubicación</a>
+      <a href="estilo.html" data-i18n="nav_estilo" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Estilo</a>
+    </nav>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="es">ES</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="it">IT</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="fr">FR</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="page-label" data-i18n="pg_label">006 / Proyectos</span>
+    <h1 class="page-heading">
+      <div class="word"><span data-i18n="pg_h1">Cuatro formas</span></div><br>
+      <div class="word"><span data-i18n="pg_h2">de pertenecer</span></div>
+    </h1>
+  </div>
+
+  <!-- PROYECTO I — FINCA UNITARIA -->
+  <div class="project-section" id="finca-unitaria">
+    <span class="project-number" data-i18n="p1_num">Proyecto I</span>
+    <h2 class="project-heading" data-i18n="p1_heading">Finca Unitaria</h2>
+    <p class="project-sub" data-i18n="p1_sub">Una hectárea. Tu legado.</p>
+    <div class="project-grid">
+      <div class="project-text">
+        <p class="project-body" data-i18n="p1_body">La Finca Unitaria es la forma más pura de pertenecer a Olive Soul. Una propiedad privada de mínimo 1 hectárea con olivares en producción, vivienda contemporánea diseñada por Jaime Sanahuja e independencia total: energía solar, agua propia y producción de aceite de autor.</p>
+        <ul class="feature-list">
+          <li data-i18n="p1_f1">Mínimo 1 hectárea de superficie privada</li>
+          <li data-i18n="p1_f2">Vivienda desde 100 m², personalizable</li>
+          <li data-i18n="p1_f3">Olivares centenarios en producción activa</li>
+          <li data-i18n="p1_f4">Autosuficiencia energética e hídrica</li>
+          <li data-i18n="p1_f5">Diseño firmado por Jaime Sanahuja / Sanahuja &amp; Partners</li>
+          <li data-i18n="p1_f6">Privacidad total con vistas abiertas al paisaje</li>
+          <li data-i18n="p1_f7">Producción de aceite virgen extra propio</li>
+        </ul>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li data-i18n="p1_b1">Huella de carbono reducida por autosuficiencia energética</li>
+          <li data-i18n="p1_b2">Preservación activa de patrimonio natural y cultural</li>
+          <li data-i18n="p1_b3">Economía local: producción agrícola de proximidad</li>
+          <li data-i18n="p1_b4">Biodiversidad: integración con el ecosistema del olivar</li>
+        </ul>
+      </div>
+      <div class="project-image-wrap">
+        <div class="project-placeholder">
+          <div class="placeholder-icon">◻</div>
+          <p class="placeholder-text" data-i18n="placeholder_text">Imagen disponible próximamente</p>
+          <p class="placeholder-credit" data-i18n="placeholder_credit">Diseño: Jaime Sanahuja / Sanahuja &amp; Partners</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROYECTO II — COLIVING -->
+  <div class="project-section" id="coliving">
+    <span class="project-number" data-i18n="p2_num">Proyecto II</span>
+    <h2 class="project-heading" data-i18n="p2_heading">Coliving Olive Soul</h2>
+    <p class="project-sub" data-i18n="p2_sub">Una villa. Cuatro vidas.</p>
+    <div class="project-grid">
+      <div class="project-text">
+        <p class="project-body" data-i18n="p2_body">El modelo Coliving propone una gran villa mediterránea diseñada por Jaime Sanahuja, fraccionada en cuatro unidades independientes con espacios comunes de alto valor. Ideal para quienes desean la experiencia Olive Soul con una inversión más accesible y el valor añadido de una comunidad cercana.</p>
+        <ul class="feature-list">
+          <li data-i18n="p2_f1">Villa de diseño fraccionada en 4 unidades privadas</li>
+          <li data-i18n="p2_f2">Espacios comunes: jardín, zona de producción de aceite, áreas de descanso</li>
+          <li data-i18n="p2_f3">Diseño firmado por Jaime Sanahuja / Sanahuja &amp; Partners</li>
+          <li data-i18n="p2_f4">Comunidad reducida y seleccionada</li>
+          <li data-i18n="p2_f5">Producción colectiva de aceite virgen extra</li>
+          <li data-i18n="p2_f6">Inversión más accesible dentro del ecosistema Olive Soul</li>
+        </ul>
+      </div>
+      <div class="project-image-wrap">
+        <div class="project-placeholder">
+          <div class="placeholder-icon">◻</div>
+          <p class="placeholder-text" data-i18n="placeholder_text">Imagen disponible próximamente</p>
+          <p class="placeholder-credit" data-i18n="placeholder_credit">Diseño: Jaime Sanahuja / Sanahuja &amp; Partners</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROYECTO III — COHOUSING -->
+  <div class="project-section" id="cohousing">
+    <span class="project-number" data-i18n="p3_num">Proyecto III</span>
+    <h2 class="project-heading" data-i18n="p3_heading">Cohousing</h2>
+    <p class="project-sub" data-i18n="p3_sub">Un proyecto comunitario de largo alcance.</p>
+    <div class="project-text" style="max-width:720px">
+      <p class="project-body" data-i18n="p3_body">El modelo Cohousing se desarrolla en entornos de aproximadamente 2 hectáreas bajo la figura legal de Declaración de Interés Comunitario (DIC), que permite hasta un 2% de superficie construida. Un proyecto para quienes desean crear comunidad con mayor profundidad, compartiendo territorio, recursos y visión.</p>
+      <ul class="feature-list">
+        <li data-i18n="p3_f1">Entorno de 2 hectáreas con gestión comunitaria</li>
+        <li data-i18n="p3_f2">Hasta 2% de superficie construida bajo DIC</li>
+        <li data-i18n="p3_f3">Espacios compartidos: producción, ocio, trabajo y cultura</li>
+        <li data-i18n="p3_f4">Modelo de gobernanza participativa</li>
+        <li data-i18n="p3_f5">Alta integración con el territorio y el ecosistema local</li>
+        <li data-i18n="p3_f6">Ideal para grupos con visión compartida de vida sostenible</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PROYECTO IV — HOSPITALIDAD -->
+  <div class="project-section" id="hospitalidad">
+    <span class="project-number" data-i18n="p4_num">Proyecto IV</span>
+    <h2 class="project-heading" data-i18n="p4_heading">Inversión en Hospitalidad</h2>
+    <p class="project-sub" data-i18n="p4_sub">Turismo de autor en un territorio único.</p>
+    <div class="project-text" style="max-width:720px">
+      <p class="project-body" data-i18n="p4_body">Una oportunidad para venture capital y perfiles inversores que buscan construir en el Bajo Maestrazgo con fines turísticos y de hospitalidad premium. Olive Soul ofrece gestión integral del proyecto, acceso al territorio, red de contactos locales y la promoción de eventos culturales como valor diferencial.</p>
+      <ul class="feature-list">
+        <li data-i18n="p4_f1">Inversión orientada a turismo rural premium</li>
+        <li data-i18n="p4_f2">Construcción en zona de alto valor paisajístico y patrimonial</li>
+        <li data-i18n="p4_f3">Gestión integral por parte de Olive Soul</li>
+        <li data-i18n="p4_f4">Promoción de eventos culturales y gastronómicos</li>
+        <li data-i18n="p4_f5">Acceso a una red internacional de propietarios y huéspedes</li>
+        <li data-i18n="p4_f6">Modelo de retorno combinando rentabilidad y impacto cultural</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta-section" style="padding:8vh 8vw;border-top:1px solid var(--line);display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
+    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text);text-decoration:none;border-bottom:1px solid var(--olive);padding-bottom:0.25rem;transition:color .3s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
+    <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);transition:color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
+  </div>
+
+  <footer class="page-footer">© 2025 Olive Soul · Bajo Maestrazgo, España</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+  (function () {
+
+    /* ——— TRANSLATIONS ——— */
+    const T = {
+      es: {
+        nav_arquitectura: 'Arquitectura', nav_ubicacion: 'Ubicación', nav_estilo: 'Estilo de vida',
+        pg_label: '006 / Proyectos', pg_h1: 'Cuatro formas', pg_h2: 'de pertenecer',
+        p1_num: 'Proyecto I', p1_heading: 'Finca Unitaria', p1_sub: 'Una hectárea. Tu legado.',
+        p1_body: 'La Finca Unitaria es la forma más pura de pertenecer a Olive Soul. Una propiedad privada de mínimo 1 hectárea con olivares en producción, vivienda contemporánea diseñada por Jaime Sanahuja e independencia total: energía solar, agua propia y producción de aceite de autor.',
+        p1_f1: 'Mínimo 1 hectárea de superficie privada', p1_f2: 'Vivienda desde 100 m², personalizable',
+        p1_f3: 'Olivares centenarios en producción activa', p1_f4: 'Autosuficiencia energética e hídrica',
+        p1_f5: 'Diseño firmado por Jaime Sanahuja / Sanahuja & Partners',
+        p1_f6: 'Privacidad total con vistas abiertas al paisaje', p1_f7: 'Producción de aceite virgen extra propio',
+        p1_b1: 'Huella de carbono reducida por autosuficiencia energética',
+        p1_b2: 'Preservación activa de patrimonio natural y cultural',
+        p1_b3: 'Economía local: producción agrícola de proximidad',
+        p1_b4: 'Biodiversidad: integración con el ecosistema del olivar',
+        p2_num: 'Proyecto II', p2_heading: 'Coliving Olive Soul', p2_sub: 'Una villa. Cuatro vidas.',
+        p2_body: 'El modelo Coliving propone una gran villa mediterránea diseñada por Jaime Sanahuja, fraccionada en cuatro unidades independientes con espacios comunes de alto valor. Ideal para quienes desean la experiencia Olive Soul con una inversión más accesible y el valor añadido de una comunidad cercana.',
+        p2_f1: 'Villa de diseño fraccionada en 4 unidades privadas',
+        p2_f2: 'Espacios comunes: jardín, zona de producción de aceite, áreas de descanso',
+        p2_f3: 'Diseño firmado por Jaime Sanahuja / Sanahuja & Partners',
+        p2_f4: 'Comunidad reducida y seleccionada', p2_f5: 'Producción colectiva de aceite virgen extra',
+        p2_f6: 'Inversión más accesible dentro del ecosistema Olive Soul',
+        p3_num: 'Proyecto III', p3_heading: 'Cohousing', p3_sub: 'Un proyecto comunitario de largo alcance.',
+        p3_body: 'El modelo Cohousing se desarrolla en entornos de aproximadamente 2 hectáreas bajo la figura legal de Declaración de Interés Comunitario (DIC), que permite hasta un 2% de superficie construida. Un proyecto para quienes desean crear comunidad con mayor profundidad, compartiendo territorio, recursos y visión.',
+        p3_f1: 'Entorno de 2 hectáreas con gestión comunitaria', p3_f2: 'Hasta 2% de superficie construida bajo DIC',
+        p3_f3: 'Espacios compartidos: producción, ocio, trabajo y cultura',
+        p3_f4: 'Modelo de gobernanza participativa',
+        p3_f5: 'Alta integración con el territorio y el ecosistema local',
+        p3_f6: 'Ideal para grupos con visión compartida de vida sostenible',
+        p4_num: 'Proyecto IV', p4_heading: 'Inversión en Hospitalidad', p4_sub: 'Turismo de autor en un territorio único.',
+        p4_body: 'Una oportunidad para venture capital y perfiles inversores que buscan construir en el Bajo Maestrazgo con fines turísticos y de hospitalidad premium. Olive Soul ofrece gestión integral del proyecto, acceso al territorio, red de contactos locales y la promoción de eventos culturales como valor diferencial.',
+        p4_f1: 'Inversión orientada a turismo rural premium',
+        p4_f2: 'Construcción en zona de alto valor paisajístico y patrimonial',
+        p4_f3: 'Gestión integral por parte de Olive Soul',
+        p4_f4: 'Promoción de eventos culturales y gastronómicos',
+        p4_f5: 'Acceso a una red internacional de propietarios y huéspedes',
+        p4_f6: 'Modelo de retorno combinando rentabilidad y impacto cultural',
+        placeholder_text: 'Imagen disponible próximamente',
+        placeholder_credit: 'Diseño: Jaime Sanahuja / Sanahuja & Partners',
+        cta_whatsapp: 'Hablar con nuestro equipo',
+        cta_dossier: 'Recibir el Dossier Completo',
+      },
+      en: {
+        nav_arquitectura: 'Architecture', nav_ubicacion: 'Location', nav_estilo: 'Lifestyle',
+        pg_label: '006 / Projects', pg_h1: 'Four ways', pg_h2: 'to belong',
+        p1_num: 'Project I', p1_heading: 'Finca Unitaria', p1_sub: 'One hectare. Your legacy.',
+        p1_body: 'The Finca Unitaria is the purest way to belong to Olive Soul. A private property of at least 1 hectare with producing olive groves, a contemporary home designed by Jaime Sanahuja and total independence: solar energy, private water and artisan oil production.',
+        p1_f1: 'Minimum 1 hectare of private land', p1_f2: 'Home from 100 m², customisable',
+        p1_f3: 'Century-old olive groves in active production', p1_f4: 'Energy and water self-sufficiency',
+        p1_f5: 'Design signed by Jaime Sanahuja / Sanahuja & Partners',
+        p1_f6: 'Total privacy with open views over the landscape', p1_f7: 'Own extra virgin olive oil production',
+        p1_b1: 'Reduced carbon footprint through energy self-sufficiency',
+        p1_b2: 'Active preservation of natural and cultural heritage',
+        p1_b3: 'Local economy: proximity agricultural production',
+        p1_b4: 'Biodiversity: integration with the olive grove ecosystem',
+        p2_num: 'Project II', p2_heading: 'Coliving Olive Soul', p2_sub: 'One villa. Four lives.',
+        p2_body: 'The Coliving model proposes a large Mediterranean villa designed by Jaime Sanahuja, divided into four independent units with high-value shared spaces. Ideal for those who want the Olive Soul experience with a more accessible investment and the added value of a close community.',
+        p2_f1: 'Design villa divided into 4 private units',
+        p2_f2: 'Shared spaces: garden, oil production area, rest areas',
+        p2_f3: 'Design signed by Jaime Sanahuja / Sanahuja & Partners',
+        p2_f4: 'Small, selected community', p2_f5: 'Collective production of extra virgin olive oil',
+        p2_f6: 'More accessible investment within the Olive Soul ecosystem',
+        p3_num: 'Project III', p3_heading: 'Cohousing', p3_sub: 'A long-range community project.',
+        p3_body: 'The Cohousing model is developed in settings of approximately 2 hectares under the legal framework of Declaration of Community Interest (DIC), which allows up to 2% of built area. A project for those who wish to build community with greater depth, sharing territory, resources and vision.',
+        p3_f1: '2-hectare setting with community management', p3_f2: 'Up to 2% built area under DIC',
+        p3_f3: 'Shared spaces: production, leisure, work and culture',
+        p3_f4: 'Participatory governance model',
+        p3_f5: 'High integration with the territory and local ecosystem',
+        p3_f6: 'Ideal for groups with a shared vision of sustainable living',
+        p4_num: 'Project IV', p4_heading: 'Hospitality Investment', p4_sub: 'Artisan tourism in a unique territory.',
+        p4_body: 'An opportunity for venture capital and investor profiles seeking to build in the Bajo Maestrazgo for tourism and premium hospitality purposes. Olive Soul offers comprehensive project management, access to the territory, local contact network and the promotion of cultural events as a differential value.',
+        p4_f1: 'Investment focused on premium rural tourism',
+        p4_f2: 'Construction in a zone of high landscape and heritage value',
+        p4_f3: 'Comprehensive management by Olive Soul',
+        p4_f4: 'Promotion of cultural and gastronomic events',
+        p4_f5: 'Access to an international network of owners and guests',
+        p4_f6: 'Return model combining profitability and cultural impact',
+        placeholder_text: 'Image available soon',
+        placeholder_credit: 'Design: Jaime Sanahuja / Sanahuja & Partners',
+        cta_whatsapp: 'Talk to our team',
+        cta_dossier: 'Receive the Full Dossier',
+      },
+      it: {
+        nav_arquitectura: 'Architettura', nav_ubicacion: 'Posizione', nav_estilo: 'Stile di vita',
+        pg_label: '006 / Progetti', pg_h1: 'Quattro modi', pg_h2: 'di appartenere',
+        p1_num: 'Progetto I', p1_heading: 'Finca Unitaria', p1_sub: 'Un ettaro. Il tuo lascito.',
+        p1_body: 'La Finca Unitaria è il modo più puro di appartenere a Olive Soul. Una proprietà privata di almeno 1 ettaro con uliveti in produzione, abitazione contemporanea progettata da Jaime Sanahuja e totale indipendenza: energia solare, acqua propria e produzione di olio d\'autore.',
+        p1_f1: 'Minimo 1 ettaro di superficie privata', p1_f2: 'Abitazione da 100 m², personalizzabile',
+        p1_f3: 'Uliveti centenari in produzione attiva', p1_f4: 'Autosufficienza energetica e idrica',
+        p1_f5: 'Design firmato da Jaime Sanahuja / Sanahuja & Partners',
+        p1_f6: 'Privacy totale con viste aperte sul paesaggio', p1_f7: 'Produzione di olio extravergine d\'oliva proprio',
+        p1_b1: 'Impronta di carbonio ridotta grazie all\'autosufficienza energetica',
+        p1_b2: 'Preservazione attiva del patrimonio naturale e culturale',
+        p1_b3: 'Economia locale: produzione agricola di prossimità',
+        p1_b4: 'Biodiversità: integrazione con l\'ecosistema dell\'uliveto',
+        p2_num: 'Progetto II', p2_heading: 'Coliving Olive Soul', p2_sub: 'Una villa. Quattro vite.',
+        p2_body: 'Il modello Coliving propone una grande villa mediterranea progettata da Jaime Sanahuja, suddivisa in quattro unità indipendenti con spazi comuni di alto valore. Ideale per chi desidera l\'esperienza Olive Soul con un investimento più accessibile e il valore aggiunto di una comunità vicina.',
+        p2_f1: 'Villa di design suddivisa in 4 unità private',
+        p2_f2: 'Spazi comuni: giardino, area produzione olio, aree di riposo',
+        p2_f3: 'Design firmato da Jaime Sanahuja / Sanahuja & Partners',
+        p2_f4: 'Comunità ridotta e selezionata', p2_f5: 'Produzione collettiva di olio extravergine d\'oliva',
+        p2_f6: 'Investimento più accessibile nell\'ecosistema Olive Soul',
+        p3_num: 'Progetto III', p3_heading: 'Cohousing', p3_sub: 'Un progetto comunitario di ampio respiro.',
+        p3_body: 'Il modello Cohousing si sviluppa in contesti di circa 2 ettari sotto la figura giuridica della Dichiarazione di Interesse Comunitario (DIC), che consente fino al 2% di superficie costruita. Un progetto per chi desidera creare comunità con maggiore profondità, condividendo territorio, risorse e visione.',
+        p3_f1: 'Contesto di 2 ettari con gestione comunitaria', p3_f2: 'Fino al 2% di superficie costruita sotto DIC',
+        p3_f3: 'Spazi condivisi: produzione, svago, lavoro e cultura',
+        p3_f4: 'Modello di governance partecipativa',
+        p3_f5: 'Alta integrazione con il territorio e l\'ecosistema locale',
+        p3_f6: 'Ideale per gruppi con visione condivisa di vita sostenibile',
+        p4_num: 'Progetto IV', p4_heading: 'Investimento in Ospitalità', p4_sub: 'Turismo d\'autore in un territorio unico.',
+        p4_body: 'Un\'opportunità per venture capital e profili investitori che cercano di costruire nel Bajo Maestrazgo a fini turistici e di ospitalità premium. Olive Soul offre gestione integrale del progetto, accesso al territorio, rete di contatti locali e la promozione di eventi culturali come valore differenziale.',
+        p4_f1: 'Investimento orientato al turismo rurale premium',
+        p4_f2: 'Costruzione in zona di alto valore paesaggistico e patrimoniale',
+        p4_f3: 'Gestione integrale da parte di Olive Soul',
+        p4_f4: 'Promozione di eventi culturali e gastronomici',
+        p4_f5: 'Accesso a una rete internazionale di proprietari e ospiti',
+        p4_f6: 'Modello di rendimento che combina redditività e impatto culturale',
+        placeholder_text: 'Immagine disponibile prossimamente',
+        placeholder_credit: 'Design: Jaime Sanahuja / Sanahuja & Partners',
+        cta_whatsapp: 'Parla con il nostro team',
+        cta_dossier: 'Ricevi il Dossier Completo',
+      },
+      fr: {
+        nav_arquitectura: 'Architecture', nav_ubicacion: 'Localisation', nav_estilo: 'Style de vie',
+        pg_label: '006 / Projets', pg_h1: 'Quatre façons', pg_h2: "d'appartenir",
+        p1_num: 'Projet I', p1_heading: 'Finca Unitaria', p1_sub: 'Un hectare. Votre legs.',
+        p1_body: "La Finca Unitaria est la façon la plus pure d'appartenir à Olive Soul. Une propriété privée d'au moins 1 hectare avec des oliveraies en production, une maison contemporaine conçue par Jaime Sanahuja et une totale indépendance : énergie solaire, eau propre et production d'huile d'auteur.",
+        p1_f1: "Minimum 1 hectare de surface privée", p1_f2: "Maison à partir de 100 m², personnalisable",
+        p1_f3: "Oliveraies centenaires en production active", p1_f4: "Autosuffisance énergétique et hydrique",
+        p1_f5: "Design signé par Jaime Sanahuja / Sanahuja & Partners",
+        p1_f6: "Intimité totale avec vues dégagées sur le paysage", p1_f7: "Production d'huile d'olive vierge extra propre",
+        p1_b1: "Empreinte carbone réduite grâce à l'autosuffisance énergétique",
+        p1_b2: "Préservation active du patrimoine naturel et culturel",
+        p1_b3: "Économie locale : production agricole de proximité",
+        p1_b4: "Biodiversité : intégration avec l'écosystème de l'oliveraie",
+        p2_num: 'Projet II', p2_heading: 'Coliving Olive Soul', p2_sub: 'Une villa. Quatre vies.',
+        p2_body: "Le modèle Coliving propose une grande villa méditerranéenne conçue par Jaime Sanahuja, divisée en quatre unités indépendantes avec des espaces communs de grande valeur. Idéal pour ceux qui souhaitent l'expérience Olive Soul avec un investissement plus accessible et la valeur ajoutée d'une communauté proche.",
+        p2_f1: "Villa de design divisée en 4 unités privées",
+        p2_f2: "Espaces communs : jardin, zone de production d'huile, aires de repos",
+        p2_f3: "Design signé par Jaime Sanahuja / Sanahuja & Partners",
+        p2_f4: "Communauté réduite et sélectionnée", p2_f5: "Production collective d'huile d'olive vierge extra",
+        p2_f6: "Investissement plus accessible au sein de l'écosystème Olive Soul",
+        p3_num: 'Projet III', p3_heading: 'Cohousing', p3_sub: 'Un projet communautaire de longue portée.',
+        p3_body: "Le modèle Cohousing se développe dans des environnements d'environ 2 hectares sous le cadre juridique de la Déclaration d'Intérêt Communautaire (DIC), qui permet jusqu'à 2% de surface construite. Un projet pour ceux qui souhaitent créer une communauté avec plus de profondeur, en partageant territoire, ressources et vision.",
+        p3_f1: "Environnement de 2 hectares avec gestion communautaire", p3_f2: "Jusqu'à 2% de surface construite sous DIC",
+        p3_f3: "Espaces partagés : production, loisirs, travail et culture",
+        p3_f4: "Modèle de gouvernance participative",
+        p3_f5: "Haute intégration avec le territoire et l'écosystème local",
+        p3_f6: "Idéal pour des groupes partageant une vision de vie durable",
+        p4_num: 'Projet IV', p4_heading: "Investissement en Hospitalité", p4_sub: "Tourisme d'auteur dans un territoire unique.",
+        p4_body: "Une opportunité pour le capital-risque et les profils investisseurs cherchant à construire dans le Bajo Maestrazgo à des fins touristiques et d'hospitalité premium. Olive Soul offre une gestion intégrale du projet, l'accès au territoire, un réseau de contacts locaux et la promotion d'événements culturels comme valeur différentielle.",
+        p4_f1: "Investissement orienté vers le tourisme rural premium",
+        p4_f2: "Construction dans une zone de haute valeur paysagère et patrimoniale",
+        p4_f3: "Gestion intégrale par Olive Soul",
+        p4_f4: "Promotion d'événements culturels et gastronomiques",
+        p4_f5: "Accès à un réseau international de propriétaires et d'hôtes",
+        p4_f6: "Modèle de retour combinant rentabilité et impact culturel",
+        placeholder_text: "Image disponible prochainement",
+        placeholder_credit: "Design : Jaime Sanahuja / Sanahuja & Partners",
+        cta_whatsapp: 'Parler à notre équipe',
+        cta_dossier: 'Recevoir le Dossier Complet',
+      }
+    };
+
+    const WA_URLS = {
+      es: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul',
+      en: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience',
+      it: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul',
+      fr: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul',
+    };
+
+    let currentLang = 'es';
+    function switchLang(lang) {
+      currentLang = lang;
+      const tr = T[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (tr[key] !== undefined) el.textContent = tr[key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.lang === lang)
+      );
+      const waEl = document.querySelector('.cta-whatsapp');
+      if (waEl) waEl.href = WA_URLS[lang];
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn =>
+      btn.addEventListener('click', () => switchLang(btn.dataset.lang))
+    );
+
+    /* ——— CURSOR ——— */
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    });
+
+    /* ——— ENTRY ANIMATIONS ——— */
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.page-label', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' });
+    gsap.from('.page-heading .word span', {
+      y: '110%', duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.3
+    });
+
+    document.querySelectorAll('.project-section').forEach(section => {
+      const num     = section.querySelector('.project-number');
+      const heading = section.querySelector('.project-heading');
+      const sub     = section.querySelector('.project-sub');
+      const body    = section.querySelector('.project-body');
+      const items   = section.querySelectorAll('.feature-list li');
+      const img     = section.querySelector('.project-placeholder');
+
+      const trig = { trigger: section, start: 'top 82%', toggleActions: 'play none none reverse' };
+
+      if (num)     gsap.from(num,     { opacity: 0, y: 15, duration: 0.6, ease: 'power2.out', scrollTrigger: trig });
+      if (heading) gsap.from(heading, { opacity: 0, y: 40, duration: 1.0, ease: 'power3.out', delay: 0.05, scrollTrigger: trig });
+      if (sub)     gsap.from(sub,     { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out', delay: 0.15, scrollTrigger: trig });
+      if (body)    gsap.from(body,    { opacity: 0, y: 25, duration: 0.9, ease: 'power3.out', delay: 0.2, scrollTrigger: trig });
+      if (items.length) gsap.from(items, { opacity: 0, y: 18, duration: 0.6, stagger: 0.07, ease: 'power2.out', delay: 0.3, scrollTrigger: trig });
+      if (img)     gsap.from(img,     { opacity: 0, x: 40, duration: 1.0, ease: 'power3.out', scrollTrigger: trig });
+    });
+
+  })();
+  </script>
+  <script src="modal-dossier.js"></script>
+
+</body>
+</html>
