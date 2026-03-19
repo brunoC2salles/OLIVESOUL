@@ -36,12 +36,9 @@
 
     /* ——— CURSOR ——— */
     #cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--olive);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
+      position: fixed; width: 8px; height: 8px;
+      background: var(--olive); border-radius: 50%;
+      pointer-events: none; z-index: 10000;
       transform: translate(-50%, -50%);
       transition: width .3s ease, height .3s ease, background .3s ease, border .3s ease;
       will-change: left, top;
@@ -64,163 +61,152 @@
 
     /* ——— HEADER ——— */
     .page-header {
-      position: fixed; top: 0; right: 5vw;
-      z-index: 100; padding: 2rem 0;
-      font-size: 0.75rem; letter-spacing: 0.4em; text-transform: uppercase;
-      color: var(--muted); font-weight: 300;
-    }
-
-    /* ——— HERO ——— */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 8vw 5rem;
-      position: relative;
-      background: #0a0a0a;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 1px;
-      background: var(--olive);
-      opacity: 0.3;
-    }
-    .page-label {
-      display: block;
-      font-size: 0.68rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--olive);
-      margin-bottom: 1.2rem;
-    }
-    .page-heading {
-      font-size: clamp(6rem, 10vw, 11rem);
-      font-weight: 300;
-      line-height: 0.92;
-      letter-spacing: -0.025em;
-      overflow: hidden;
-      margin-bottom: 0.5rem;
-    }
-    .page-heading .word {
-      display: inline-block;
-      overflow: hidden;
-      line-height: 1.05;
-      margin-right: 0.15em;
-    }
-    .page-heading .word span { display: inline-block; }
-    .page-subtitle {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-style: italic;
-      font-weight: 300;
-      color: var(--muted);
-      margin-top: 0.5rem;
-    }
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    /* ——— CONTENT SECTIONS ——— */
-    .content-section { padding: 10vh 8vw; }
-
-    /* ——— SECTION ELEMENTS ——— */
-    .section-label {
-      display: block;
-      font-size: 0.65rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--olive);
-      margin-bottom: 1.8rem;
-      border-left: 2px solid var(--olive);
-      padding-left: 0.8rem;
-    }
-    .section-body {
-      font-size: clamp(0.95rem, 1vw, 1.05rem);
-      line-height: 1.9;
-      color: rgba(245,240,232,0.8);
-      font-weight: 300;
-    }
-
-    /* ——— INTRO GRID ——— */
-    .intro-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6vw;
-      align-items: start;
-    }
-
-    /* ——— FEATURE LIST ——— */
-    .feature-list { list-style: none; margin: 2rem 0 1rem; }
-    .feature-list li {
-      font-size: clamp(1rem, 1.1vw, 1.15rem);
-      color: rgba(245,240,232,0.85);
-      padding: 1.2rem 0 1.2rem 1.6rem;
-      border-bottom: 1px solid var(--line);
-      position: relative;
-      font-weight: 300;
-      line-height: 1.5;
-    }
-    .feature-list li::before {
-      content: '—';
-      position: absolute; left: 0;
-      color: var(--olive);
-      font-size: 1rem;
-    }
-
-    /* ——— EXPERIENCE GRID ——— */
-    .exp-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 4vw;
+      position: fixed; top: 0; right: 5vw; z-index: 100;
+      padding: 2rem 0; display: flex; align-items: center; gap: 2rem;
     }
 
     /* ——— LANG SWITCHER ——— */
     .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
     .lang-btn {
-      background: none; border: none;
-      color: var(--muted);
-      font-size: 0.62rem; letter-spacing: 0.15em;
-      cursor: none; font-family: var(--font);
-      font-weight: 300;
-      transition: color .3s;
-      padding: 0 2px;
+      background: none; border: none; color: var(--muted);
+      font-size: 0.62rem; letter-spacing: 0.15em; cursor: none;
+      font-family: var(--font); font-weight: 300; transition: color .3s; padding: 0 2px;
     }
     .lang-btn.active, .lang-btn:hover { color: var(--text); }
     .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
 
-    /* ——— FOOTER ——— */
-    .page-footer {
-      padding: 3rem 8vw;
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 300;
+    /* ——— HERO ——— */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 8vw 5rem;
+      position: relative; background: #0a0a0a; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px; background: var(--olive); opacity: 0.3;
+    }
+    .hero-deco { display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem; }
+    .hero-deco-v { width: 2px; height: 60px; background: var(--olive); }
+    .hero-deco-h { width: 80px; height: 1px; background: var(--olive); opacity: 0.4; margin-top: 8px; }
+
+    .page-label {
+      font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--olive); display: block; margin-bottom: 1.2rem;
+    }
+    .page-heading {
+      font-size: clamp(6rem, 10vw, 11rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: -0.025em; overflow: hidden; margin-bottom: 0.5rem;
+    }
+    .page-heading .word { display: inline-block; overflow: hidden; line-height: 1.05; margin-right: 0.1em; }
+    .page-heading .word span { display: inline-block; }
+    .page-subtitle {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-style: italic; font-weight: 300; color: var(--muted); margin-top: 0.5rem;
+    }
+    .scroll-indicator {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
+    }
+
+    /* ——— MARQUEE ——— */
+    .marquee-section {
+      background: var(--olive-muted); overflow: hidden; padding: 2rem 0; white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-block; white-space: nowrap;
+      font-size: 8vw; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(107,123,58,0.6); will-change: transform;
+    }
+
+    /* ——— QUOTE SECTION ——— */
+    .section-quote {
+      background: var(--terracota-muted);
+      border-left: 3px solid var(--terracota);
+      padding: 10vh 8vw; text-align: center;
+    }
+    .quote-text {
+      font-style: italic; font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+      color: var(--text); line-height: 1.5; max-width: 760px; margin: 0 auto;
+    }
+    .quote-sig {
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); margin-top: 2rem;
+    }
+
+    /* ——— INTRO SECTION ——— */
+    .section-intro { background: #0a0a0a; padding: 10vh 8vw; }
+    .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: start; }
+    .section-label {
+      display: block; font-size: 0.65rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--olive); margin-bottom: 1.8rem;
+      border-left: 2px solid var(--olive); padding-left: 0.8rem;
+    }
+    .section-body {
+      font-size: clamp(0.95rem, 1vw, 1.1rem);
+      line-height: 1.9; color: rgba(245,240,232,0.8); font-weight: 300;
+    }
+    .intro-placeholder {
+      aspect-ratio: 3/4; border: 1px solid var(--line);
+      background: rgba(107,123,58,0.06);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1rem; padding: 2rem; text-align: center;
+    }
+
+    /* ——— EXPERIENCIAS SECTION ——— */
+    .section-exp { background: var(--olive-muted); padding: 10vh 8vw; }
+    .exp-label {
+      display: block; font-size: 0.65rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--olive); margin-bottom: 2rem;
+      border-left: 2px solid var(--olive); padding-left: 0.8rem;
+    }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4vw; }
+    .feature-list { list-style: none; }
+    .feature-list li {
+      font-size: clamp(1rem, 1.1vw, 1.15rem);
+      color: rgba(245,240,232,0.85);
+      padding: 1.2rem 0 1.2rem 1.6rem;
+      border-bottom: 1px solid var(--line);
+      position: relative; font-weight: 300; line-height: 1.5;
+    }
+    .feature-list li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--olive); font-size: 1rem;
+    }
+
+    /* ——— CLOSING SECTION ——— */
+    .section-closing { background: #0a0a0a; padding: 10vh 8vw; text-align: center; }
+    .closing-sep {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin: 0 auto 4rem; max-width: 500px;
+    }
+    .closing-sep div { flex: 1; height: 1px; background: var(--line); }
+    .closing-text {
+      font-style: italic; font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+      max-width: 600px; margin: 0 auto; line-height: 1.8;
+      color: rgba(245,240,232,0.8);
     }
 
     /* ——— CTA ——— */
     .cta-whatsapp:hover { opacity: 0.85; }
     .cta-section button:hover { border-color: rgba(196,113,74,0.8); }
 
-    /* ——— MOBILE ——— */
+    /* ——— FOOTER ——— */
+    .page-footer {
+      padding: 3rem 8vw; font-size: 0.68rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); font-weight: 300;
+    }
+
     @media (max-width: 768px) {
       .hero { padding: 8vh 6vw 5rem; }
       .page-heading { font-size: clamp(3rem, 12vw, 6rem); }
-      .page-subtitle { font-size: clamp(1.5rem, 8vw, 3rem); }
-      .content-section { padding: 8vh 6vw; }
       .intro-grid, .exp-grid { grid-template-columns: 1fr; }
+      .section-intro, .section-exp, .section-closing { padding: 8vh 6vw; }
+      .marquee-track { font-size: 14vw; }
     }
   </style>
 </head>
@@ -229,7 +215,7 @@
   <div id="cursor"></div>
 
   <a href="index.html" class="back-btn">← Olive Soul</a>
-  <div class="page-header" style="display:flex;align-items:center;gap:2rem;">
+  <div class="page-header">
     <span style="font-size:0.75rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--muted);font-weight:300;">Olive Soul</span>
     <nav style="display:flex;gap:1.8rem;">
       <a href="proyectos.html" data-i18n="nav_proyectos" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:var(--font);font-weight:300;transition:color .3s;">Proyectos</a>
@@ -248,49 +234,53 @@
   </div>
 
   <!-- HERO -->
-  <div class="hero">
-    <div style="width:2px;height:60px;background:var(--olive);margin-bottom:1.5rem"></div>
+  <section class="hero">
+    <div class="hero-deco">
+      <div class="hero-deco-v"></div>
+      <div class="hero-deco-h"></div>
+    </div>
     <span class="page-label" data-i18n="pg_label">009 / Estilo de Vida</span>
     <h1 class="page-heading">
       <div class="word"><span data-i18n="pg_heading1">Slow living</span></div>
     </h1>
     <p class="page-subtitle" data-i18n="pg_heading2">mediterráneo</p>
     <div class="scroll-indicator">↓ scroll</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section" aria-hidden="true">
+    <span class="marquee-track">SLOW LIVING · MEDITERRÁNEO · OLIVE SOUL · TIEMPO · SILENCIO · AUTENTICIDAD · SLOW LIVING · MEDITERRÁNEO · OLIVE SOUL · TIEMPO · SILENCIO · AUTENTICIDAD · </span>
   </div>
 
   <!-- QUOTE -->
-  <div style="background:var(--terracota-muted);border-left:3px solid var(--terracota);padding:10vh 8vw">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:1rem;display:block"><ellipse cx="12" cy="8" rx="4" ry="6" fill="rgba(107,123,58,0.8)" transform="rotate(-15 12 8)"/><line x1="12" y1="2" x2="12" y2="22" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><ellipse cx="9" cy="13" rx="3" ry="5" fill="rgba(107,123,58,0.4)" transform="rotate(20 9 13)"/></svg>
-    <p style="font-style:italic;font-size:1.6rem;color:var(--text);line-height:1.7;max-width:720px">"El lujo no es ostentación. Es tiempo, silencio y autenticidad."</p>
-    <p style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-top:1.5rem">Olive Soul</p>
-  </div>
+  <section class="section-quote">
+    <p class="quote-text">"El lujo no es ostentación. Es tiempo, silencio y autenticidad."</p>
+    <p class="quote-sig">Olive Soul</p>
+  </section>
 
   <!-- INTRO -->
-  <div class="content-section" style="background:#0a0a0a">
+  <section class="section-intro">
     <div class="intro-grid">
-      <div>
-        <span data-i18n="pg_label" style="display:block;font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--olive);margin-bottom:1.5rem">009 / Estilo de Vida</span>
+      <div class="intro-left">
+        <span class="section-label" data-i18n="pg_label">009 / Estilo de Vida</span>
         <p class="section-body" data-i18n="sl_intro">Vivir en Olive Soul es recuperar el ritmo natural. Es seguir el ciclo de las estaciones y de la cosecha. Es producir aceite propio prensado en frío. Es participar en la destilación artesanal de esencias aromáticas. Es caminar rutas temáticas entre olivos milenarios. Es encontrar espacios de meditación en antiguas construcciones de piedra seca.</p>
       </div>
-      <div style="aspect-ratio:3/4;border:1px solid var(--line);background:rgba(107,123,58,0.06);display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center">
-        <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)">Imagen próximamente</p>
+      <div class="intro-right">
+        <div class="intro-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <ellipse cx="12" cy="8" rx="4" ry="6" fill="rgba(107,123,58,0.8)" transform="rotate(-15 12 8)"/>
+            <line x1="12" y1="2" x2="12" y2="22" stroke="rgba(107,123,58,0.5)" stroke-width="1"/>
+            <ellipse cx="9" cy="13" rx="3" ry="5" fill="rgba(107,123,58,0.4)" transform="rotate(20 9 13)"/>
+          </svg>
+          <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)">Imagen próximamente</p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- SEPARATOR -->
-  <div style="display:flex;align-items:center;gap:1.5rem;margin:0 8vw">
-    <div style="flex:1;height:1px;background:var(--line)"></div>
-    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><circle cx="6" cy="6" r="2" fill="rgba(107,123,58,0.5)"/></svg>
-    <div style="flex:1;height:1px;background:var(--line)"></div>
-  </div>
-
-  <!-- EXPERIENCES -->
-  <div class="content-section" style="background:var(--olive-muted)">
-    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="8" rx="4" ry="6" fill="rgba(107,123,58,0.8)" transform="rotate(-15 12 8)"/><line x1="12" y1="2" x2="12" y2="22" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><ellipse cx="9" cy="13" rx="3" ry="5" fill="rgba(107,123,58,0.4)" transform="rotate(20 9 13)"/></svg>
-      <span class="section-label" data-i18n="sl_exp_label" style="border-left:none;padding-left:0;margin-bottom:0">Experiencias</span>
-    </div>
+  <!-- EXPERIENCIAS -->
+  <section class="section-exp">
+    <span class="exp-label" data-i18n="sl_exp_label">Experiencias</span>
     <div class="exp-grid">
       <ul class="feature-list">
         <li data-i18n="sl_f1">Producción de aceite virgen extra propio, prensado en frío</li>
@@ -305,23 +295,24 @@
         <li data-i18n="sl_f8">Cerámica tradicional e intervenciones artísticas en el paisaje</li>
       </ul>
     </div>
-  </div>
-
-  <!-- SEPARATOR -->
-  <div style="display:flex;align-items:center;gap:1.5rem;margin:0 8vw">
-    <div style="flex:1;height:1px;background:var(--line)"></div>
-    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="rgba(107,123,58,0.5)" stroke-width="1"/><circle cx="6" cy="6" r="2" fill="rgba(107,123,58,0.5)"/></svg>
-    <div style="flex:1;height:1px;background:var(--line)"></div>
-  </div>
+  </section>
 
   <!-- CLOSING -->
-  <div class="content-section" style="background:#0a0a0a;text-align:center">
-    <p class="section-body" data-i18n="sl_closing" style="font-style:italic;font-size:1.3rem;max-width:600px;margin:0 auto;line-height:1.8">Olive Soul no es únicamente un lugar para residir. Es un espacio para reconectar con la familia, con uno mismo y con una comunidad selecta e internacional.</p>
-  </div>
+  <section class="section-closing">
+    <div class="closing-sep">
+      <div></div>
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <circle cx="6" cy="6" r="5" fill="none" stroke="rgba(107,123,58,0.5)" stroke-width="1"/>
+        <circle cx="6" cy="6" r="2" fill="rgba(107,123,58,0.5)"/>
+      </svg>
+      <div></div>
+    </div>
+    <p class="closing-text" data-i18n="sl_closing">Olive Soul no es únicamente un lugar para residir. Es un espacio para reconectar con la familia, con uno mismo y con una comunidad selecta e internacional.</p>
+  </section>
 
   <!-- CTA -->
   <div class="cta-section" style="background:linear-gradient(135deg,rgba(107,123,58,0.08),rgba(196,113,74,0.08));border-top:1px solid rgba(196,113,74,0.3);padding:8vh 8vw;display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
-    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0a;text-decoration:none;background:var(--olive);padding:1rem 2.5rem;border:none;font-family:var(--font);transition:opacity .2s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
+    <a class="cta-whatsapp" href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a0a;text-decoration:none;background:var(--olive);padding:1rem 2.5rem;font-family:var(--font);transition:opacity .2s;" data-i18n="cta_whatsapp">Hablar con nuestro equipo</a>
     <button onclick="window.openDossierModal()" style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);background:transparent;border:1px solid var(--terracota);padding:1rem 2.5rem;cursor:pointer;font-family:var(--font);transition:border-color .3s;" data-i18n="cta_dossier">Recibir el Dossier Completo</button>
   </div>
 
@@ -440,33 +431,58 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
     });
 
-    /* ——— SCROLL ANIMATIONS ——— */
+    /* ——— GSAP ——— */
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero
-    gsap.from('.page-label', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' });
-    gsap.from('.page-heading .word span', {
-      y: '110%', duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.3
+    // Hero: clip-path reveal bottom to top
+    gsap.from('.hero', {
+      clipPath: 'inset(0% 0% 100% 0%)',
+      duration: 1.4, ease: 'power4.inOut'
+    });
+    gsap.from('.hero-deco', { opacity: 0, scaleY: 0, duration: 0.8, delay: 0.4, ease: 'power3.out', transformOrigin: 'top center' });
+    gsap.from('.page-label', { opacity: 0, y: 20, duration: 0.8, delay: 0.6, ease: 'power3.out' });
+    gsap.from('.page-heading .word span', { y: '110%', duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.7 });
+    gsap.from('.page-subtitle', { opacity: 0, y: 20, duration: 0.8, delay: 0.9, ease: 'power3.out' });
+
+    // Marquee infinite scroll
+    gsap.to('.marquee-track', { xPercent: -50, repeat: -1, duration: 24, ease: 'none' });
+
+    // Quote: staggered fade-up
+    gsap.from(['.quote-text', '.quote-sig'], {
+      opacity: 0, y: 40, duration: 1, stagger: 0.2, ease: 'power3.out',
+      scrollTrigger: { trigger: '.section-quote', start: 'top 80%', toggleActions: 'play none none reverse' }
     });
 
-    // Content sections
-    document.querySelectorAll('.content-section').forEach(section => {
-      const label   = section.querySelector('.section-label');
-      const bodies  = section.querySelectorAll('.section-body');
-      const listItems = section.querySelectorAll('.feature-list li');
+    // Intro: slide-right (left col), slide-left (right col)
+    gsap.from('.intro-left', {
+      opacity: 0, x: -60, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: '.section-intro', start: 'top 80%', toggleActions: 'play none none reverse' }
+    });
+    gsap.from('.intro-right', {
+      opacity: 0, x: 60, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: '.section-intro', start: 'top 80%', toggleActions: 'play none none reverse' }
+    });
 
-      if (label) gsap.from(label, {
-        opacity: 0, y: 20, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play none none reverse' }
-      });
-      bodies.forEach(body => gsap.from(body, {
-        opacity: 0, y: 30, duration: 0.9, ease: 'power3.out',
-        scrollTrigger: { trigger: section, start: 'top 82%', toggleActions: 'play none none reverse' }
-      }));
-      if (listItems.length) gsap.from(listItems, {
-        opacity: 0, y: 20, duration: 0.7, stagger: 0.08, ease: 'power2.out',
-        scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' }
-      });
+    // Experiencias: stagger fade-up 0.08s per item
+    gsap.from('.exp-label', {
+      opacity: 0, y: 20, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: '.section-exp', start: 'top 85%', toggleActions: 'play none none reverse' }
+    });
+    gsap.from('.feature-list li', {
+      opacity: 0, y: 20, duration: 0.7, stagger: 0.08, ease: 'power2.out',
+      scrollTrigger: { trigger: '.section-exp', start: 'top 80%', toggleActions: 'play none none reverse' }
+    });
+
+    // Closing: scale-up
+    gsap.from('.closing-text', {
+      opacity: 0, scale: 0.96, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: '.section-closing', start: 'top 80%', toggleActions: 'play none none reverse' }
+    });
+
+    // CTA: fade-up
+    gsap.from('.cta-section', {
+      opacity: 0, y: 30, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: '.cta-section', start: 'top 88%', toggleActions: 'play none none reverse' }
     });
 
   })();

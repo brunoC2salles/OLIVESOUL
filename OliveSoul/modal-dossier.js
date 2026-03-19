@@ -31,6 +31,7 @@
   function injectStyles() {
     var style = document.createElement('style');
     style.textContent = [
+      '#modal-dossier,#modal-dossier *{cursor:auto;}',
       '#modal-dossier{display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,10,10,0.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem;}',
       '#modal-dossier.is-open{display:flex;}',
       '#modal-dossier-inner{position:relative;max-width:520px;width:100%;border:1px solid rgba(245,240,232,0.2);padding:3rem;background:#0f0f0f;font-family:"Cormorant Garamond",Georgia,serif;opacity:0;transform:translateY(20px);transition:opacity 0.4s ease,transform 0.4s ease;}',

@@ -230,18 +230,18 @@
   </div>
 
   <!-- STATS -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:4vh 8vw;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4vh 0;text-align:center">
+  <div class="stats-section" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:6vh 8vw;background:var(--olive-muted);text-align:center">
     <div>
-      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">4.670</span>
+      <span class="stat-num" data-target="4670" style="display:block;font-size:5rem;font-weight:300;color:var(--olive);line-height:1">0</span>
       <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Olivos monumentales</span>
     </div>
     <div>
-      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">5</span>
+      <span class="stat-num" data-target="5" style="display:block;font-size:5rem;font-weight:300;color:var(--olive);line-height:1">0</span>
       <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Parques naturales</span>
     </div>
     <div>
-      <span style="display:block;font-size:3.5rem;font-weight:300;color:var(--olive);line-height:1">15'</span>
-      <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Del Mediterráneo</span>
+      <span class="stat-num" data-target="15" data-suffix="'" style="display:block;font-size:5rem;font-weight:300;color:var(--olive);line-height:1">0</span>
+      <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.5rem">Min del Mediterráneo</span>
     </div>
   </div>
 
@@ -289,6 +289,7 @@
   <footer class="page-footer">© Olive Soul · Bajo Maestrazgo, España</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script>
   (function () {
 
@@ -393,14 +394,39 @@
     });
 
     /* ——— ENTRY ANIMATIONS ——— */
+    gsap.registerPlugin(ScrollTrigger);
     gsap.from('.page-label', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' });
     gsap.from('.page-heading .word span', {
       y: '110%', duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.3
     });
-    gsap.from('.map-wrap', { opacity: 0, y: 40, duration: 1.0, delay: 0.8, ease: 'power3.out' });
-    gsap.from('.desc-eyebrow', { opacity: 0, y: 20, duration: 0.8, delay: 1.0, ease: 'power3.out' });
-    gsap.from('.desc-body', { opacity: 0, y: 30, duration: 0.9, stagger: 0.15, delay: 1.1, ease: 'power3.out' });
-    gsap.from('.feature-list li', { opacity: 0, y: 20, duration: 0.7, stagger: 0.1, delay: 1.3, ease: 'power2.out' });
+    gsap.from('.map-wrap', {
+      opacity: 0, y: 40, duration: 1.0, ease: 'power3.out',
+      scrollTrigger: { trigger: '.map-wrap', start: 'top 85%', toggleActions: 'play none none reverse' }
+    });
+    gsap.from('.desc-eyebrow', {
+      opacity: 0, y: 20, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: '.description', start: 'top 85%', toggleActions: 'play none none reverse' }
+    });
+    gsap.from('.desc-body', {
+      opacity: 0, y: 30, duration: 0.9, stagger: 0.15, ease: 'power3.out',
+      scrollTrigger: { trigger: '.description', start: 'top 82%', toggleActions: 'play none none reverse' }
+    });
+    gsap.from('.feature-list li', {
+      opacity: 0, y: 20, duration: 0.7, stagger: 0.08, ease: 'power2.out',
+      scrollTrigger: { trigger: '.feature-list', start: 'top 85%', toggleActions: 'play none none reverse' }
+    });
+
+    /* ——— STATS COUNTTO ——— */
+    document.querySelectorAll('.stat-num').forEach(function(el) {
+      var target = parseInt(el.dataset.target, 10);
+      var suffix = el.dataset.suffix || '';
+      var obj = { val: 0 };
+      gsap.to(obj, {
+        val: target, duration: 2.5, ease: 'power2.out',
+        onUpdate: function() { el.textContent = Math.round(obj.val).toLocaleString('es-ES') + suffix; },
+        scrollTrigger: { trigger: '.stats-section', start: 'top 80%', once: true }
+      });
+    });
 
   })();
   </script>
