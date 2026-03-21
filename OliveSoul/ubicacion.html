@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubicación — Olive Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg: #E8E0D0;
+            --bg2: #D4C9B0;
+            --bg-olive: #4A5C2A;
+            --bg-terracota: #C4714A;
+            --bg-dark: #1a1a18;
+            --olive: #6B7B3A;
+            --olive-light: #8BA446;
+            --terracota: #C4714A;
+            --ochre: #C49A3A;
+            --teal: #7BA8A4;
+            --text: #1a1a18;
+            --text-light: #F5F0E8;
+            --muted: rgba(26,26,24,0.5);
+            --line: rgba(26,26,24,0.12);
+            --line-strong: rgba(26,26,24,0.25);
+            --font: 'Bebas Neue', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font); 
+            letter-spacing: 0.04em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Cursor */
+        #cursor { 
+            position: fixed; 
+            width: 10px; 
+            height: 10px; 
+            background: var(--olive); 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 10000; 
+            transform: translate(-50%,-50%); 
+            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s; 
+        }
+        #cursor.expand { 
+            width: 40px; 
+            height: 40px; 
+            background: transparent; 
+            border: 1px solid var(--olive); 
+        }
+
+        /* Header */
+        #site-header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            z-index: 500; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 1.5rem 5vw; 
+            background: rgba(232,224,208,0.95); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid var(--line); 
+        }
+        .header-logo { 
+            font-family: var(--font); 
+            font-size: 1.2rem; 
+            letter-spacing: 0.25em; 
+            color: var(--text); 
+            text-decoration: none; 
+            text-transform: uppercase;
+        }
+        .header-right { display: flex; align-items: center; gap: 2.5rem; }
+        .header-nav { display: flex; gap: 2rem; }
+        .header-nav a { 
+            font-family: var(--font); 
+            font-size: 0.85rem; 
+            letter-spacing: 0.15em; 
+            color: var(--muted); 
+            text-decoration: none; 
+            transition: color 0.3s; 
+            text-transform: uppercase;
+        }
+        .header-nav a:hover { color: var(--text); }
+        .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
+        .lang-btn { 
+            background: none; 
+            border: none; 
+            color: var(--muted); 
+            font-family: var(--font); 
+            font-size: 0.75rem; 
+            letter-spacing: 0.1em; 
+            cursor: pointer; 
+            transition: color 0.3s; 
+            padding: 0 2px; 
+        }
+        .lang-btn.active, .lang-btn:hover { color: var(--text); }
+        .lang-sep { color: var(--line-strong); font-size: 0.6rem; }
+
+        /* Waves */
+        .wave-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: visible;
+        }
+
+        /* Sections */
+        section { position: relative; }
+
+        /* Hero */
+        .hero-section {
+            display: block;
+            height: 100vh;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: calc(100vh - 80px);
+            padding: 0 8vw 12vh 8vw;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-label-top {
+            position: absolute;
+            top: 7rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--olive);
+        }
+        .hero-line {
+            width: 40px;
+            height: 1px;
+            background: var(--olive);
+            margin-bottom: 2rem;
+        }
+        .hero-title-line {
+            display: block;
+            overflow: hidden;
+            line-height: 0.85;
+        }
+        .hero-title-line span { display: block; }
+        .hero-t1, .hero-t2 { font-size: clamp(6rem, 11vw, 13rem); }
+        .hero-t1 { color: var(--text); }
+        .hero-t2 { color: var(--olive); }
+        .hero-t3 { 
+            font-size: clamp(3rem, 5.5vw, 6.5rem); 
+            color: var(--terracota); 
+        }
+        .hero-bottom-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--line-strong);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 8vw;
+            font-size: 0.65rem;
+            letter-spacing: 0.4em;
+            color: var(--muted);
+        }
+
+        .hero-right {
+            background: var(--bg2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8vw 6vw;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+        }
+        .map-caption {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--olive);
+            margin-top: 1rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-stat-item { text-align: center; }
+        .hero-stat-num {
+            font-size: clamp(2rem, 3vw, 3.5rem);
+            color: var(--olive);
+            display: block;
+            line-height: 1;
+        }
+        .hero-stat-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* Statement */
+        .statement-section {
+            padding: 12vh 8vw;
+            background: var(--bg-olive);
+            text-align: center;
+            overflow: hidden;
+        }
+        .statement-text {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(1.8rem, 3vw, 3.5rem);
+            letter-spacing: 0.06em;
+            color: var(--text-light);
+            line-height: 1.4;
+            max-width: 900px;
+            margin: 0 auto;
+            text-transform: uppercase;
+        }
+
+        /* Big Stats */
+        .big-stats-section {
+            padding: 15vh 8vw;
+            border-top: 1px solid var(--line-strong);
+            overflow: hidden;
+        }
+        .section-title-row {
+            font-size: clamp(3.5rem, 7vw, 8rem);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 2rem;
+            margin-bottom: 6rem;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-left: 1px solid var(--line);
+            position: relative;
+            z-index: 1;
+        }
+        .stat-cell {
+            border-right: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 6vh 4vw;
+        }
+        .stat-num {
+            font-size: clamp(4rem, 7vw, 8rem);
+            color: var(--olive);
+            line-height: 1;
+        }
+        .stat-unit {
+            font-size: clamp(2rem, 3vw, 3.5rem);
+            color: var(--ochre);
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            color: var(--muted);
+            margin-top: 1rem;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        /* Intro Text */
+        .intro-section {
+            padding: 15vh 8vw;
+            background: var(--bg2);
+            border-top: 1px solid var(--line-strong);
+            overflow: hidden;
+        }
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            position: relative;
+            z-index: 1;
+        }
+        .intro-left-label {
+            color: var(--olive);
+            border-left: 2px solid var(--olive);
+            padding-left: 1.5rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+        }
+        .intro-body {
+            font-size: clamp(1.1rem, 1.2vw, 1.25rem);
+            letter-spacing: 0.04em;
+            line-height: 2;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+        .intro-right-title {
+            font-size: clamp(3rem, 5vw, 6rem);
+            color: rgba(26,26,24,0.06);
+            line-height: 1;
+            letter-spacing: 0.02em;
+            margin-bottom: 3rem;
+        }
+        .connection-list-item {
+            display: flex;
+            gap: 2rem;
+            border-top: 1px solid var(--line);
+            padding: 1.5rem 0;
+            align-items: center;
+        }
+        .pin-icon { width: 16px; height: 16px; stroke: var(--olive); fill: none; flex-shrink: 0; }
+        .connection-item-text {
+            font-size: clamp(0.9rem, 1vw, 1rem);
+            letter-spacing: 0.05em;
+            color: var(--text);
+            text-transform: uppercase;
+        }
+
+        /* Large Map */
+        .large-map-section {
+            padding: 12vh 0;
+            background: var(--bg-terracota);
+            overflow: hidden;
+        }
+        .map-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid rgba(245,240,232,0.2);
+            padding: 0 8vw 2rem 8vw;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        .map-title {
+            font-size: clamp(3.5rem, 7vw, 8rem);
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+        .map-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: rgba(245,240,232,0.6);
+        }
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            z-index: 1;
+        }
+        .large-map-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            filter: grayscale(100%);
+            transition: filter 0.8s ease;
+        }
+        .map-wrapper:hover .large-map-iframe {
+            filter: grayscale(0%);
+        }
+        .map-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: rgba(196, 113, 74, 0.3);
+            border: 2px solid var(--terracota);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            animation: pulse-circle 2s infinite;
+        }
+        @keyframes pulse-circle {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+        }
+        .large-map-caption {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: rgba(245,240,232,0.6);
+            margin-top: 1.5rem;
+            padding: 0 8vw;
+            text-align: center;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Conexiones */
+        .conexiones-section {
+            padding: 15vh 8vw;
+            border-top: 1px solid var(--line-strong);
+            overflow: hidden;
+        }
+        .conexiones-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 2rem;
+            margin-bottom: 5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .conexiones-title {
+            font-size: clamp(4rem, 8vw, 9rem);
+            text-transform: uppercase;
+        }
+        .conexiones-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+        }
+        .conexiones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 4vw;
+            position: relative;
+            z-index: 1;
+        }
+        .conn-item {
+            border-top: 1px solid var(--line);
+            padding: 2rem 0;
+            display: grid;
+            grid-template-columns: 48px 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .conn-icon { width: 24px; height: 24px; stroke: var(--olive); stroke-width: 1.2; fill: none; }
+        .conn-text {
+            font-size: clamp(1rem, 1.1vw, 1.15rem);
+            letter-spacing: 0.05em;
+            color: var(--text);
+            text-transform: uppercase;
+        }
+        .conn-dist {
+            font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+            color: var(--olive);
+            letter-spacing: 0.05em;
+        }
+
+        /* CTAs */
+        .cta-section {
+            background: var(--bg-dark);
+            border-top: 3px solid var(--olive);
+            padding: 12vh 8vw;
+            overflow: hidden;
+        }
+        .cta-group {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-wa {
+            background: var(--olive);
+            color: #F5F0E8;
+            padding: 1.2rem 3rem;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn-wa:hover { background: var(--olive-light); }
+        .btn-dossier {
+            background: transparent;
+            border: 1px solid rgba(245,240,232,0.3);
+            color: #F5F0E8;
+            padding: 1.2rem 3rem;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-dossier:hover { border-color: var(--olive); color: var(--olive); }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid rgba(245,240,232,0.08);
+            padding: 4rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-logo {
+            letter-spacing: 0.3em;
+            color: rgba(245,240,232,0.4);
+            font-size: 1rem;
+        }
+        .footer-nav { display: flex; gap: 2rem; }
+        .footer-nav a {
+            color: rgba(245,240,232,0.4);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+        .footer-nav a:hover { color: #F5F0E8; }
+        .footer-copy {
+            color: rgba(245,240,232,0.2);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            #site-header { padding: 1rem 5vw; }
+            .header-nav { display: none; }
+            .hero-section { grid-template-columns: 1fr; }
+            .hero-right { display: none; }
+            .hero-left { padding: 0 8vw 8vh 8vw; }
+            .hero-t1, .hero-t2 { font-size: clamp(4rem, 13vw, 7rem); }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .intro-grid { grid-template-columns: 1fr; }
+            .conexiones-grid { grid-template-columns: 1fr; }
+            .cta-group { flex-direction: column; width: 100%; }
+            .btn-wa, .btn-dossier { width: 100%; text-align: center; }
+            footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <header id="site-header">
+        <a href="index.html" class="header-logo">Olive Soul</a>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="es">ES</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="it">IT</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="fr">FR</button>
+            </div>
+            <nav class="header-nav">
+                <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+                <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section 1: Hero -->
+    <section class="hero-section">
+        <div class="hero-left">
+            <span class="hero-label-top" data-i18n="hero_label">008 — UBICACIÓN</span>
+            <div class="hero-line"></div>
+            <h1 class="hero-titles">
+                <span class="hero-title-line hero-t1"><span data-i18n="hero_t1">ENTRE EL</span></span>
+                <span class="hero-title-line hero-t2"><span data-i18n="hero_t2">MEDITERRÁNEO</span></span>
+                <span class="hero-title-line hero-t3"><span data-i18n="hero_t3">Y LA MONTAÑA</span></span>
+            </h1>
+            <div class="scroll-indicator" data-i18n="scroll">SCROLL</div>
+            <div class="hero-bottom-border"></div>
+        </div>
+    </section>
+
+    <!-- Section 2: Statement -->
+    <section class="statement-section">
+        <p class="statement-text" data-i18n="statement">OLIVE SOUL SE SITÚA EN EL CORAZÓN DEL BAJO MAESTRAZGO — UN TERRITORIO DECLARADO PATRIMONIO UNESCO POR SU EXTRAORDINARIA CONCENTRACIÓN DE OLIVOS MILENARIOS MONUMENTALES. UN LUGAR QUE MUCHOS DEFINEN COMO LA OTRA TOSCANA O LA PROVENZA VALENCIANA.</p>
+    </section>
+
+    <!-- Section 3: Big Stats -->
+    <section class="big-stats-section">
+        <h2 class="section-title-row" data-i18n="territorio_title">DATOS DEL TERRITORIO</h2>
+        <div class="stats-grid">
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="4670">0</span>
+                <span class="stat-label" data-i18n="stat_olivos">OLIVOS MONUMENTALES</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="5">0</span>
+                <span class="stat-label" data-i18n="stat_parques">PARQUES NATURALES</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="15">0</span><span class="stat-unit">'</span>
+                <span class="stat-label" data-i18n="stat_med">DEL MEDITERRÁNEO</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="9">0</span>
+                <span class="stat-label" data-i18n="stat_puertos">PUERTOS DEPORTIVOS</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="7">0</span><span class="stat-unit">KM</span>
+                <span class="stat-label" data-i18n="stat_golf">CAMPO DE GOLF</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-num counter" data-target="40">0</span><span class="stat-unit">'</span>
+                <span class="stat-label" data-i18n="stat_aero">AEROPUERTO CASTELLÓN</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Intro Text -->
+    <section class="intro-section">
+        <div class="intro-grid">
+            <div class="intro-left">
+                <div class="intro-left-label">008 / UBICACIÓN</div>
+                <p class="intro-body" data-i18n="body_intro">OLIVE SOUL SE SITÚA EN EL NORTE DE LA COMUNITAT VALENCIANA, EN EL TERRITORIO DEL BAJO MAESTRAZGO, ENTRE SANT MATEU, CANET LO ROIG Y TRAIGUERA. UN TERRITORIO CON MÁS DE 4.670 OLIVOS MILENARIOS MONUMENTALES — ÚNICOS EN EUROPA.</p>
+                <p class="intro-body" style="margin-top: 2rem;" data-i18n="body_intro_2">UN ENCLAVE QUE HA SIDO DECLARADO PATRIMONIO UNESCO Y QUE FORMÓ PARTE DE LA VÍA AUGUSTA ROMANA. UN LUGAR DONDE LA HISTORIA, LA NATURALEZA Y LA ARQUITECTURA CONVIVEN DESDE HACE SIGLOS. PRIVACIDAD SIN AISLAMIENTO. NATURALEZA SIN DESCONEXIÓN DEL MUNDO.</p>
+            </div>
+            <div class="intro-right">
+                <h3 class="intro-right-title">BAJO<br>MAESTRAZGO</h3>
+                <div class="connection-list">
+                    <div class="connection-list-item">
+                        <svg class="pin-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span class="connection-item-text">SANT MATEU</span>
+                    </div>
+                    <div class="connection-list-item">
+                        <svg class="pin-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span class="connection-item-text">CANET LO ROIG</span>
+                    </div>
+                    <div class="connection-list-item">
+                        <svg class="pin-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span class="connection-item-text">TRAIGUERA</span>
+                    </div>
+                    <div class="connection-list-item">
+                        <svg class="pin-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span class="connection-item-text">BAJO MAESTRAZGO, CASTELLÓN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Large Map -->
+    <section class="large-map-section">
+        <div class="map-top-row">
+            <h2 class="map-title" data-i18n="territorio_label">EL TERRITORIO</h2>
+            <span class="map-label">008 / BAJO MAESTRAZGO</span>
+        </div>
+        <div class="map-wrapper">
+            <iframe class="large-map-iframe" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50000!2d-0.17!3d40.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1" allowfullscreen loading="lazy"></iframe>
+            <div class="map-circle"></div>
+        </div>
+        <div class="large-map-caption">SANT MATEU · CANET LO ROIG · TRAIGUERA — NORTE DE VALENCIA, ESPAÑA</div>
+    </section>
+
+    <!-- Section 6: Conexiones -->
+    <section class="conexiones-section">
+        <div class="conexiones-title-row">
+            <h2 class="conexiones-title" data-i18n="conexiones_title">CONEXIONES</h2>
+            <span class="conexiones-label">008 / ACCESIBILIDAD</span>
+        </div>
+        <div class="conexiones-grid">
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><path d="M22 16.24v-2L13.5 9V3.5a1.5 1.5 0 1 0-3 0V9L2 14.24v2l8.5-2.53v5.69l-2.25 1.81v1.3l3.75-1.12 3.75 1.12v-1.3l-2.25-1.81v-5.69l8.5 2.53z"></path></svg>
+                <span class="conn-text" data-i18n="conn_aero_cas">AEROPUERTO DE CASTELLÓN</span>
+                <span class="conn-dist">40'</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><path d="M22 16.24v-2L13.5 9V3.5a1.5 1.5 0 1 0-3 0V9L2 14.24v2l8.5-2.53v5.69l-2.25 1.81v1.3l3.75-1.12 3.75 1.12v-1.3l-2.25-1.81v-5.69l8.5 2.53z"></path></svg>
+                <span class="conn-text" data-i18n="conn_aero_val">AEROPUERTO DE VALENCIA</span>
+                <span class="conn-dist">150 KM</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><path d="M22 16.24v-2L13.5 9V3.5a1.5 1.5 0 1 0-3 0V9L2 14.24v2l8.5-2.53v5.69l-2.25 1.81v1.3l3.75-1.12 3.75 1.12v-1.3l-2.25-1.81v-5.69l8.5 2.53z"></path></svg>
+                <span class="conn-text" data-i18n="conn_aero_bcn">AEROPUERTO DE BARCELONA</span>
+                <span class="conn-dist">197 KM</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><path d="M22 16.24v-2L13.5 9V3.5a1.5 1.5 0 1 0-3 0V9L2 14.24v2l8.5-2.53v5.69l-2.25 1.81v1.3l3.75-1.12 3.75 1.12v-1.3l-2.25-1.81v-5.69l8.5 2.53z"></path></svg>
+                <span class="conn-text" data-i18n="conn_aero_reus">AEROPUERTO DE REUS</span>
+                <span class="conn-dist">105 KM</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <span class="conn-text" data-i18n="conn_med">MAR MEDITERRÁNEO</span>
+                <span class="conn-dist">15'</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <span class="conn-text" data-i18n="conn_ap7">AUTOPISTA AP-7</span>
+                <span class="conn-dist" data-i18n="conn_ap7_val">ACCESO DIRECTO</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                <span class="conn-text" data-i18n="conn_puertos">PUERTOS DEPORTIVOS</span>
+                <span class="conn-dist" data-i18n="conn_puertos_val">9 A MENOS DE 50 KM</span>
+            </div>
+            <div class="conn-item">
+                <svg class="conn-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                <span class="conn-text" data-i18n="conn_golf">CAMPO DE GOLF</span>
+                <span class="conn-dist">7 KM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: CTAs -->
+    <section class="cta-section">
+        <div class="cta-group">
+            <a href="#" id="wa-btn" class="btn-wa" data-i18n="cta_team">HABLAR CON NUESTRO EQUIPO</a>
+            <button class="btn-dossier" data-i18n="cta_dossier">RECIBIR EL DOSSIER COMPLETO</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">OLIVE SOUL</div>
+        <nav class="footer-nav">
+            <a href="index.html" data-i18n="nav_inicio">Inicio</a>
+            <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+            <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+            <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+            <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+        </nav>
+        <div class="footer-copy" data-i18n="footer_rights">© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAÑA</div>
+    </footer>
+
+    <script src="modal-dossier.js"></script>
+    <script>
+        // Translations
+        const T = {
+            es: {
+                nav_inicio: 'INICIO', nav_proyectos: 'PROYECTOS', nav_arquitectura: 'ARQUITECTURA', nav_ubicacion: 'UBICACIÓN', nav_estilo: 'ESTILO',
+                hero_label: '008 — UBICACIÓN', hero_t1: 'ENTRE EL', hero_t2: 'MEDITERRÁNEO', hero_t3: 'Y LA MONTAÑA', scroll: 'SCROLL',
+                stat_olivos: 'OLIVOS MONUMENTALES', stat_parques: 'PARQUES NATURALES', stat_med: 'DEL MEDITERRÁNEO',
+                statement: 'OLIVE SOUL SE SITÚA EN EL CORAZÓN DEL BAJO MAESTRAZGO — UN TERRITORIO DECLARADO PATRIMONIO UNESCO POR SU EXTRAORDINARIA CONCENTRACIÓN DE OLIVOS MILENARIOS MONUMENTALES. UN LUGAR QUE MUCHOS DEFINEN COMO LA OTRA TOSCANA O LA PROVENZA VALENCIANA.',
+                territorio_title: 'DATOS DEL TERRITORIO', stat_puertos: 'PUERTOS DEPORTIVOS', stat_golf: 'CAMPO DE GOLF', stat_aero: 'AEROPUERTO CASTELLÓN',
+                body_intro: 'OLIVE SOUL SE SITÚA EN EL NORTE DE LA COMUNITAT VALENCIANA, EN EL TERRITORIO DEL BAJO MAESTRAZGO, ENTRE SANT MATEU, CANET LO ROIG Y TRAIGUERA. UN TERRITORIO CON MÁS DE 4.670 OLIVOS MILENARIOS MONUMENTALES — ÚNICOS EN EUROPA.',
+                body_intro_2: 'UN ENCLAVE QUE HA SIDO DECLARADO PATRIMONIO UNESCO Y QUE FORMÓ PARTE DE LA VÍA AUGUSTA ROMANA. UN LUGAR DONDE LA HISTORIA, LA NATURALEZA Y LA ARQUITECTURA CONVIVEN DESDE HACE SIGLOS. PRIVACIDAD SIN AISLAMIENTO. NATURALEZA SIN DESCONEXIÓN DEL MUNDO.',
+                territorio_label: 'EL TERRITORIO', conexiones_title: 'CONEXIONES',
+                conn_aero_cas: 'AEROPUERTO DE CASTELLÓN', conn_aero_val: 'AEROPUERTO DE VALENCIA', conn_aero_bcn: 'AEROPUERTO DE BARCELONA', conn_aero_reus: 'AEROPUERTO DE REUS',
+                conn_med: 'MAR MEDITERRÁNEO', conn_ap7: 'AUTOPISTA AP-7', conn_ap7_val: 'ACCESO DIRECTO', conn_puertos: 'PUERTOS DEPORTIVOS', conn_puertos_val: '9 A MENOS DE 50 KM', conn_golf: 'CAMPO DE GOLF',
+                cta_team: 'HABLAR CON NUESTRO EQUIPO', cta_dossier: 'RECIBIR EL DOSSIER COMPLETO', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAÑA',
+                wa: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul'
+            },
+            en: {
+                nav_inicio: 'HOME', nav_proyectos: 'PROJECTS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCATION', nav_estilo: 'LIFESTYLE',
+                hero_label: '008 — LOCATION', hero_t1: 'BETWEEN THE', hero_t2: 'MEDITERRANEAN', hero_t3: 'AND THE MOUNTAINS', scroll: 'SCROLL',
+                stat_olivos: 'MONUMENTAL OLIVE TREES', stat_parques: 'NATURAL PARKS', stat_med: 'FROM THE MEDITERRANEAN',
+                statement: 'OLIVE SOUL IS LOCATED IN THE HEART OF BAJO MAESTRAZGO — A TERRITORY DECLARED UNESCO HERITAGE FOR ITS EXTRAORDINARY CONCENTRATION OF MONUMENTAL MILLENARY OLIVE TREES. A PLACE THAT MANY DEFINE AS THE OTHER TUSCANY OR THE VALENCIAN PROVENCE.',
+                territorio_title: 'TERRITORY DATA', stat_puertos: 'SPORTS MARINAS', stat_golf: 'GOLF COURSE', stat_aero: 'CASTELLÓN AIRPORT',
+                body_intro: 'OLIVE SOUL IS LOCATED IN NORTHERN VALENCIA, IN THE TERRITORY OF BAJO MAESTRAZGO, BETWEEN SANT MATEU, CANET LO ROIG AND TRAIGUERA. A TERRITORY WITH MORE THAN 4,670 MONUMENTAL MILLENARY OLIVE TREES — UNIQUE IN EUROPE.',
+                body_intro_2: 'AN ENCLAVE DECLARED UNESCO HERITAGE THAT FORMED PART OF THE ROMAN VIA AUGUSTA. A PLACE WHERE HISTORY, NATURE AND ARCHITECTURE HAVE COEXISTED FOR CENTURIES. PRIVACY WITHOUT ISOLATION. NATURE WITHOUT DISCONNECTION FROM THE WORLD.',
+                territorio_label: 'THE TERRITORY', conexiones_title: 'CONNECTIONS',
+                conn_aero_cas: 'CASTELLÓN AIRPORT', conn_aero_val: 'VALENCIA AIRPORT', conn_aero_bcn: 'BARCELONA AIRPORT', conn_aero_reus: 'REUS AIRPORT',
+                conn_med: 'MEDITERRANEAN SEA', conn_ap7: 'AP-7 HIGHWAY', conn_ap7_val: 'DIRECT ACCESS', conn_puertos: 'SPORTS MARINAS', conn_puertos_val: '9 WITHIN 50 KM', conn_golf: 'GOLF COURSE',
+                cta_team: 'TALK TO OUR TEAM', cta_dossier: 'RECEIVE THE FULL DOSSIER', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, SPAIN',
+                wa: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience'
+            },
+            it: {
+                nav_inicio: 'HOME', nav_proyectos: 'PROGETTI', nav_arquitectura: 'ARCHITETTURA', nav_ubicacion: 'POSIZIONE', nav_estilo: 'STILE DI VITA',
+                hero_label: '008 — POSIZIONE', hero_t1: 'TRA IL', hero_t2: 'MEDITERRANEO', hero_t3: 'E LA MONTAGNA', scroll: 'SCROLL',
+                stat_olivos: 'ULIVI MONUMENTALI', stat_parques: 'PARCHI NATURALI', stat_med: 'DAL MEDITERRANEO',
+                statement: 'OLIVE SOUL SI TROVA NEL CUORE DEL BAJO MAESTRAZGO — UN TERRITORIO DICHIARATO PATRIMONIO UNESCO PER LA SUA STRAORDINARIA CONCENTRAZIONE DI ULIVI MILLENARI MONUMENTALI. UN LUOGO CHE MOLTI DEFINISCONO COME L\'ALTRA TOSCANA O LA PROVENZA VALENCIANA.',
+                territorio_title: 'DATI DEL TERRITORIO', stat_puertos: 'PORTI SPORTIVI', stat_golf: 'CAMPO DA GOLF', stat_aero: 'AEROPORTO CASTELLÓN',
+                body_intro: 'OLIVE SOUL SI TROVA NEL NORD DELLA COMUNITAT VALENCIANA, NEL TERRITORIO DEL BAJO MAESTRAZGO, TRA SANT MATEU, CANET LO ROIG E TRAIGUERA. UN TERRITORIO CON OLTRE 4.670 ULIVI MILLENARI MONUMENTALI — UNICI IN EUROPA.',
+                body_intro_2: 'UN ENCLAVE DICHIARATO PATRIMONIO UNESCO CHE FACEVA PARTE DELLA VIA AUGUSTA ROMANA. UN LUOGO DOVE STORIA, NATURA E ARCHITETTURA CONVIVONO DA SECOLI. PRIVACY SENZA ISOLAMENTO. NATURA SENZA DISCONNESSIONE DAL MONDO.',
+                territorio_label: 'IL TERRITORIO', conexiones_title: 'CONNESSIONI',
+                conn_aero_cas: 'AEROPORTO DI CASTELLÓN', conn_aero_val: 'AEROPORTO DI VALENCIA', conn_aero_bcn: 'AEROPORTO DI BARCELLONA', conn_aero_reus: 'AEROPORTO DI REUS',
+                conn_med: 'MAR MEDITERRANEO', conn_ap7: 'AUTOSTRADA AP-7', conn_ap7_val: 'ACCESSO DIRETTO', conn_puertos: 'PORTI SPORTIVI', conn_puertos_val: '9 A MENO DI 50 KM', conn_golf: 'CAMPO DA GOLF',
+                cta_team: 'PARLA CON IL NOSTRO TEAM', cta_dossier: 'RICEVI IL DOSSIER COMPLETO', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, SPAGNA',
+                wa: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul'
+            },
+            fr: {
+                nav_inicio: 'ACCUEIL', nav_proyectos: 'PROJETS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCALISATION', nav_estilo: 'STYLE DE VIE',
+                hero_label: '008 — LOCALISATION', hero_t1: 'ENTRE LA', hero_t2: 'MÉDITERRANÉE', hero_t3: 'ET LA MONTAGNE', scroll: 'SCROLL',
+                stat_olivos: 'OLIVIERS MONUMENTAUX', stat_parques: 'PARCS NATURELS', stat_med: 'DE LA MÉDITERRANÉE',
+                statement: 'OLIVE SOUL SE SITUE AU CŒUR DU BAJO MAESTRAZGO — UN TERRITOIRE DÉCLARÉ PATRIMOINE UNESCO POUR SON EXTRAORDINAIRE CONCENTRATION D\'OLIVIERS MILLÉNAIRES MONUMENTAUX. UN LIEU QUE BEAUCOUP DÉFINISSENT COMME L\'AUTRE TOSCANE OU LA PROVENCE VALENCIENNE.',
+                territorio_title: 'DONNÉES DU TERRITOIRE', stat_puertos: 'PORTS DE PLAISANCE', stat_golf: 'TERRAIN DE GOLF', stat_aero: 'AÉROPORT CASTELLÓN',
+                body_intro: 'OLIVE SOUL SE SITUE DANS LE NORD DE LA COMMUNAUTÉ VALENCIENNE, DANS LE TERRITOIRE DU BAJO MAESTRAZGO, ENTRE SANT MATEU, CANET LO ROIG ET TRAIGUERA. UN TERRITOIRE AVEC PLUS DE 4 670 OLIVIERS MILLÉNAIRES MONUMENTAUX — UNIQUES EN EUROPE.',
+                body_intro_2: 'UN ENCLAVE DÉCLARÉ PATRIMOINE UNESCO QUI FAISAIT PARTIE DE LA VIA AUGUSTA ROMAINE. UN LIEU OÙ L\'HISTOIRE, LA NATURE ET L\'ARCHITECTURE COEXISTENT DEPUIS DES SIÈCLES. INTIMITÉ SANS ISOLEMENT. NATURE SANS DÉCONNEXION DU MONDE.',
+                territorio_label: 'LE TERRITOIRE', conexiones_title: 'CONNEXIONS',
+                conn_aero_cas: 'AÉROPORT DE CASTELLÓN', conn_aero_val: 'AÉROPORT DE VALENCE', conn_aero_bcn: 'AÉROPORT DE BARCELONE', conn_aero_reus: 'AÉROPORT DE REUS',
+                conn_med: 'MER MÉDITERRANÉE', conn_ap7: 'AUTOROUTE AP-7', conn_ap7_val: 'ACCÈS DIRECT', conn_puertos: 'PORTS DE PLAISANCE', conn_puertos_val: '9 À MOINS DE 50 KM', conn_golf: 'TERRAIN DE GOLF',
+                cta_team: 'PARLER À NOTRE ÉQUIPE', cta_dossier: 'RECEVOIR LE DOSSIER COMPLET', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAGNE',
+                wa: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul'
+            }
+        };
+
+        function switchLang(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (T[lang][key]) el.textContent = T[lang][key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+            const waBtn = document.getElementById('wa-btn');
+            if (waBtn) waBtn.href = T[lang].wa;
+            document.documentElement.lang = lang;
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchLang(btn.getAttribute('data-lang')));
+        });
+
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power2.out' });
+        });
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+        });
+
+        // Wave Generator
+        function createWaves(section, type) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", "wave-bg");
+            svg.setAttribute("viewBox", "0 0 100 100");
+            svg.setAttribute("preserveAspectRatio", "none");
+
+            const colors = type === 'light' 
+                ? [
+                    { stroke: "#6B7B3A", opacity: 0.2, width: 1.5 },
+                    { stroke: "#C4714A", opacity: 0.15, width: 1 },
+                    { stroke: "#7BA8A4", opacity: 0.12, width: 1 },
+                    { stroke: "#C49A3A", opacity: 0.1, width: 0.8 }
+                ]
+                : [
+                    { stroke: "#F5F0E8", opacity: 0.15, width: 1.5 },
+                    { stroke: "#F5F0E8", opacity: 0.1, width: 1 },
+                    { stroke: "#F5F0E8", opacity: 0.07, width: 1 },
+                    { stroke: "#F5F0E8", opacity: 0.04, width: 0.8 }
+                ];
+
+            const paths = [
+                "M-20,25 C15,12 35,40 55,22 S80,8 110,28",
+                "M-20,42 C15,28 35,58 55,38 S80,22 110,44",
+                "M-20,60 C15,46 35,74 55,54 S80,38 110,62",
+                "M-20,76 C15,62 35,88 55,70 S80,54 110,78"
+            ];
+
+            paths.forEach((d, i) => {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", d);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", colors[i].stroke);
+                path.setAttribute("opacity", colors[i].opacity);
+                path.setAttribute("stroke-width", colors[i].width);
+                svg.appendChild(path);
+                
+                gsap.to(path, { 
+                    x: i % 2 === 0 ? -10 : 10, 
+                    duration: 12 + i * 4, 
+                    repeat: -1, 
+                    yoyo: true, 
+                    ease: 'sine.inOut', 
+                    delay: i * 1.5 
+                });
+            });
+
+            section.prepend(svg);
+        }
+
+        // Initialize Waves
+        createWaves(document.querySelector('.hero-section'), 'light');
+        createWaves(document.querySelector('.hero-right'), 'light'); // Subtle version handled by CSS opacity if needed, but prompt asked for waves in every section
+        createWaves(document.querySelector('.statement-section'), 'dark');
+        createWaves(document.querySelector('.big-stats-section'), 'light');
+        createWaves(document.querySelector('.intro-section'), 'light');
+        createWaves(document.querySelector('.large-map-section'), 'dark');
+        createWaves(document.querySelector('.conexiones-section'), 'light');
+        createWaves(document.querySelector('.cta-section'), 'dark');
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero
+        gsap.from('.hero-title-line span', { y: '110%', stagger: 0.15, duration: 1.3, ease: 'power4.out', delay: 0.4 });
+        gsap.from('.hero-right', { opacity: 0, scale: 0.97, duration: 1.2, delay: 0.6 });
+
+        // Statement
+        gsap.from('.statement-text', { 
+            scrollTrigger: { trigger: '.statement-section', start: 'top 80%' },
+            scale: 0.97, opacity: 0, duration: 1.2 
+        });
+
+        // Stats Counter
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            gsap.to(counter, {
+                scrollTrigger: { trigger: '.stats-grid', start: 'top 75%' },
+                innerText: target,
+                duration: 2,
+                snap: { innerText: 1 },
+                ease: 'power2.out'
+            });
+        });
+
+        // Intro
+        gsap.from('.intro-left', {
+            scrollTrigger: { trigger: '.intro-section', start: 'top 75%' },
+            x: -40, opacity: 0, duration: 1.2
+        });
+        gsap.from('.intro-right', {
+            scrollTrigger: { trigger: '.intro-section', start: 'top 75%' },
+            x: 40, opacity: 0, duration: 1.2
+        });
+
+        // Large Map
+        gsap.from('.large-map-section > *', {
+            scrollTrigger: { trigger: '.large-map-section', start: 'top 80%' },
+            y: 30, opacity: 0, duration: 1.2, stagger: 0.2
+        });
+
+        // Connections
+        gsap.from('.conn-item', {
+            scrollTrigger: { trigger: '.conexiones-grid', start: 'top 80%' },
+            y: 15, opacity: 0, duration: 0.8, stagger: 0.08
+        });
+
+        // CTA
+        gsap.from('.cta-group', {
+            scrollTrigger: { trigger: '.cta-section', start: 'top 85%' },
+            y: 20, opacity: 0, duration: 1
+        });
+
+    </script>
+</body>
+</html>

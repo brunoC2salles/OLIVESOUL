@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estilo de Vida — Olive Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg: #F5F0E8; /* Cream */
+            --olive: #2C3A1A; /* Dark Olive */
+            --olive-light: #6B7B3A;
+            --text-dark: #2C3A1A;
+            --text-light: #F5F0E8;
+            --muted-dark: rgba(44, 58, 26, 0.6);
+            --muted-light: rgba(245, 240, 232, 0.6);
+            --line-dark: rgba(44, 58, 26, 0.15);
+            --line-light: rgba(245, 240, 232, 0.15);
+            --font: 'Bebas Neue', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-dark);
+            font-family: var(--font);
+            letter-spacing: 0.05em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Cursor */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--olive-light);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%,-50%);
+            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s;
+        }
+        #cursor.expand {
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: 1px solid var(--olive-light);
+        }
+
+        /* Wave Backgrounds */
+        .wave-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .wave-container svg { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Header */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 5vw;
+            transition: background 0.5s, border-color 0.5s, color 0.5s;
+            border-bottom: 1px solid transparent;
+        }
+        #site-header.scrolled {
+            backdrop-filter: blur(10px);
+        }
+        .header-logo {
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: inherit;
+        }
+        .header-right { display: flex; align-items: center; gap: 3rem; }
+        .header-nav { display: flex; gap: 2.5rem; }
+        .header-nav a {
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            text-transform: uppercase;
+            color: inherit;
+        }
+        .header-nav a:hover { opacity: 0.6; }
+        .lang-switcher { display: flex; align-items: center; gap: 0.5rem; }
+        .lang-btn {
+            background: none;
+            border: none;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            color: inherit;
+            padding: 0 2px;
+        }
+        .lang-btn.active { opacity: 1; font-weight: bold; }
+        .lang-btn:not(.active) { opacity: 0.4; }
+        .lang-sep { opacity: 0.2; font-size: 0.7rem; }
+
+        /* General Section Styles */
+        section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10vh 8vw;
+            overflow: hidden;
+        }
+
+        .section-dark { background: var(--olive); color: var(--text-light); }
+        .section-light { background: var(--bg); color: var(--text-dark); }
+
+        /* Hero Section */
+        .hero-section { height: 100vh; justify-content: flex-end; padding-bottom: 12vh; }
+        .hero-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.5em;
+            color: var(--olive-light);
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .hero-title {
+            font-size: clamp(5rem, 15vw, 18rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+        }
+        .hero-subtitle {
+            font-size: clamp(2rem, 5vw, 6rem);
+            letter-spacing: 0.1em;
+            opacity: 0.5;
+            margin-top: 1rem;
+        }
+
+        /* Quote Section */
+        .quote-section { min-height: 80vh; text-align: center; }
+        .quote-text {
+            font-size: clamp(2rem, 4vw, 5rem);
+            line-height: 1.1;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-decoration {
+            width: 60px;
+            height: 1px;
+            background: currentColor;
+            margin: 3rem auto;
+            opacity: 0.3;
+        }
+
+        /* Intro Section */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            align-items: center;
+        }
+        .intro-text {
+            font-size: clamp(1.5rem, 2.5vw, 3.5rem);
+            line-height: 1.2;
+        }
+        .intro-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .pill {
+            border: 1px solid currentColor;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            border-radius: 100px;
+            opacity: 0.7;
+        }
+
+        /* Experience Sections */
+        .exp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5vw;
+            height: 100%;
+            align-items: center;
+        }
+        .exp-left { position: relative; z-index: 1; }
+        .exp-number {
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            color: var(--olive-light);
+            margin-bottom: 2rem;
+            display: block;
+        }
+        .exp-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 2rem;
+            stroke-width: 1;
+        }
+        .exp-title {
+            font-size: clamp(3rem, 7vw, 9rem);
+            line-height: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        .exp-sub {
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            max-width: 400px;
+        }
+        .exp-right {
+            position: relative;
+            aspect-ratio: 4/5;
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--line-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .section-dark .exp-right { border-color: var(--line-light); background: rgba(255,255,255,0.03); }
+        
+        .placeholder-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            opacity: 0.3;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Closing Section */
+        .closing-section { text-align: center; }
+        .closing-title {
+            font-size: clamp(4rem, 10vw, 12rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            min-height: 60vh;
+            background: #1a1a18;
+            color: #F5F0E8;
+            text-align: center;
+        }
+        .cta-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 1.5rem 4rem;
+            font-family: var(--font);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .btn-primary { background: var(--olive-light); color: #F5F0E8; border: none; }
+        .btn-primary:hover { background: #7c8d4a; }
+        .btn-secondary { background: transparent; border: 1px solid rgba(245,240,232,0.3); color: #F5F0E8; }
+        .btn-secondary:hover { border-color: var(--olive-light); color: var(--olive-light); }
+
+        /* Footer */
+        footer {
+            background: #1a1a18;
+            padding: 5vh 5vw;
+            border-top: 1px solid rgba(245,240,232,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.2rem; letter-spacing: 0.3em; color: rgba(245,240,232,0.3); }
+        .footer-nav { display: flex; gap: 2rem; }
+        .footer-nav a {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: rgba(245,240,232,0.3);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-nav a:hover { color: #F5F0E8; }
+        .footer-copy { font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(245,240,232,0.15); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .intro-grid, .exp-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .exp-right { order: -1; }
+            .hero-title { font-size: 5rem; }
+            .hero-subtitle { font-size: 2rem; }
+            .cta-group { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+            footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <header id="site-header">
+        <a href="index.html" class="header-logo">Olive Soul</a>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="es">ES</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="it">IT</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" data-lang="fr">FR</button>
+            </div>
+            <nav class="header-nav">
+                <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+                <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section 1: Hero -->
+    <section class="section-dark hero-section" id="hero">
+        <div class="wave-container" id="waves-hero"></div>
+        <div class="hero-content">
+            <span class="hero-label scroll-reveal" data-i18n="hero_label">008 — ESTILO DE VIDA</span>
+            <h1 class="hero-title">
+                <div class="hero-anim"><span>EL ARTE</span></div>
+                <div class="hero-anim"><span style="color: var(--olive-light);">DE VIVIR</span></div>
+            </h1>
+            <p class="hero-subtitle scroll-reveal" data-i18n="hero_sub">DESPACIO. CON ALMA.</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Quote -->
+    <section class="section-light quote-section">
+        <div class="wave-container" id="waves-quote"></div>
+        <div class="quote-decoration scroll-reveal"></div>
+        <h2 class="quote-text scroll-reveal" data-i18n="quote">"EL VERDADERO LUJO NO ES POSEER, SINO PERTENECER A UN RITMO QUE RESPETA LA TIERRA Y EL TIEMPO."</h2>
+        <div class="quote-decoration scroll-reveal"></div>
+    </section>
+
+    <!-- Section 3: Intro -->
+    <section class="section-dark intro-section">
+        <div class="wave-container" id="waves-intro"></div>
+        <div class="intro-grid">
+            <h2 class="intro-text scroll-reveal" data-i18n="intro_title">UNA FILOSOFÍA BASADA EN LA RECONEXIÓN CON LO ESENCIAL.</h2>
+            <div class="scroll-reveal">
+                <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.8;" data-i18n="intro_body">
+                    Olive Soul no es solo un lugar donde vivir; es un manifiesto sobre cómo queremos habitar el mundo. Recuperamos la sabiduría del Mediterráneo para crear un refugio donde el silencio, la luz y la naturaleza dictan el paso de las horas.
+                </p>
+                <div class="intro-pills">
+                    <span class="pill">SLOW LIVING</span>
+                    <span class="pill">REGENERACIÓN</span>
+                    <span class="pill">LEGADO</span>
+                    <span class="pill">CONSCIENCIA</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Experience 1 -->
+    <section class="section-light exp-section" id="exp1">
+        <div class="wave-container" id="waves-exp1"></div>
+        <div class="exp-grid">
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">01</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                <h3 class="exp-title" data-i18n="e1_t">EL ARTE DE LA MESA</h3>
+                <p class="exp-sub" data-i18n="e1_s">SABORES QUE NACEN DEL PROPIO OLIVAR Y LA TIERRA ROJA.</p>
+            </div>
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — GASTRONOMÍA KM 0</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Experience 2 -->
+    <section class="section-dark exp-section" id="exp2">
+        <div class="wave-container" id="waves-exp2"></div>
+        <div class="exp-grid">
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — BIENESTAR MEDITERRÁNEO</span>
+            </div>
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">02</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                <h3 class="exp-title" data-i18n="e2_t">EL RITMO DEL AGUA</h3>
+                <p class="exp-sub" data-i18n="e2_s">CALMA SENSORIAL EN ESPACIOS DISEÑADOS PARA EL REPOSO.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Experience 3 -->
+    <section class="section-light exp-section" id="exp3">
+        <div class="wave-container" id="waves-exp3"></div>
+        <div class="exp-grid">
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">03</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                <h3 class="exp-title" data-i18n="e3_t">EL ABRAZO DEL OLIVAR</h3>
+                <p class="exp-sub" data-i18n="e3_s">VIVIR ENTRE ÁRBOLES MILENARIOS QUE CUSTODIAN LA HISTORIA.</p>
+            </div>
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — NATURALEZA REGENERATIVA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Experience 4 -->
+    <section class="section-dark exp-section" id="exp4">
+        <div class="wave-container" id="waves-exp4"></div>
+        <div class="exp-grid">
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — EL VALOR DEL SILENCIO</span>
+            </div>
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">04</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1v22M5 12h14"></path></svg>
+                <h3 class="exp-title" data-i18n="e4_t">EL VALOR DEL SILENCIO</h3>
+                <p class="exp-sub" data-i18n="e4_s">DONDE EL ÚNICO SONIDO ES EL VIENTO ENTRE LAS HOJAS.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Experience 5 -->
+    <section class="section-light exp-section" id="exp5">
+        <div class="wave-container" id="waves-exp5"></div>
+        <div class="exp-grid">
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">05</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="6.36" x2="19.78" y2="4.92"></line></svg>
+                <h3 class="exp-title" data-i18n="e5_t">LA FORMA DE LA LUZ</h3>
+                <p class="exp-sub" data-i18n="e5_s">ARQUITECTURA QUE ENMARCA EL SOL Y LAS SOMBRAS.</p>
+            </div>
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — LUZ Y GEOMETRÍA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Experience 6 -->
+    <section class="section-dark exp-section" id="exp6">
+        <div class="wave-container" id="waves-exp6"></div>
+        <div class="exp-grid">
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — TRADICIÓN VIVA</span>
+            </div>
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">06</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <h3 class="exp-title" data-i18n="e6_t">EL LEGADO DE LA TIERRA</h3>
+                <p class="exp-sub" data-i18n="e6_s">HONRAR LAS RAÍCES PARA CONSTRUIR EL FUTURO.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Experience 7 -->
+    <section class="section-light exp-section" id="exp7">
+        <div class="wave-container" id="waves-exp7"></div>
+        <div class="exp-grid">
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">07</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <h3 class="exp-title" data-i18n="e7_t">LA CALMA DEL MEDITERRÁNEO</h3>
+                <p class="exp-sub" data-i18n="e7_s">UNA MIRADA SERENA HACIA EL HORIZONTE AZUL.</p>
+            </div>
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — HORIZONTE OLIVE SOUL</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 11: Experience 8 -->
+    <section class="section-dark exp-section" id="exp8">
+        <div class="wave-container" id="waves-exp8"></div>
+        <div class="exp-grid">
+            <div class="exp-right scroll-reveal">
+                <span class="placeholder-text" data-i18n="img_soon">IMAGEN DISPONIBLE PRÓXIMAMENTE — EL TIEMPO RECOBRADO</span>
+            </div>
+            <div class="exp-left scroll-reveal">
+                <span class="exp-number">08</span>
+                <svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <h3 class="exp-title" data-i18n="e8_t">EL TIEMPO RECOBRADO</h3>
+                <p class="exp-sub" data-i18n="e8_s">SER DUEÑO DE TUS HORAS, SIN PRISAS NI RELOJES.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 12: Closing -->
+    <section class="section-light closing-section">
+        <div class="wave-container" id="waves-closing"></div>
+        <h2 class="closing-title scroll-reveal">
+            <span data-i18n="close_1">VIVE</span><br>
+            <span style="color: var(--olive-light);" data-i18n="close_2">CON ALMA</span>
+        </h2>
+        <p class="scroll-reveal" style="font-size: 1.2rem; letter-spacing: 0.2em; opacity: 0.6;" data-i18n="close_sub">OLIVE SOUL · BAJO MAESTRAZGO</p>
+    </section>
+
+    <!-- Section 13: CTAs -->
+    <section class="cta-section">
+        <div class="wave-container" id="waves-cta" style="opacity: 0.1;"></div>
+        <h2 class="scroll-reveal" style="font-size: 3rem;" data-i18n="cta_title">¿ESTÁS LISTO PARA PERTENECER?</h2>
+        <div class="cta-group scroll-reveal">
+            <a href="https://wa.me/34603502986" target="_blank" class="btn btn-primary" data-i18n="cta_team">HABLAR CON NUESTRO EQUIPO</a>
+            <button class="btn btn-secondary" data-i18n="cta_dossier">RECIBIR EL DOSSIER COMPLETO</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wave-container" id="waves-footer" style="opacity: 0.05;"></div>
+        <div class="footer-logo">OLIVE SOUL</div>
+        <nav class="footer-nav">
+            <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+            <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+            <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+            <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+        </nav>
+        <div class="footer-copy" data-i18n="footer_rights">© 2025 Olive Soul · Bajo Maestrazgo, España</div>
+    </footer>
+
+    <script src="modal-dossier.js"></script>
+    <script>
+        const TRANSLATIONS = {
+            es: {
+                nav_proyectos: 'PROYECTOS', nav_arquitectura: 'ARQUITECTURA', nav_ubicacion: 'UBICACIÓN', nav_estilo: 'ESTILO',
+                hero_label: '008 — ESTILO DE VIDA', hero_sub: 'DESPACIO. CON ALMA.',
+                quote: '"EL VERDADERO LUJO NO ES POSEER, SINO PERTENECER A UN RITMO QUE RESPETA LA TIERRA Y EL TIEMPO."',
+                intro_title: 'UNA FILOSOFÍA BASADA EN LA RECONEXIÓN CON LO ESENCIAL.',
+                intro_body: 'Olive Soul no es solo un lugar donde vivir; es un manifiesto sobre cómo queremos habitar el mundo. Recuperamos la sabiduría del Mediterráneo para crear un refugio donde el silencio, la luz y la naturaleza dictan el paso de las horas.',
+                e1_t: 'EL ARTE DE LA MESA', e1_s: 'SABORES QUE NACEN DEL PROPIO OLIVAR Y LA TIERRA ROJA.',
+                e2_t: 'EL RITMO DEL AGUA', e2_s: 'CALMA SENSORIAL EN ESPACIOS DISEÑADOS PARA EL REPOSO.',
+                e3_t: 'EL ABRAZO DEL OLIVAR', e3_s: 'VIVIR ENTRE ÁRBOLES MILENARIOS QUE CUSTODIAN LA HISTORIA.',
+                e4_t: 'EL VALOR DEL SILENCIO', e4_s: 'DONDE EL ÚNICO SONIDO ES EL VIENTO ENTRE LAS HOJAS.',
+                e5_t: 'LA FORMA DE LA LUZ', e5_s: 'ARQUITECTURA QUE ENMARCA EL SOL Y LAS SOMBRAS.',
+                e6_t: 'EL LEGADO DE LA TIERRA', e6_s: 'HONRAR LAS RAÍCES PARA CONSTRUIR EL FUTURO.',
+                e7_t: 'LA CALMA DEL MEDITERRÁNEO', e7_s: 'UNA MIRADA SERENA HACIA EL HORIZONTE AZUL.',
+                e8_t: 'EL TIEMPO RECOBRADO', e8_s: 'SER DUEÑO DE TUS HORAS, SIN PRISAS NI RELOJES.',
+                close_1: 'VIVE', close_2: 'CON ALMA', close_sub: 'OLIVE SOUL · BAJO MAESTRAZGO',
+                cta_title: '¿ESTÁS LISTO PARA PERTENECER?', cta_team: 'HABLAR CON NUESTRO EQUIPO', cta_dossier: 'RECIBIR EL DOSSIER COMPLETO',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, España',
+                img_soon: 'IMAGEN DISPONIBLE PRÓXIMAMENTE'
+            },
+            en: {
+                nav_proyectos: 'PROJECTS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCATION', nav_estilo: 'STYLE',
+                hero_label: '008 — LIFESTYLE', hero_sub: 'SLOWLY. WITH SOUL.',
+                quote: '"TRUE LUXURY IS NOT POSSESSING, BUT BELONGING TO A RHYTHM THAT RESPECTS THE EARTH AND TIME."',
+                intro_title: 'A PHILOSOPHY BASED ON RECONNECTING WITH THE ESSENTIAL.',
+                intro_body: 'Olive Soul is not just a place to live; it is a manifesto on how we want to inhabit the world. We recover the wisdom of the Mediterranean to create a refuge where silence, light and nature dictate the passing of the hours.',
+                e1_t: 'THE ART OF THE TABLE', e1_s: 'FLAVORS BORN FROM THE OLIVE GROVE AND THE RED EARTH.',
+                e2_t: 'THE RHYTHM OF WATER', e2_s: 'SENSORY CALM IN SPACES DESIGNED FOR REST.',
+                e3_t: 'THE EMBRACE OF THE GROVE', e3_s: 'LIVING AMONG ANCIENT TREES THAT GUARD HISTORY.',
+                e4_t: 'THE VALUE OF SILENCE', e4_s: 'WHERE THE ONLY SOUND IS THE WIND THROUGH THE LEAVES.',
+                e5_t: 'THE SHAPE OF LIGHT', e5_s: 'ARCHITECTURE THAT FRAMES THE SUN AND SHADOWS.',
+                e6_t: 'THE LEGACY OF THE LAND', e6_s: 'HONORING ROOTS TO BUILD THE FUTURE.',
+                e7_t: 'MEDITERRANEAN CALM', e7_s: 'A SERENE LOOK TOWARDS THE BLUE HORIZON.',
+                e8_t: 'TIME REGAINED', e8_s: 'OWNING YOUR HOURS, WITHOUT HURRY OR CLOCKS.',
+                close_1: 'LIVE', close_2: 'WITH SOUL', close_sub: 'OLIVE SOUL · BAJO MAESTRAZGO',
+                cta_title: 'ARE YOU READY TO BELONG?', cta_team: 'TALK TO OUR TEAM', cta_dossier: 'RECEIVE THE FULL DOSSIER',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spain',
+                img_soon: 'IMAGE AVAILABLE SOON'
+            },
+            it: {
+                nav_proyectos: 'PROGETTI', nav_arquitectura: 'ARCHITETTURA', nav_ubicacion: 'POSIZIONE', nav_estilo: 'STILE',
+                hero_label: '008 — STILE DI VITA', hero_sub: 'LENTAMENTE. CON ANIMA.',
+                quote: '"IL VERO LUSSO NON È POSSEDERE, MA APPARTENERE A UN RITMO CHE RISPETTA LA TERRA E IL TEMPO."',
+                intro_title: 'UNA FILOSOFIA BASATA SULLA RICONNESSIONE CON L\'ESSENZIALE.',
+                intro_body: 'Olive Soul non è solo un posto dove vivere; è un manifesto su come vogliamo abitare il mondo. Recuperiamo la saggezza del Mediterraneo per creare un rifugio dove il silenzio, la luce e la natura dettano il passare delle ore.',
+                e1_t: 'L\'ARTE DELLA TAVOLA', e1_s: 'SAPORI NATI DALL\'ULIVETO E DALLA TERRA ROSSA.',
+                e2_t: 'IL RITMO DELL\'ACQUA', e2_s: 'CALMA SENSORIALE IN SPAZI PROGETTATI PER IL RIPOSO.',
+                e3_t: 'L\'ABBRACCIO DELL\'ULIVETO', e3_s: 'VIVERE TRA ALBERI MILLENARI CHE CUSTODISCONO LA STORIA.',
+                e4_t: 'IL VALORE DEL SILENZIO', e4_s: 'DOVE L\'UNICO SUONO È IL VENTO TRA LE FOGLIE.',
+                e5_t: 'LA FORMA DELLA LUCE', e5_s: 'ARCHITETTURA CHE INCORNICIA IL SOLE E LE OMBRE.',
+                e6_t: 'L\'EREDITÀ DELLA TERRA', e6_s: 'ONORARE LE RADICI PER COSTRUIRE IL FUTURO.',
+                e7_t: 'CALMA MEDITERRANEA', e7_s: 'UNO SGUARDO SERENO VERSO L\'ORIZZONTE BLU.',
+                e8_t: 'IL TEMPO RITROVATO', e8_s: 'POSSEDERE LE TUE ORE, SENZA FRETTA NÉ OLOGI.',
+                close_1: 'VIVI', close_2: 'CON ANIMA', close_sub: 'OLIVE SOUL · BAJO MAESTRAZGO',
+                cta_title: 'SEI PRONTO AD APPARTENERE?', cta_team: 'PARLA CON IL NOSTRO TEAM', cta_dossier: 'RICEVI IL DOSSIER COMPLETO',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spagna',
+                img_soon: 'IMMAGINE DISPONIBILE A BREVE'
+            },
+            fr: {
+                nav_proyectos: 'PROJETS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'EMPLACEMENT', nav_estilo: 'STYLE',
+                hero_label: '008 — ART DE VIVRE', hero_sub: 'LENTEMENT. AVEC ÂME.',
+                quote: '"LE VRAI LUXE N\'EST PAS DE POSSÉDER, MAIS D\'APPARTENIR À UN RYTHME QUI RESPECTE LA TERRE ET LE TEMPS."',
+                intro_title: 'UNE PHILOSOPHIE BASÉE SUR LA RECONNEXION À L\'ESSENTIEL.',
+                intro_body: 'Olive Soul n\'est pas seulement un lieu de vie ; c\'est un manifeste sur la façon dont nous voulons habiter le monde. Nous récupérons la sagesse de la Méditerranée pour créer un refuge où le silence, la lumière et la nature dictent le passage des heures.',
+                e1_t: 'L\'ART DE LA TABLE', e1_s: 'SAVEURS NÉES DE L\'OLIVERAIE ET DE LA TERRE ROUGE.',
+                e2_t: 'LE RYTHME DE L\'EAU', e2_s: 'CALME SENSORIEL DANS DES ESPACES CONÇUS POUR LE REPOS.',
+                e3_t: 'L\'ÉTREINTE DE L\'OLIVERAIE', e3_s: 'VIVRE PARMI DES ARBRES MILLÉNAIRES QUI GARDENT L\'HISTOIRE.',
+                e4_t: 'LA VALEUR DU SILENCE', e4_s: 'OÙ LE SEUL SON EST LE VENT DANS LES FEUILLES.',
+                e5_t: 'LA FORME DE LA LUMIÈRE', e5_s: 'UNE ARCHITECTURE QUI CADRE LE SOLEIL ET LES OMBRES.',
+                e6_t: 'L\'HÉRITAGE DE LA TERRE', e6_s: 'HONORER LES RACINES POUR CONSTRUIRE L\'AVENIR.',
+                e7_t: 'CALME MÉDITERRANÉEN', e7_s: 'UN REGARD SEREIN VERS L\'HORIZON BLEU.',
+                e8_t: 'LE TEMPS RETROUVÉ', e8_s: 'POSSÉDER VOS HEURES, SANS HÂTE NI HORLOGE.',
+                close_1: 'VIVEZ', close_2: 'AVEC ÂME', close_sub: 'OLIVE SOUL · BAJO MAESTRAZGO',
+                cta_title: 'ÊTES-VOUS PRÊT À APPARTENIR ?', cta_team: 'PARLER À NOTRE ÉQUIPE', cta_dossier: 'RECEVOIR LE DOSSIER COMPLET',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Espagne',
+                img_soon: 'IMAGE DISPONIBLE BIENTÔT'
+            }
+        };
+
+        let currentLang = 'es';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (TRANSLATIONS[lang][key]) el.textContent = TRANSLATIONS[lang][key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+            document.documentElement.lang = lang;
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchLang(btn.getAttribute('data-lang')));
+        });
+
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        });
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+        });
+
+        // Wave Generator
+        function createWaves(containerId, color, opacity) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 1920 1080");
+            svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+            
+            for (let i = 0; i < 4; i++) {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const y = 300 + i * 100;
+                path.setAttribute("d", `M-100,${y} C200,${y-100} 400,${y+100} 700,${y} S1100,${y-150} 1500,${y} S1900,${y+100} 2200,${y}`);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", color);
+                path.setAttribute("stroke-width", 1.5 - i * 0.2);
+                path.setAttribute("opacity", opacity - i * 0.02);
+                svg.appendChild(path);
+                
+                gsap.to(path, {
+                    x: i % 2 === 0 ? -80 : 80,
+                    duration: 10 + i * 5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: i * 2
+                });
+            }
+            container.appendChild(svg);
+        }
+
+        // Initialize Waves
+        const waveConfigs = [
+            { id: 'waves-hero', color: '#F5F0E8', op: 0.15 },
+            { id: 'waves-quote', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-intro', color: '#F5F0E8', op: 0.12 },
+            { id: 'waves-exp1', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-exp2', color: '#F5F0E8', op: 0.12 },
+            { id: 'waves-exp3', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-exp4', color: '#F5F0E8', op: 0.12 },
+            { id: 'waves-exp5', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-exp6', color: '#F5F0E8', op: 0.12 },
+            { id: 'waves-exp7', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-exp8', color: '#F5F0E8', op: 0.12 },
+            { id: 'waves-closing', color: '#2C3A1A', op: 0.1 },
+            { id: 'waves-cta', color: '#F5F0E8', op: 0.15 },
+            { id: 'waves-footer', color: '#F5F0E8', op: 0.05 }
+        ];
+
+        waveConfigs.forEach(w => createWaves(w.id, w.color, w.op));
+
+        // Animations
+        gsap.from('.hero-anim span', { y: '100%', duration: 1.5, stagger: 0.2, ease: 'power4.out', delay: 0.5 });
+        
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            gsap.from(el, {
+                opacity: 0,
+                y: 40,
+                duration: 1.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                }
+            });
+        });
+
+        // Header Color Change
+        const header = document.getElementById('site-header');
+        ScrollTrigger.create({
+            start: 'top top',
+            onUpdate: (self) => {
+                if (self.scroll() > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+        });
+
+        // Dynamic Header Color based on Section
+        document.querySelectorAll('section').forEach(section => {
+            ScrollTrigger.create({
+                trigger: section,
+                start: 'top 10%',
+                end: 'bottom 10%',
+                onEnter: () => updateHeaderColor(section),
+                onEnterBack: () => updateHeaderColor(section)
+            });
+        });
+
+        function updateHeaderColor(section) {
+            if (section.classList.contains('section-dark') || section.classList.contains('cta-section')) {
+                header.style.color = 'var(--text-light)';
+                header.style.borderColor = 'rgba(245, 240, 232, 0.1)';
+            } else {
+                header.style.color = 'var(--text-dark)';
+                header.style.borderColor = 'rgba(44, 58, 26, 0.1)';
+            }
+        }
+
+    </script>
+</body>
+</html>

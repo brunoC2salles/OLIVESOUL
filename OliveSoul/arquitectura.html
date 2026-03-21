@@ -1,794 +1,947 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arquitectura — Olive Soul</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura — Olive Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg: #F5F0E8;
+            --bg2: #EDEADE;
+            --bg-dark: #1a1a18;
+            --olive: #6B7B3A;
+            --terracota: #C4714A;
+            --teal: #7BA8A4;
+            --text: #1a1a18;
+            --muted: rgba(26,26,24,0.45);
+            --line: rgba(26,26,24,0.12);
+            --line-strong: rgba(26,26,24,0.25);
+            --font: 'Bebas Neue', sans-serif;
+        }
 
-    :root {
-      --bg:        #F5F0E8;
-      --bg-dark:   #0a0a0a;
-      --olive:     #6B7B3A;
-      --text:      #1a1a18;
-      --muted:     rgba(26,26,24,0.5);
-      --line:      rgba(26,26,24,0.12);
-      --terracota: #C4714A;
-      --font:      'Cormorant Garamond', Georgia, serif;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html { scroll-behavior: auto; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            letter-spacing: 0.04em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-weight: 300;
-      overflow-x: hidden;
-      cursor: none;
-      min-height: 100vh;
-    }
+        /* Cursor */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--olive);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%,-50%);
+            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s;
+        }
+        #cursor.expand {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid var(--olive);
+        }
 
-    /* ——— CURSOR ——— */
-    #cursor {
-      position: fixed; width: 8px; height: 8px;
-      background: #1a1a18; border-radius: 50%;
-      pointer-events: none; z-index: 10000;
-      transform: translate(-50%, -50%);
-      transition: width .3s ease, height .3s ease, background .3s ease, border .3s ease;
-      will-change: left, top;
-    }
-    #cursor.expand {
-      width: 36px; height: 36px;
-      background: transparent;
-      border: 1px solid rgba(26,26,24,0.4);
-    }
+        /* Wave Backgrounds */
+        .wave-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .wave-bg svg { width: 100%; height: 100%; object-fit: cover; }
 
-    /* ——— BACK BUTTON ——— */
-    .back-btn {
-      position: fixed; top: 2rem; left: 4vw; z-index: 200;
-      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
-      display: flex; align-items: center; gap: 0.5rem;
-      transition: color .3s; font-family: var(--font); font-weight: 300;
-    }
-    .back-btn:hover { color: var(--text); }
+        /* Header */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 5vw;
+            background: rgba(245,240,232,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+        .header-logo {
+            font-family: var(--font);
+            font-size: 1.2rem;
+            letter-spacing: 0.25em;
+            color: var(--text);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .header-right { display: flex; align-items: center; gap: 2.5rem; }
+        .header-nav { display: flex; gap: 2rem; }
+        .header-nav a {
+            font-family: var(--font);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+        .header-nav a:hover { color: var(--text); }
+        .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 0 2px;
+        }
+        .lang-btn.active, .lang-btn:hover { color: var(--text); }
+        .lang-sep { color: var(--line-strong); font-size: 0.6rem; }
 
-    /* ——— HEADER ——— */
-    .page-header {
-      position: fixed; top: 0; right: 5vw; z-index: 200;
-      padding: 2rem 0; display: flex; align-items: center; gap: 2rem;
-    }
-    .header-brand {
-      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--text); opacity: 0.6; font-family: var(--font);
-      text-decoration: none; transition: opacity .3s;
-    }
-    .header-brand:hover { opacity: 1; }
-    .header-nav { display: flex; gap: 1.5rem; align-items: center; }
-    .header-nav a {
-      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--text); opacity: 0.6; text-decoration: none;
-      font-family: var(--font); transition: opacity .3s;
-    }
-    .header-nav a:hover { opacity: 1; }
+        /* Sections */
+        section { position: relative; overflow: hidden; }
 
-    /* ——— LANG SWITCHER ——— */
-    .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
-    .lang-btn {
-      background: none; border: none; color: var(--text); opacity: 0.6;
-      font-size: 0.62rem; letter-spacing: 0.15em; cursor: none;
-      font-family: var(--font); font-weight: 300; transition: opacity .3s; padding: 0 2px;
-    }
-    .lang-btn.active, .lang-btn:hover { opacity: 1; }
-    .lang-sep { color: rgba(26,26,24,0.2); font-size: 0.55rem; }
+        /* Hero */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 8vw;
+            background: var(--bg);
+        }
+        .hero-label-container {
+            position: absolute;
+            top: 7rem;
+            left: 8vw;
+            z-index: 2;
+        }
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--olive);
+            display: block;
+        }
+        .hero-line {
+            width: 40px;
+            height: 1px;
+            background: var(--olive);
+            margin-top: 0.5rem;
+        }
+        .hero-titles {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-anim {
+            display: block;
+            overflow: hidden;
+            line-height: 0.85;
+        }
+        .hero-anim span { display: block; }
+        .hero-title-1 { font-size: clamp(5rem, 13vw, 15rem); color: var(--text); }
+        .hero-title-2 { font-size: clamp(5rem, 13vw, 15rem); color: var(--olive); }
+        .hero-title-3 { 
+            font-size: clamp(2rem, 4.5vw, 5rem); 
+            letter-spacing: 0.1em; 
+            color: var(--muted); 
+            margin-top: 1rem;
+        }
 
-    /* ━━━ HERO (CAROUSEL) ━━━ */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-      background: var(--bg-dark);
-    }
+        /* Quote Section */
+        .quote-section {
+            background: var(--olive);
+            padding: 15vh 8vw;
+            color: #F5F0E8;
+        }
+        .quote-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 8vw;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-text {
+            font-size: clamp(1.8rem, 3vw, 4rem);
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            margin-bottom: 2rem;
+        }
+        .quote-attribution {
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: rgba(245,240,232,0.6);
+            text-transform: uppercase;
+        }
+        .quote-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+            color: rgba(245,240,232,0.8);
+            align-self: center;
+        }
 
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
+        /* Carousel Section */
+        .carousel-section {
+            background: var(--bg2);
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel-container {
+            width: 100%;
+            height: 70vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            width: 300%;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        .carousel-slide {
+            width: 33.333%;
+            height: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-controls {
+            position: absolute;
+            bottom: 5vh;
+            right: 8vw;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10;
+        }
+        .carousel-btn {
+            background: none;
+            border: none;
+            font-family: var(--font);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            color: var(--text);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: opacity 0.3s;
+        }
+        .carousel-btn:hover { opacity: 0.6; }
+        .carousel-counter {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+        }
+        .carousel-caption {
+            position: absolute;
+            bottom: 5vh;
+            left: 8vw;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--muted);
+            z-index: 10;
+        }
 
-    .carousel-slide {
-      flex: 0 0 100%;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
+        /* Pilares Section */
+        .pilares-section {
+            background: var(--bg);
+            padding: 15vh 8vw;
+            border-top: 1px solid var(--line-strong);
+        }
+        .section-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 2rem;
+            margin-bottom: 6rem;
+            position: relative;
+            z-index: 1;
+        }
+        .section-title {
+            font-size: clamp(3rem, 6vw, 7rem);
+            color: var(--text);
+        }
+        .section-counter {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+        }
+        .pilares-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw 8vw;
+            position: relative;
+            z-index: 1;
+        }
+        .pilar-item {
+            display: flex;
+            gap: 2rem;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .pilar-num {
+            font-size: 0.8rem;
+            color: var(--olive);
+            margin-top: 0.5rem;
+        }
+        .pilar-content h3 {
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .pilar-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--muted);
+            max-width: 400px;
+        }
+        .pilar-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 1.5rem;
+            color: var(--olive);
+        }
 
-    .carousel-slide img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+        /* Filosofia Section */
+        .filosofia-section {
+            background: var(--bg2);
+            padding: 15vh 8vw;
+        }
+        .filosofia-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            position: relative;
+            z-index: 1;
+        }
+        .filosofia-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .filosofia-body {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 3rem;
+        }
+        .filosofia-note {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--terracota);
+            border-left: 2px solid var(--terracota);
+            padding-left: 1.5rem;
+        }
+        .filosofia-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .philosophy-quote {
+            font-size: clamp(3rem, 5vw, 6rem);
+            line-height: 0.9;
+            color: var(--line-strong);
+            text-align: right;
+        }
 
-    .carousel-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 50%, transparent 100%);
-      pointer-events: none; z-index: 1;
-    }
+        /* Arquiteto Section */
+        .arquiteto-section {
+            background: var(--bg);
+            padding: 15vh 8vw;
+            border-top: 1px solid var(--line-strong);
+        }
+        .arquiteto-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 8vw;
+            position: relative;
+            z-index: 1;
+            align-items: center;
+        }
+        .arquiteto-photo {
+            width: 320px;
+            aspect-ratio: 3/4;
+            background: var(--bg2);
+            overflow: hidden;
+            border: 1px solid var(--line-strong);
+        }
+        .arquiteto-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.5s;
+        }
+        .arquiteto-photo:hover img { filter: grayscale(0%); }
+        .arquiteto-content h2 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+        .arquiteto-bio {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--muted);
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+        .arquiteto-link {
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            color: var(--olive);
+            text-decoration: none;
+            border-bottom: 1px solid var(--olive);
+            padding-bottom: 0.5rem;
+            transition: opacity 0.3s;
+        }
+        .arquiteto-link:hover { opacity: 0.6; }
 
-    .hero-content {
-      position: absolute; bottom: 8vh; left: 8vw; z-index: 2;
-    }
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg-dark);
+            border-top: 3px solid var(--olive);
+            padding: 12vh 8vw;
+            text-align: center;
+        }
+        .cta-group {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-wa {
+            background: var(--olive);
+            color: #F5F0E8;
+            padding: 1.2rem 3rem;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn-wa:hover { background: #5a6932; }
+        .btn-dossier {
+            background: transparent;
+            border: 1px solid rgba(245,240,232,0.3);
+            color: #F5F0E8;
+            padding: 1.2rem 3rem;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-dossier:hover {
+            border-color: var(--olive);
+            color: var(--olive);
+        }
 
-    .hero-label {
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(245,240,232,0.7); margin-bottom: 1.5rem; display: block;
-    }
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid rgba(245,240,232,0.08);
+            padding: 3rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .footer-logo {
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            color: rgba(245,240,232,0.4);
+        }
+        .footer-nav { display: flex; gap: 2rem; }
+        .footer-nav a {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: rgba(245,240,232,0.4);
+            text-decoration: none;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+        .footer-nav a:hover { color: #F5F0E8; }
+        .footer-copy {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: rgba(245,240,232,0.2);
+        }
 
-    .hero-word {
-      display: block;
-      overflow: hidden;
-    }
-    .hero-word span { display: inline-block; }
-
-    .hero-title-main {
-      font-size: clamp(6rem,12vw,14rem);
-      font-weight: 700;
-      line-height: 0.85;
-      letter-spacing: -0.03em;
-      color: #f5f0e8;
-    }
-
-    .hero-title-sub {
-      font-size: clamp(2.5rem,4.5vw,5.5rem);
-      font-style: italic;
-      font-weight: 300;
-      color: rgba(245,240,232,0.6);
-      margin-top: 0.3rem;
-    }
-
-    .carousel-controls {
-      position: absolute; bottom: 8vh; right: 8vw; z-index: 2;
-      display: flex; gap: 1rem; align-items: center;
-    }
-
-    .carousel-btn {
-      width: 48px; height: 48px;
-      border: 1px solid rgba(245,240,232,0.4);
-      background: transparent;
-      color: #f5f0e8;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: background 0.3s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .carousel-btn:hover { background: rgba(245,240,232,0.1); }
-
-    .carousel-counter {
-      font-size: 0.65rem; letter-spacing: 0.15em;
-      color: rgba(245,240,232,0.5);
-      font-family: var(--font);
-      align-self: center;
-    }
-
-    .carousel-dots {
-      display: flex; gap: 0.5rem; align-items: center;
-    }
-    .carousel-dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: rgba(245,240,232,0.3);
-      cursor: pointer; transition: background 0.3s, transform 0.3s;
-      border: none;
-    }
-    .carousel-dot.active {
-      background: #f5f0e8;
-      transform: scale(1.5);
-    }
-
-    /* ━━━ STATEMENT ━━━ */
-    .statement {
-      padding: 10vh 8vw;
-      border-bottom: 1px solid var(--line);
-      background: var(--bg);
-    }
-
-    .statement-grid {
-      display: grid;
-      grid-template-columns: 40% 60%;
-      gap: 6vw;
-      align-items: center;
-    }
-
-    .statement-left .arch-label {
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--olive); border-left: 2px solid var(--olive);
-      padding-left: 0.8rem; margin-bottom: 2rem; display: block;
-    }
-
-    .statement-quote {
-      font-size: clamp(2rem,3.5vw,4rem);
-      font-style: italic;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1.3;
-    }
-
-    .statement-sig {
-      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); margin-top: 1.5rem; display: block;
-    }
-
-    .statement-right p {
-      font-size: clamp(1.1rem,1.2vw,1.3rem);
-      line-height: 2;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    /* ━━━ PILARES ━━━ */
-    .pilares {
-      padding: 12vh 8vw;
-      background: var(--bg-dark);
-    }
-
-    .pilares-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 6rem;
-      border-bottom: 1px solid rgba(245,240,232,0.1);
-      padding-bottom: 2rem;
-    }
-
-    .pilares-heading {
-      font-size: clamp(4rem,8vw,9rem);
-      font-weight: 700;
-      color: #f5f0e8;
-      line-height: 0.9;
-      overflow: hidden;
-    }
-    .pilares-heading span { display: inline-block; }
-
-    .pilares-count {
-      font-size: 0.65rem; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--olive);
-    }
-
-    .pilares-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 6vw;
-    }
-
-    .pilar {
-      padding: 2rem 0;
-      border-bottom: 1px solid rgba(245,240,232,0.1);
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 1.5rem;
-      align-items: start;
-    }
-
-    .pilar:last-child {
-      grid-column: 1 / -1;
-    }
-
-    .pilar-num {
-      font-size: 0.65rem; color: var(--olive);
-      letter-spacing: 0.1em; padding-top: 0.2rem;
-    }
-
-    .pilar-text {
-      font-size: clamp(1rem,1.1vw,1.15rem);
-      color: rgba(245,240,232,0.8);
-      line-height: 1.7;
-    }
-
-    /* ━━━ ARQUITETO ━━━ */
-    .arquitecto {
-      padding: 12vh 8vw;
-      background: var(--bg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .arquitecto-deco {
-      font-size: clamp(8rem,16vw,20rem);
-      font-weight: 700;
-      font-style: italic;
-      color: rgba(26,26,24,0.06);
-      position: absolute;
-      right: 6vw; top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      line-height: 1;
-      user-select: none;
-    }
-
-    .arquitecto-grid {
-      display: grid;
-      grid-template-columns: 35% 65%;
-      gap: 8vw;
-      align-items: start;
-      position: relative;
-    }
-
-    .arquitecto-photo {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      display: block;
-    }
-
-    .arquitecto-photo-label {
-      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--olive); margin-top: 1rem; display: block;
-    }
-
-    .arquitecto-name {
-      font-size: clamp(1.8rem,2.5vw,3rem);
-      font-weight: 300;
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s;
-      display: inline-block;
-      margin-top: 0.5rem;
-    }
-    .arquitecto-name:hover { border-color: var(--olive); }
-
-    .arquitecto-right .arch-label-right {
-      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--olive); border-left: 2px solid var(--olive);
-      padding-left: 0.8rem; margin-bottom: 3rem; display: block;
-    }
-
-    .arquitecto-bio {
-      font-size: clamp(1.1rem,1.2vw,1.25rem);
-      line-height: 2;
-      color: var(--muted);
-      font-weight: 300;
-      margin-bottom: 1.5rem;
-    }
-
-    .arquitecto-note {
-      font-style: italic;
-      color: var(--terracota);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-top: 2rem;
-    }
-
-    /* ━━━ CTAs ━━━ */
-    .ctas {
-      border-top: 3px solid var(--olive);
-      padding: 10vh 8vw;
-      background: var(--bg-dark);
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .cta-wa {
-      background: var(--olive);
-      color: #f5f0e8;
-      padding: 1.2rem 3rem;
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-family: var(--font);
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.2s;
-    }
-    .cta-wa:hover { background: #7a8e42; }
-
-    .cta-dossier {
-      background: transparent;
-      border: 1px solid rgba(245,240,232,0.3);
-      color: #f5f0e8;
-      padding: 1.2rem 3rem;
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-family: var(--font);
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .cta-dossier:hover { border-color: var(--olive); color: var(--olive); }
-
-    /* ━━━ FOOTER ━━━ */
-    .footer {
-      padding: 3rem 8vw;
-      border-top: 1px solid rgba(245,240,232,0.1);
-      background: var(--bg-dark);
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.3);
-    }
-
-    /* ━━━ MOBILE ━━━ */
-    @media (max-width: 768px) {
-      .page-header { display: none; }
-      .back-btn { left: 1.5rem; }
-
-      .hero-title-main { font-size: clamp(4rem,13vw,7rem); }
-
-      .statement-grid { grid-template-columns: 1fr; gap: 3rem; }
-
-      .pilares-grid { grid-template-columns: 1fr; }
-      .pilar:last-child { grid-column: 1; }
-
-      .arquitecto-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .arquitecto-deco { display: none; }
-
-      .ctas { flex-direction: column; }
-      .cta-wa, .cta-dossier { width: 100%; text-align: center; }
-    }
-  </style>
+        @media (max-width: 900px) {
+            .quote-grid, .pilares-grid, .filosofia-grid, .arquiteto-grid {
+                grid-template-columns: 1fr;
+            }
+            .arquiteto-photo { width: 100%; max-width: 320px; margin: 0 auto; }
+            .philosophy-quote { text-align: left; margin-top: 2rem; }
+        }
+    </style>
 </head>
 <body>
+    <div id="cursor"></div>
 
-<div id="cursor"></div>
+    <!-- Header -->
+    <header id="site-header">
+        <a href="/" class="header-logo">Olive Soul</a>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="switchLang('es')">ES</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" onclick="switchLang('en')">EN</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" onclick="switchLang('it')">IT</button>
+                <span class="lang-sep">|</span>
+                <button class="lang-btn" onclick="switchLang('fr')">FR</button>
+            </div>
+            <nav class="header-nav">
+                <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+                <a href="#" data-i18n="nav_estilo">Estilo</a>
+            </nav>
+        </div>
+    </header>
 
-<a href="index.html" class="back-btn">← Volver</a>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="wave-bg" id="hero-waves"></div>
+        <div class="hero-label-container">
+            <span class="hero-label" data-i18n="arch_hero_label">007 — ARQUITECTURA</span>
+            <div class="hero-line"></div>
+        </div>
+        <div class="hero-titles">
+            <div class="hero-anim"><span class="hero-title-1" data-i18n="arch_hero_t1">ARQUITECTURA</span></div>
+            <div class="hero-anim"><span class="hero-title-2" data-i18n="arch_hero_t2">EN DIÁLOGO</span></div>
+            <div class="hero-anim"><span class="hero-title-3" data-i18n="arch_hero_t3">CON EL PAISAJE</span></div>
+        </div>
+    </section>
 
-<header class="page-header">
-  <a href="index.html" class="header-brand">Olive Soul</a>
-  <nav class="header-nav">
-    <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
-    <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
-  </nav>
-  <div class="lang-switcher">
-    <button class="lang-btn active" onclick="switchLang('es')">ES</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" onclick="switchLang('en')">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" onclick="switchLang('it')">IT</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" onclick="switchLang('fr')">FR</button>
-  </div>
-</header>
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <div class="wave-bg" id="quote-waves"></div>
+        <div class="quote-grid">
+            <div class="scroll-reveal">
+                <p class="quote-text" data-i18n="arch_quote">"LA ARQUITECTURA NO DEBE COMPETIR CON LA NATURALEZA, SINO SER EL MARCO QUE LA EXALTA. CADA LÍNEA, CADA MURO, CADA APERTURA ES UNA RESPUESTA AL VIENTO, A LA LUZ Y A LA MEMORIA DE ESTA TIERRA."</p>
+                <span class="quote-attribution" data-i18n="arch_attribution">JAIME SANAHUJA — ARQUITECTO</span>
+            </div>
+            <div class="scroll-reveal quote-body" data-i18n="arch_body1">
+                Nuestra visión arquitectónica nace del respeto absoluto por el Bajo Maestrazgo. No construimos sobre el terreno; construimos desde él. La arquitectura de Jaime Sanahuja para Olive Soul es un ejercicio de honestidad material y precisión geométrica, donde la frontera entre el interior y el exterior se disuelve para dar paso a una experiencia sensorial única.
+            </div>
+        </div>
+    </section>
 
-<!-- ━━━ HERO CAROUSEL ━━━ -->
-<section class="hero">
-  <div class="carousel-track" id="carousel-track">
-    <div class="carousel-slide">
-      <img src="https://i.postimg.cc/qqK7LJFQ/a853c86b-4ebd-4247-90e6-2697e456256c.jpg" alt="Arquitectura 1">
-      <div class="carousel-overlay"></div>
-    </div>
-    <div class="carousel-slide">
-      <img src="https://i.postimg.cc/T25hG03S/IMG-0537.jpg" alt="Arquitectura 2">
-      <div class="carousel-overlay"></div>
-    </div>
-    <div class="carousel-slide">
-      <img src="https://i.postimg.cc/brnvTy50/IMG-0538-2.png" alt="Arquitectura 3">
-      <div class="carousel-overlay"></div>
-    </div>
-  </div>
+    <!-- Carousel Section -->
+    <section class="carousel-section">
+        <div class="wave-bg" id="carousel-waves" style="opacity: 0.5;"></div>
+        <div class="carousel-container">
+            <div class="carousel-track" id="carousel-track">
+                <div class="carousel-slide"><img src="https://i.postimg.cc/qqK7LJFQ/a853c86b-4ebd-4247-90e6-2697e456256c.jpg" alt="Architecture 1"></div>
+                <div class="carousel-slide"><img src="https://i.postimg.cc/T25hG03S/IMG-0537.jpg" alt="Architecture 2"></div>
+                <div class="carousel-slide"><img src="https://i.postimg.cc/brnvTy50/IMG-0538.jpg" alt="Architecture 3"></div>
+            </div>
+        </div>
+        <div class="carousel-caption" data-i18n="arch_carousel_caption">INTEGRACIÓN PAISAJÍSTICA Y PUREZA FORMAL</div>
+        <div class="carousel-controls">
+            <button class="carousel-btn" onclick="prevSlide()">PREV</button>
+            <span class="carousel-counter" id="carousel-counter">01 / 03</span>
+            <button class="carousel-btn" onclick="nextSlide()">NEXT</button>
+        </div>
+    </section>
 
-  <div class="hero-content">
-    <span class="hero-label" data-i18n="pg_label">007 — ARQUITECTURA</span>
-    <div class="hero-word">
-      <span class="hero-title-main" data-i18n="hero_w1">ARQUITECTURA</span>
-    </div>
-    <div class="hero-word">
-      <span class="hero-title-sub" data-i18n="hero_w2">en diálogo.</span>
-    </div>
-  </div>
+    <!-- Pilares Section -->
+    <section class="pilares-section">
+        <div class="wave-bg" id="pilares-waves"></div>
+        <div class="section-title-row">
+            <h2 class="section-title" data-i18n="arch_pilares_title">PRINCIPIOS DE DISEÑO</h2>
+            <span class="section-counter">04</span>
+        </div>
+        <div class="pilares-grid">
+            <div class="pilar-item scroll-reveal">
+                <span class="pilar-num">01</span>
+                <div class="pilar-content">
+                    <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <h3 data-i18n="arch_pilar1_label">HONESTIDAD MATERIAL</h3>
+                    <p data-i18n="arch_pilar1_text">Uso de piedra local, cal y madera que envejecen con nobleza.</p>
+                </div>
+            </div>
+            <div class="pilar-item scroll-reveal">
+                <span class="pilar-num">02</span>
+                <div class="pilar-content">
+                    <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M17.64 6.36l1.42-1.42"/></svg>
+                    <h3 data-i18n="arch_pilar2_label">LUZ MEDITERRÁNEA</h3>
+                    <p data-i18n="arch_pilar2_text">Captura de la luz como elemento constructivo fundamental.</p>
+                </div>
+            </div>
+            <div class="pilar-item scroll-reveal">
+                <span class="pilar-num">03</span>
+                <div class="pilar-content">
+                    <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <h3 data-i18n="arch_pilar3_label">SOSTENIBILIDAD PASIVA</h3>
+                    <p data-i18n="arch_pilar3_text">Diseño bioclimático que minimiza el impacto ambiental.</p>
+                </div>
+            </div>
+            <div class="pilar-item scroll-reveal">
+                <span class="pilar-num">04</span>
+                <div class="pilar-content">
+                    <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                    <h3 data-i18n="arch_pilar4_label">DIÁLOGO VISUAL</h3>
+                    <p data-i18n="arch_pilar4_text">Encuadres precisos que convierten el paisaje en arte vivo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <div class="carousel-controls">
-    <button class="carousel-btn" id="btn-prev" aria-label="Anterior">&#8592;</button>
-    <div class="carousel-dots">
-      <button class="carousel-dot active" onclick="goTo(0)"></button>
-      <button class="carousel-dot" onclick="goTo(1)"></button>
-      <button class="carousel-dot" onclick="goTo(2)"></button>
-    </div>
-    <span class="carousel-counter" id="carousel-counter">01 / 03</span>
-    <button class="carousel-btn" id="btn-next" aria-label="Siguiente">&#8594;</button>
-  </div>
-</section>
+    <!-- Filosofia Section -->
+    <section class="filosofia-section">
+        <div class="wave-bg" id="filosofia-waves"></div>
+        <div class="filosofia-grid">
+            <div class="filosofia-left scroll-reveal">
+                <p class="filosofia-body" data-i18n="arch_body2">La filosofía de Olive Soul se aleja de la ostentación para abrazar el lujo silencioso. Es una arquitectura que respira, que entiende el paso del tiempo y que celebra la imperfección de lo natural. Cada proyecto es una pieza única, adaptada a la topografía y a la orientación de la finca.</p>
+                <div class="filosofia-note" data-i18n="arch_note">NOTA: TODAS LAS VIVIENDAS CUENTAN CON CERTIFICACIÓN ENERGÉTICA CLASE A Y SISTEMAS DE RECOGIDA DE AGUAS PLUVIALES.</div>
+            </div>
+            <div class="filosofia-right scroll-reveal">
+                <div class="philosophy-quote" data-i18n="arch_philosophy_quote">EL LUJO ES EL ESPACIO, EL SILENCIO Y LA LUZ.</div>
+            </div>
+        </div>
+    </section>
 
-<!-- ━━━ STATEMENT ━━━ -->
-<section class="statement">
-  <div class="statement-grid">
-    <div class="statement-left">
-      <span class="arch-label" data-i18n="arch_label">007 / ARQUITECTURA</span>
-      <blockquote class="statement-quote" data-i18n="statement_quote">"La arquitectura no invade el territorio. Lo interpreta."</blockquote>
-      <span class="statement-sig">— Jaime Sanahuja</span>
-    </div>
-    <div class="statement-right">
-      <p data-i18n="arch_body1">La Finca Olive Soul se concibe desde una arquitectura que escucha antes de proyectar. Cada volumen responde al relieve, cada apertura al sol, cada material a la tierra que lo rodea. No hay imposición, sino conversación.</p>
-    </div>
-  </div>
-</section>
+    <!-- Arquiteto Section -->
+    <section class="arquiteto-section">
+        <div class="wave-bg" id="arquiteto-waves"></div>
+        <div class="arquiteto-grid">
+            <div class="arquiteto-photo scroll-reveal">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7H8jc2YRBlX5d7_Q5uCCri21wNAl5hEnahQ&s" alt="Jaime Sanahuja">
+            </div>
+            <div class="arquiteto-content scroll-reveal">
+                <h2 data-i18n="arch_attribution">JAIME SANAHUJA</h2>
+                <p class="arquiteto-bio" data-i18n="arch_bio">Jaime Sanahuja, fundador de Sanahuja & Partners, es un referente de la arquitectura mediterránea contemporánea. Su obra se caracteriza por la búsqueda de la esencia, la sobriedad y la integración armónica en el entorno. En Olive Soul, Sanahuja vuelca décadas de experiencia para crear un lenguaje arquitectónico que es, a la vez, vanguardista y profundamente arraigado a la tradición del Maestrazgo.</p>
+                <a href="https://sanahujapartners.com/" target="_blank" class="arquiteto-link" data-i18n="arch_link_text">VISITAR SANAHUJA & PARTNERS</a>
+            </div>
+        </div>
+    </section>
 
-<!-- ━━━ PILARES ━━━ -->
-<section class="pilares">
-  <div class="pilares-top">
-    <div class="pilares-heading">
-      <span data-i18n="pilares_label">PRINCIPIOS</span>
-    </div>
-    <span class="pilares-count" data-i18n="pilares_count">007 / 5 principios</span>
-  </div>
-  <div class="pilares-grid">
-    <div class="pilar">
-      <span class="pilar-num">01</span>
-      <p class="pilar-text" data-i18n="p_f1">Construcción mediterránea integrada con piedra seca y materiales nobles</p>
-    </div>
-    <div class="pilar">
-      <span class="pilar-num">02</span>
-      <p class="pilar-text" data-i18n="p_f2">Diseño abierto, luminoso y facilitador del diálogo con la naturaleza</p>
-    </div>
-    <div class="pilar">
-      <span class="pilar-num">03</span>
-      <p class="pilar-text" data-i18n="p_f3">Autosuficiencia energética con solar y sistemas de agua propios</p>
-    </div>
-    <div class="pilar">
-      <span class="pilar-num">04</span>
-      <p class="pilar-text" data-i18n="p_f4">Espacios flexibles, adaptables y de alta eficiencia</p>
-    </div>
-    <div class="pilar">
-      <span class="pilar-num">05</span>
-      <p class="pilar-text" data-i18n="p_f5">Sostenibilidad como fundamento, no como añadido</p>
-    </div>
-  </div>
-</section>
+    <!-- CTAs -->
+    <section class="cta-section">
+        <div class="wave-bg" id="cta-waves" style="opacity: 0.1;"></div>
+        <div class="cta-group">
+            <a href="https://wa.me/34603502986" target="_blank" class="btn-wa" data-i18n="cta_team">HABLAR CON NUESTRO EQUIPO</a>
+            <button class="btn-dossier" data-i18n="cta_dossier">RECIBIR EL DOSSIER COMPLETO</button>
+        </div>
+    </section>
 
-<!-- ━━━ ARQUITETO ━━━ -->
-<section class="arquitecto">
-  <div class="arquitecto-deco">JS</div>
-  <div class="arquitecto-grid">
-    <div class="arquitecto-left">
-      <img
-        class="arquitecto-photo"
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7H8jc2YRBlX5d7_Q5uCCri21wNAl5hEnahQ&s"
-        alt="Jaime Sanahuja"
-      >
-      <span class="arquitecto-photo-label" data-i18n="arch_role">Arquitecto Director</span>
-      <a href="https://www.sanahujapartners.com/" target="_blank" rel="noopener" class="arquitecto-name">Jaime Sanahuja</a>
-    </div>
-    <div class="arquitecto-right">
-      <span class="arch-label-right" data-i18n="arch_label2">007 / EL ARQUITECTO</span>
-      <p class="arquitecto-bio" data-i18n="arch_body1">La Finca Olive Soul se concibe desde una arquitectura que escucha antes de proyectar. Cada volumen responde al relieve, cada apertura al sol, cada material a la tierra que lo rodea. No hay imposición, sino conversación.</p>
-      <p class="arquitecto-bio" data-i18n="arch_body2">Jaime Sanahuja dirige uno de los estudios de arquitectura residencial de lujo más reconocidos del Mediterráneo español. Su obra conjuga la tradición constructiva valenciana con una sensibilidad contemporánea que ha merecido reconocimiento internacional.</p>
-      <p class="arquitecto-note" data-i18n="arch_note">Los proyectos de Finca Unitaria y Coliving cuentan ya con diseños desarrollados por Jaime Sanahuja, disponibles bajo solicitud.</p>
-    </div>
-  </div>
-</section>
+    <!-- Footer -->
+    <footer>
+        <div class="wave-bg" id="footer-waves" style="opacity: 0.05;"></div>
+        <span class="footer-logo">OLIVE SOUL</span>
+        <nav class="footer-nav">
+            <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
+            <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
+            <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
+            <a href="#" data-i18n="nav_estilo">Estilo</a>
+        </nav>
+        <span class="footer-copy" data-i18n="footer_rights">© 2025 Olive Soul · Bajo Maestrazgo, España</span>
+    </footer>
 
-<!-- ━━━ CTAs ━━━ -->
-<section class="ctas">
-  <a href="#" class="cta-wa" data-i18n="cta_whatsapp">Consultar por WhatsApp</a>
-  <button class="cta-dossier" onclick="window.openDossierModal && window.openDossierModal()" data-i18n="cta_dossier">Solicitar Dossier</button>
-</section>
+    <script src="modal-dossier.js"></script>
+    <script>
+        // Translations
+        const T = {
+            es: {
+                nav_proyectos: 'PROYECTOS',
+                nav_arquitectura: 'ARQUITECTURA',
+                nav_ubicacion: 'UBICACIÓN',
+                nav_estilo: 'ESTILO',
+                arch_hero_label: '007 — ARQUITECTURA',
+                arch_hero_t1: 'ARQUITECTURA',
+                arch_hero_t2: 'EN DIÁLOGO',
+                arch_hero_t3: 'CON EL PAISAJE',
+                arch_quote: '"LA ARQUITECTURA NO DEBE COMPETIR CON LA NATURALEZA, SINO SER EL MARCO QUE LA EXALTA. CADA LÍNEA, CADA MURO, CADA APERTURA ES UNA RESPUESTA AL VIENTO, A LA LUZ Y A LA MEMORIA DE ESTA TIERRA."',
+                arch_attribution: 'JAIME SANAHUJA — ARQUITECTO',
+                arch_body1: 'Nuestra visión arquitectónica nace del respeto absoluto por el Bajo Maestrazgo. No construimos sobre el terreno; construimos desde él. La arquitectura de Jaime Sanahuja para Olive Soul es un ejercicio de honestidad material y precisión geométrica, donde la frontera entre el interior y el exterior se disuelve para dar paso a una experiencia sensorial única.',
+                arch_carousel_caption: 'INTEGRACIÓN PAISAJÍSTICA Y PUREZA FORMAL',
+                arch_pilares_title: 'PRINCIPIOS DE DISEÑO',
+                arch_pilar1_label: 'HONESTIDAD MATERIAL',
+                arch_pilar1_text: 'Uso de piedra local, cal y madera que envejecen con nobleza.',
+                arch_pilar2_label: 'LUZ MEDITERRÁNEA',
+                arch_pilar2_text: 'Captura de la luz como elemento constructivo fundamental.',
+                arch_pilar3_label: 'SOSTENIBILIDAD PASIVA',
+                arch_pilar3_text: 'Diseño bioclimático que minimiza el impacto ambiental.',
+                arch_pilar4_label: 'DIÁLOGO VISUAL',
+                arch_pilar4_text: 'Encuadres precisos que convierten el paisaje en arte vivo.',
+                arch_body2: 'La filosofía de Olive Soul se aleja de la ostentación para abrazar el lujo silencioso. Es una arquitectura que respira, que entiende el paso del tiempo y que celebra la imperfección de lo natural. Cada proyecto es una pieza única, adaptada a la topografía y a la orientación de la finca.',
+                arch_note: 'NOTA: TODAS LAS VIVIENDAS CUENTAN CON CERTIFICACIÓN ENERGÉTICA CLASE A Y SISTEMAS DE RECOGIDA DE AGUAS PLUVIALES.',
+                arch_philosophy_quote: 'EL LUJO ES EL ESPACIO, EL SILENCIO Y LA LUZ.',
+                arch_bio: 'Jaime Sanahuja, fundador de Sanahuja & Partners, es un referente de la arquitectura mediterránea contemporánea. Su obra se caracteriza por la búsqueda de la esencia, la sobriedad y la integración armónica en el entorno. En Olive Soul, Sanahuja vuelca décadas de experiencia para crear un lenguaje arquitectónico que es, a la vez, vanguardista y profundamente arraigado a la tradición del Maestrazgo.',
+                arch_link_text: 'VISITAR SANAHUJA & PARTNERS',
+                cta_team: 'HABLAR CON NUESTRO EQUIPO',
+                cta_dossier: 'RECIBIR EL DOSSIER COMPLETO',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, España'
+            },
+            en: {
+                nav_proyectos: 'PROJECTS',
+                nav_arquitectura: 'ARCHITECTURE',
+                nav_ubicacion: 'LOCATION',
+                nav_estilo: 'STYLE',
+                arch_hero_label: '007 — ARCHITECTURE',
+                arch_hero_t1: 'ARCHITECTURE',
+                arch_hero_t2: 'IN DIALOGUE',
+                arch_hero_t3: 'WITH THE LANDSCAPE',
+                arch_quote: '"ARCHITECTURE SHOULD NOT COMPETE WITH NATURE, BUT BE THE FRAME THAT EXALTS IT. EVERY LINE, EVERY WALL, EVERY OPENING IS A RESPONSE TO THE WIND, THE LIGHT AND THE MEMORY OF THIS LAND."',
+                arch_attribution: 'JAIME SANAHUJA — ARCHITECT',
+                arch_body1: 'Our architectural vision is born from absolute respect for the Bajo Maestrazgo. We do not build on the land; we build from it. Jaime Sanahuja\'s architecture for Olive Soul is an exercise in material honesty and geometric precision, where the border between interior and exterior dissolves to give way to a unique sensory experience.',
+                arch_carousel_caption: 'LANDSCAPE INTEGRATION AND FORMAL PURITY',
+                arch_pilares_title: 'DESIGN PRINCIPLES',
+                arch_pilar1_label: 'MATERIAL HONESTY',
+                arch_pilar1_text: 'Use of local stone, lime and wood that age with nobility.',
+                arch_pilar2_label: 'MEDITERRANEAN LIGHT',
+                arch_pilar2_text: 'Capturing light as a fundamental constructive element.',
+                arch_pilar3_label: 'PASSIVE SUSTAINABILITY',
+                arch_pilar3_text: 'Bioclimatic design that minimizes environmental impact.',
+                arch_pilar4_label: 'VISUAL DIALOGUE',
+                arch_pilar4_text: 'Precise framing that turns the landscape into living art.',
+                arch_body2: 'The Olive Soul philosophy moves away from ostentation to embrace silent luxury. It is an architecture that breathes, that understands the passage of time and that celebrates the imperfection of the natural. Each project is a unique piece, adapted to the topography and orientation of the estate.',
+                arch_note: 'NOTE: ALL HOMES HAVE CLASS A ENERGY CERTIFICATION AND RAINWATER COLLECTION SYSTEMS.',
+                arch_philosophy_quote: 'LUXURY IS SPACE, SILENCE AND LIGHT.',
+                arch_bio: 'Jaime Sanahuja, founder of Sanahuja & Partners, is a benchmark of contemporary Mediterranean architecture. His work is characterized by the search for essence, sobriety and harmonic integration into the environment. In Olive Soul, Sanahuja pours decades of experience to create an architectural language that is, at the same time, avant-garde and deeply rooted in the tradition of the Maestrazgo.',
+                arch_link_text: 'VISIT SANAHUJA & PARTNERS',
+                cta_team: 'TALK TO OUR TEAM',
+                cta_dossier: 'RECEIVE THE FULL DOSSIER',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spain'
+            },
+            it: {
+                nav_proyectos: 'PROGETTI',
+                nav_arquitectura: 'ARCHITETTURA',
+                nav_ubicacion: 'POSIZIONE',
+                nav_estilo: 'STILE',
+                arch_hero_label: '007 — ARCHITETTURA',
+                arch_hero_t1: 'ARCHITETTURA',
+                arch_hero_t2: 'IN DIALOGO',
+                arch_hero_t3: 'CON IL PAESAGGIO',
+                arch_quote: '"L\'ARCHITETTURA NON DEVE COMPETERE CON LA NATURA, MA ESSERE LA CORNICE CHE LA ESALTA. OGNI LINEA, OGNI MURO, OGNI APERTURA È UNA RISPOSTA AL VENTO, ALLA LUCE E ALLA MEMORIA DI QUESTA TERRA."',
+                arch_attribution: 'JAIME SANAHUJA — ARCHITETTO',
+                arch_body1: 'La nostra visione architettonica nasce dal rispetto assoluto per il Bajo Maestrazgo. Non costruiamo sul terreno; costruiamo da esso. L\'architettura di Jaime Sanahuja per Olive Soul è un esercizio di onestà materiale e precisione geometrica, dove il confine tra interno ed esterno si dissolve per lasciare spazio a un\'esperienza sensoriale unica.',
+                arch_carousel_caption: 'INTEGRAZIONE PAESAGGISTICA E PUREZZA FORMALE',
+                arch_pilares_title: 'PRINCIPI DI DESIGN',
+                arch_pilar1_label: 'ONESTÀ MATERIALE',
+                arch_pilar1_text: 'Uso di pietra locale, calce e legno che invecchiano con nobiltà.',
+                arch_pilar2_label: 'LUCE MEDITERRANEA',
+                arch_pilar2_text: 'Catturare la luce come elemento costruttivo fondamentale.',
+                arch_pilar3_label: 'SOSTENIBILITÀ PASSIVA',
+                arch_pilar3_text: 'Design bioclimatico che riduce al minimo l\'impatto ambientale.',
+                arch_pilar4_label: 'DIALOGO VISIVO',
+                arch_pilar4_text: 'Inquadrature precise che trasformano il paesaggio in arte viva.',
+                arch_body2: 'La filosofia di Olive Soul si allontana dall\'ostentazione per abbracciare il lusso silenzioso. È un\'architettura che respira, che comprende il passare del tempo e che celebra l\'imperfezione del naturale. Ogni progetto è un pezzo unico, adattato alla topografia e all\'orientamento della tenuta.',
+                arch_note: 'NOTA: TUTTE LE CASE HANNO LA CERTIFICAZIONE ENERGETICA CLASSE A E SISTEMI DI RACCOLTA DELL\'ACQUA PIOVANA.',
+                arch_philosophy_quote: 'IL LUSSO È SPAZIO, SILENZIO E LUCE.',
+                arch_bio: 'Jaime Sanahuja, fondatore di Sanahuja & Partners, è un punto di riferimento dell\'architettura mediterranea contemporanea. Il suo lavoro si caratterizza per la ricerca dell\'essenza, la sobrietà e l\'integrazione armonica nell\'ambiente. In Olive Soul, Sanahuja riversa decenni di esperienza per creare un linguaggio architettonico che è, allo stesso tempo, all\'avanguardia e profondamente radicato nella tradizione del Maestrazgo.',
+                arch_link_text: 'VISITA SANAHUJA & PARTNERS',
+                cta_team: 'PARLA CON IL NOSTRO TEAM',
+                cta_dossier: 'RICEVI IL DOSSIER COMPLETO',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spagna'
+            },
+            fr: {
+                nav_proyectos: 'PROJETS',
+                nav_arquitectura: 'ARCHITECTURE',
+                nav_ubicacion: 'EMPLACEMENT',
+                nav_estilo: 'STYLE',
+                arch_hero_label: '007 — ARCHITECTURE',
+                arch_hero_t1: 'ARCHITECTURE',
+                arch_hero_t2: 'EN DIALOGUE',
+                arch_hero_t3: 'AVEC LE PAYSAGE',
+                arch_quote: '"L\'ARCHITECTURE NE DOIT PAS RIVALISER AVEC LA NATURE, MA ÊTRE LE CADRE QUI L\'EXALTE. CHAQUE LIGNE, CHAQUE MUR, CHAQUE OUVERTURE EST UNE RÉPONSE AU VENT, À LA LUMIÈRE ET À LA MÉMOIRE DE CETTE TERRE."',
+                arch_attribution: 'JAIME SANAHUJA — ARCHITECTE',
+                arch_body1: 'Notre vision architecturale est née du respect absolu du Bajo Maestrazgo. Nous ne construisons pas sur le terrain ; nous construisons à partir de lui. L\'architecture de Jaime Sanahuja pour Olive Soul est un exercice d\'honnêteté matérielle et de précision géométrique, où la frontière entre l\'intérieur et l\'extérieur se dissout pour laisser place à une expérience sensorielle unique.',
+                arch_carousel_caption: 'INTÉGRATION PAYSAGÈRE ET PURETÉ FORMALE',
+                arch_pilares_title: 'PRINCIPES DE CONCEPTION',
+                arch_pilar1_label: 'HONNÊTETÉ MATÉRIELLE',
+                arch_pilar1_text: 'Utilisation de pierre locale, de chaux et de bois qui vieillissent avec noblesse.',
+                arch_pilar2_label: 'LUMIÈRE MÉDITERRANÉENNE',
+                arch_pilar2_text: 'Capter la lumière comme élément constructif fondamental.',
+                arch_pilar3_label: 'DURABILITÉ PASSIVE',
+                arch_pilar3_text: 'Conception bioclimatique qui minimise l\'impact environnemental.',
+                arch_pilar4_label: 'DIALOGUE VISUEL',
+                arch_pilar4_text: 'Cadrages précis qui transforment le paysage en art vivant.',
+                arch_body2: 'La philosophie Olive Soul s\'éloigne de l\'ostentation pour embrasser le luxe silencieux. C\'est une architecture qui respire, qui comprend le passage du temps et qui célèbre l\'imperfection du naturel. Chaque projet est une pièce unique, adaptée à la topographie et à l\'orientation du domaine.',
+                arch_note: 'NOTE : TOUTES LES MAISONS ONT UNE CERTIFICATION ÉNERGÉTIQUE DE CLASSE A ET DES SYSTÈMES DE COLLECTE DES EAUX DE PLUIE.',
+                arch_philosophy_quote: 'LE LUXE, C\'EST L\'ESPACE, LE SILENCE ET LA LUMIÈRE.',
+                arch_bio: 'Jaime Sanahuja, fondateur de Sanahuja & Partners, est une référence de l\'architecture méditerranéenne contemporaine. Son œuvre se caractérise par la recherche de l\'essence, la sobriété et l\'intégration harmonieuse dans l\'environnement. Chez Olive Soul, Sanahuja met à profit des décennies d\'expérience pour créer un langage architectural à la fois avant-gardiste et profondément enraciné dans la tradition du Maestrazgo.',
+                arch_link_text: 'VISITER SANAHUJA & PARTNERS',
+                cta_team: 'PARLER À NOTRE ÉQUIPE',
+                cta_dossier: 'RECEVOIR LE DOSSIER COMPLET',
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Espagne'
+            }
+        };
 
-<!-- ━━━ FOOTER ━━━ -->
-<footer class="footer">
-  © 2025 Olive Soul · Arquitectura por Sanahuja &amp; Partners
-</footer>
+        let currentLang = 'es';
 
-<!-- GSAP -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script>
-  /* ━━━ TRANSLATIONS ━━━ */
-  var T = {
-    es: {
-      nav_proyectos:   'Proyectos',
-      nav_ubicacion:   'Ubicación',
-      pg_label:        '007 — ARQUITECTURA',
-      hero_w1:         'ARQUITECTURA',
-      hero_w2:         'en diálogo.',
-      statement_quote: '"La arquitectura no invade el territorio. Lo interpreta."',
-      arch_label:      '007 / ARQUITECTURA',
-      arch_label2:     '007 / EL ARQUITECTO',
-      arch_body1:      'La Finca Olive Soul se concibe desde una arquitectura que escucha antes de proyectar. Cada volumen responde al relieve, cada apertura al sol, cada material a la tierra que lo rodea. No hay imposición, sino conversación.',
-      arch_body2:      'Jaime Sanahuja dirige uno de los estudios de arquitectura residencial de lujo más reconocidos del Mediterráneo español. Su obra conjuga la tradición constructiva valenciana con una sensibilidad contemporánea que ha merecido reconocimiento internacional.',
-      arch_role:       'Arquitecto Director',
-      arch_note:       'Los proyectos de Finca Unitaria y Coliving cuentan ya con diseños desarrollados por Jaime Sanahuja, disponibles bajo solicitud.',
-      p_f1:            'Construcción mediterránea integrada con piedra seca y materiales nobles',
-      p_f2:            'Diseño abierto, luminoso y facilitador del diálogo con la naturaleza',
-      p_f3:            'Autosuficiencia energética con solar y sistemas de agua propios',
-      p_f4:            'Espacios flexibles, adaptables y de alta eficiencia',
-      p_f5:            'Sostenibilidad como fundamento, no como añadido',
-      pilares_label:   'PRINCIPIOS',
-      pilares_count:   '007 / 5 principios',
-      cta_whatsapp:    'Consultar por WhatsApp',
-      cta_dossier:     'Solicitar Dossier',
-    },
-    en: {
-      nav_proyectos:   'Projects',
-      nav_ubicacion:   'Location',
-      pg_label:        '007 — ARCHITECTURE',
-      hero_w1:         'ARCHITECTURE',
-      hero_w2:         'in dialogue.',
-      statement_quote: '"Architecture does not invade the territory. It interprets it."',
-      arch_label:      '007 / ARCHITECTURE',
-      arch_label2:     '007 / THE ARCHITECT',
-      arch_body1:      'Olive Soul Finca is conceived through an architecture that listens before projecting. Each volume responds to the terrain, each opening to the sun, each material to the surrounding land. There is no imposition — only conversation.',
-      arch_body2:      'Jaime Sanahuja leads one of the most recognised luxury residential architecture studios on the Spanish Mediterranean. His work combines the Valencian building tradition with a contemporary sensibility that has earned international acclaim.',
-      arch_role:       'Lead Architect',
-      arch_note:       'The Finca Unitaria and Coliving projects already have designs developed by Jaime Sanahuja, available upon request.',
-      p_f1:            'Mediterranean construction integrated with dry stone and noble materials',
-      p_f2:            'Open, luminous design facilitating dialogue with nature',
-      p_f3:            'Energy self-sufficiency with solar and private water systems',
-      p_f4:            'Flexible, adaptable and highly efficient spaces',
-      p_f5:            'Sustainability as foundation, not as an afterthought',
-      pilares_label:   'PRINCIPLES',
-      pilares_count:   '007 / 5 principles',
-      cta_whatsapp:    'Contact via WhatsApp',
-      cta_dossier:     'Request Dossier',
-    },
-    it: {
-      nav_proyectos:   'Progetti',
-      nav_ubicacion:   'Posizione',
-      pg_label:        '007 — ARCHITETTURA',
-      hero_w1:         'ARCHITETTURA',
-      hero_w2:         'in dialogo.',
-      statement_quote: '"L\'architettura non invade il territorio. Lo interpreta."',
-      arch_label:      '007 / ARCHITETTURA',
-      arch_label2:     '007 / L\'ARCHITETTO',
-      arch_body1:      'La Finca Olive Soul è concepita da un\'architettura che ascolta prima di progettare. Ogni volume risponde al rilievo, ogni apertura al sole, ogni materiale alla terra circostante. Non c\'è imposizione, ma conversazione.',
-      arch_body2:      'Jaime Sanahuja dirige uno degli studi di architettura residenziale di lusso più rinomati del Mediterraneo spagnolo. La sua opera coniuga la tradizione costruttiva valenciana con una sensibilità contemporanea che ha ottenuto riconoscimenti internazionali.',
-      arch_role:       'Architetto Direttore',
-      arch_note:       'I progetti di Finca Unitaria e Coliving hanno già design sviluppati da Jaime Sanahuja, disponibili su richiesta.',
-      p_f1:            'Costruzione mediterranea integrata con pietra a secco e materiali nobili',
-      p_f2:            'Design aperto, luminoso e facilitatore del dialogo con la natura',
-      p_f3:            'Autosufficienza energetica con solare e sistemi idrici propri',
-      p_f4:            'Spazi flessibili, adattabili e ad alta efficienza',
-      p_f5:            'Sostenibilità come fondamento, non come aggiunta',
-      pilares_label:   'PRINCIPI',
-      pilares_count:   '007 / 5 principi',
-      cta_whatsapp:    'Contatta via WhatsApp',
-      cta_dossier:     'Richiedere Dossier',
-    },
-    fr: {
-      nav_proyectos:   'Projets',
-      nav_ubicacion:   'Emplacement',
-      pg_label:        '007 — ARCHITECTURE',
-      hero_w1:         'ARCHITECTURE',
-      hero_w2:         'en dialogue.',
-      statement_quote: '"L\'architecture n\'envahit pas le territoire. Elle l\'interprète."',
-      arch_label:      '007 / ARCHITECTURE',
-      arch_label2:     '007 / L\'ARCHITECTE',
-      arch_body1:      'La Finca Olive Soul est conçue depuis une architecture qui écoute avant de projeter. Chaque volume répond au relief, chaque ouverture au soleil, chaque matériau à la terre environnante. Il n\'y a pas d\'imposition, seulement une conversation.',
-      arch_body2:      'Jaime Sanahuja dirige l\'un des cabinets d\'architecture résidentielle de luxe les plus reconnus de la Méditerranée espagnole. Son œuvre conjugue la tradition constructive valencienne avec une sensibilité contemporaine qui a été saluée à l\'international.',
-      arch_role:       'Architecte Directeur',
-      arch_note:       'Les projets Finca Unitaria et Coliving disposent déjà de designs développés par Jaime Sanahuja, disponibles sur demande.',
-      p_f1:            'Construction méditerranéenne intégrée avec pierre sèche et matériaux nobles',
-      p_f2:            'Design ouvert, lumineux et facilitant le dialogue avec la nature',
-      p_f3:            'Autosuffisance énergétique avec solaire et systèmes d\'eau propres',
-      p_f4:            'Espaces flexibles, adaptables et à haute efficacité',
-      p_f5:            'La durabilité comme fondement, non comme ajout',
-      pilares_label:   'PRINCIPES',
-      pilares_count:   '007 / 5 principes',
-      cta_whatsapp:    'Contacter par WhatsApp',
-      cta_dossier:     'Demander le Dossier',
-    },
-  };
+        function switchLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(lang));
+            });
 
-  var WA_URLS = {
-    es: 'https://wa.me/34600000000?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20la%20arquitectura%20de%20Olive%20Soul.',
-    en: 'https://wa.me/34600000000?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20Olive%20Soul%20architecture.',
-    it: 'https://wa.me/34600000000?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27architettura%20di%20Olive%20Soul.',
-    fr: 'https://wa.me/34600000000?text=Bonjour%2C%20je%20souhaite%20en%20savoir%20plus%20sur%20l%27architecture%20d%27Olive%20Soul.',
-  };
+            // Update text
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (T[lang][key]) {
+                    el.textContent = T[lang][key];
+                }
+            });
+        }
 
-  var currentLang = 'es';
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: 'power2.out'
+            });
+        });
 
-  function switchLang(lang) {
-    currentLang = lang;
-    document.documentElement.lang = lang;
-    var L = T[lang];
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var key = el.getAttribute('data-i18n');
-      if (L[key] !== undefined) el.textContent = L[key];
-    });
-    var wa = document.querySelector('.cta-wa');
-    if (wa) wa.href = WA_URLS[lang];
-    document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
-    });
-  }
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+        });
 
-  /* ━━━ CAROUSEL ━━━ */
-  var current = 0;
-  var total = 3;
+        // Waves
+        function createWaves(containerId, colors) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 1920 1080");
+            svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+            
+            colors.forEach((color, i) => {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const d = `M-100,${400 + i * 50} C200,${200 + i * 20} 400,${500 - i * 30} 700,${300 + i * 10} S1100,${150 + i * 40} 1500,${350 - i * 20} S1900,${450 + i * 10} 2200,${300 + i * 30}`;
+                path.setAttribute("d", d);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", color);
+                path.setAttribute("stroke-width", 1.5 - i * 0.2);
+                path.setAttribute("opacity", 0.25 - i * 0.04);
+                svg.appendChild(path);
+                
+                gsap.to(path, {
+                    x: -80,
+                    duration: 10 + i * 4,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut',
+                    delay: i * 2
+                });
+            });
+            
+            container.appendChild(svg);
+        }
 
-  function goTo(idx) {
-    if (idx < 0) idx = total - 1;
-    if (idx >= total) idx = 0;
-    current = idx;
-    document.getElementById('carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
-    document.querySelectorAll('.carousel-dot').forEach(function (d, i) {
-      d.classList.toggle('active', i === idx);
-    });
-    var n = String(idx + 1).padStart(2, '0');
-    document.getElementById('carousel-counter').textContent = n + ' / 0' + total;
-  }
+        const lightWaves = ['var(--olive)', 'var(--terracota)', 'var(--teal)', 'var(--olive)'];
+        const darkWaves = ['#F5F0E8', '#EDEADE', '#F5F0E8'];
 
-  document.getElementById('btn-prev').addEventListener('click', function () { goTo(current - 1); });
-  document.getElementById('btn-next').addEventListener('click', function () { goTo(current + 1); });
+        createWaves('hero-waves', lightWaves);
+        createWaves('quote-waves', darkWaves);
+        createWaves('carousel-waves', lightWaves);
+        createWaves('pilares-waves', lightWaves);
+        createWaves('filosofia-waves', lightWaves);
+        createWaves('arquiteto-waves', lightWaves);
+        createWaves('cta-waves', darkWaves);
+        createWaves('footer-waves', darkWaves);
 
-  /* ━━━ CURSOR ━━━ */
-  var cur = document.getElementById('cursor');
-  document.addEventListener('mousemove', function (e) {
-    cur.style.left = e.clientX + 'px';
-    cur.style.top  = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button').forEach(function (el) {
-    el.addEventListener('mouseenter', function () { cur.classList.add('expand'); });
-    el.addEventListener('mouseleave', function () { cur.classList.remove('expand'); });
-  });
+        // Carousel
+        let currentSlide = 0;
+        const track = document.getElementById('carousel-track');
+        const counter = document.getElementById('carousel-counter');
+        const totalSlides = 3;
 
-  /* ━━━ GSAP ━━━ */
-  gsap.registerPlugin(ScrollTrigger);
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 33.333}%)`;
+            counter.textContent = `0${currentSlide + 1} / 0${totalSlides}`;
+        }
 
-  // Hero label fade
-  gsap.from('.hero-label', {
-    opacity: 0, y: -10,
-    duration: 0.8, delay: 0.3, ease: 'power3.out',
-  });
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
 
-  // Hero words reveal
-  gsap.from('.hero-word span', {
-    y: '110%',
-    duration: 1.2,
-    stagger: 0.1,
-    ease: 'power4.out',
-    delay: 0.1,
-  });
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
 
-  // Statement columns slide
-  gsap.from('.statement-left', {
-    x: -60, opacity: 0,
-    duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.statement', start: 'top 80%' },
-  });
-  gsap.from('.statement-right', {
-    x: 60, opacity: 0,
-    duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.statement', start: 'top 80%' },
-  });
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
 
-  // Pilares heading clip
-  gsap.from('.pilares-heading span', {
-    clipPath: 'inset(100% 0 0 0)',
-    duration: 1, ease: 'power4.out',
-    scrollTrigger: { trigger: '.pilares', start: 'top 75%' },
-  });
+        // Hero
+        gsap.from('.hero-label', { opacity: 0, y: -20, duration: 1, delay: 0.5 });
+        gsap.from('.hero-title-1', { y: 100, opacity: 0, duration: 1.2, ease: 'power4.out', delay: 0.7 });
+        gsap.from('.hero-title-2', { y: 100, opacity: 0, duration: 1.2, ease: 'power4.out', delay: 0.9 });
+        gsap.from('.hero-title-3', { y: 50, opacity: 0, duration: 1.2, ease: 'power4.out', delay: 1.1 });
 
-  // Pilares items stagger
-  gsap.from('.pilar', {
-    opacity: 0, y: 20,
-    duration: 0.8, stagger: 0.06, ease: 'power3.out',
-    scrollTrigger: { trigger: '.pilares-grid', start: 'top 80%' },
-  });
+        // Scroll Reveals
+        gsap.utils.toArray('.scroll-reveal').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out'
+            });
+        });
 
-  // Arquitecto photo
-  gsap.from('.arquitecto-photo', {
-    scale: 1.05,
-    duration: 1.4, ease: 'power3.out',
-    scrollTrigger: { trigger: '.arquitecto', start: 'top 80%' },
-  });
+        gsap.utils.toArray('.section-title-row').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                },
+                x: -50,
+                opacity: 0,
+                duration: 1.2,
+                ease: 'power3.out'
+            });
+        });
 
-  // Arquitecto text
-  gsap.from('.arquitecto-right', {
-    opacity: 0, x: 40,
-    duration: 1, ease: 'power3.out',
-    scrollTrigger: { trigger: '.arquitecto', start: 'top 80%' },
-  });
-</script>
-
-<script src="modal-dossier.js"></script>
+    </script>
 </body>
 </html>
