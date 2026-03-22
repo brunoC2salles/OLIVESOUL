@@ -563,23 +563,37 @@
         </div>
     </section>
 
-    <!-- Carousel Section -->
-    <section class="carousel-section">
-        <div class="wave-bg" id="carousel-waves" style="opacity: 0.5;"></div>
-        <div class="carousel-container">
-            <div class="carousel-track" id="carousel-track">
-                <div class="carousel-slide"><img src="https://i.postimg.cc/qqK7LJFQ/a853c86b-4ebd-4247-90e6-2697e456256c.jpg" alt="Architecture 1"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/T25hG03S/IMG-0537.jpg" alt="Architecture 2"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/brnvTy50/IMG-0538.jpg" alt="Architecture 3"></div>
-            </div>
+<!-- Carousel Section -->
+<section class="carousel-section">
+    <div class="wave-bg" id="carousel-waves" style="opacity: 0.5;"></div>
+    <div class="carousel-container">
+        <div class="carousel-track" id="carousel-track">
+            <div class="carousel-slide"><img src="https://i.postimg.cc/K8FvtcNd/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-0.jpg" alt="Architecture 1"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/vmZYSPCk/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-1.jpg" alt="Architecture 2"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/xd1fFsBx/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-2.jpg" alt="Architecture 3"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/FKHrnPw6/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-3.jpg" alt="Architecture 4"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/wBjqbWnS/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-4.jpg" alt="Architecture 5"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Xv1jMfbf/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-5.jpg" alt="Architecture 6"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/SsXymnST/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-6.jpg" alt="Architecture 7"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/qRtkpNJD/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-7.jpg" alt="Architecture 8"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/9M4WcDmS/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-8.jpg" alt="Architecture 9"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/zBLJqyz9/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-9.jpg" alt="Architecture 10"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/C1Ww5w5W/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-10.jpg" alt="Architecture 11"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/SswmRmRB/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-11.jpg" alt="Architecture 12"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/TwZT1Thf/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-12.jpg" alt="Architecture 13"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/26PCyC36/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-13.jpg" alt="Architecture 14"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/hvTc7N7z/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-14.jpg" alt="Architecture 15"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Znp4yXy9/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-15.jpg" alt="Architecture 16"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/hvTc7N7Q/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-16.jpg" alt="Architecture 17"></div>
         </div>
-        <div class="carousel-caption" data-i18n="arch_carousel_caption">INTEGRACIÓN PAISAJÍSTICA Y PUREZA FORMAL</div>
-        <div class="carousel-controls">
-            <button class="carousel-btn" onclick="prevSlide()">PREV</button>
-            <span class="carousel-counter" id="carousel-counter">01 / 03</span>
-            <button class="carousel-btn" onclick="nextSlide()">NEXT</button>
-        </div>
-    </section>
+    </div>
+    <div class="carousel-caption" data-i18n="arch_carousel_caption">INTEGRACIÓN PAISAJÍSTICA Y PUREZA FORMAL</div>
+    <div class="carousel-controls">
+        <button class="carousel-btn" onclick="prevSlide()">PREV</button>
+        <span class="carousel-counter" id="carousel-counter">01 / 17</span>
+        <button class="carousel-btn" onclick="nextSlide()">NEXT</button>
+    </div>
+</section>
 
     <!-- Pilares Section -->
     <section class="pilares-section">
@@ -889,7 +903,7 @@
         let currentSlide = 0;
         const track = document.getElementById('carousel-track');
         const counter = document.getElementById('carousel-counter');
-        const totalSlides = 3;
+        const totalSlides = 17;
 
         function updateCarousel() {
             track.style.transform = `translateX(-${currentSlide * 33.333}%)`;
