@@ -16,12 +16,20 @@
     var id = TALLY_IDS[lang] || TALLY_IDS['es'];
 
     if (typeof Tally !== 'undefined') {
-      Tally.openPopup(id, {
-        width: 600,
-        autoClose: 3000,
-      });
+      Tally.openPopup(id, { width: 600, autoClose: 3000 });
     } else {
-      window.open('https://tally.so/r/' + id, '_blank');
+      // Espera até 3 segundos pelo Tally antes de abrir nova aba
+      var attempts = 0;
+      var interval = setInterval(function () {
+        attempts++;
+        if (typeof Tally !== 'undefined') {
+          clearInterval(interval);
+          Tally.openPopup(id, { width: 600, autoClose: 3000 });
+        } else if (attempts >= 6) {
+          clearInterval(interval);
+          window.open('https://tally.so/r/' + id, '_blank');
+        }
+      }, 500);
     }
   };
 })();

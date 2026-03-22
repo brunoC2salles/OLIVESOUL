@@ -223,6 +223,12 @@
       text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 0.25rem;
+      font-family: var(--font);
+      cursor: pointer;
       transition: color .3s;
     }
     .cta-secondary:hover { color: var(--text); }
@@ -500,7 +506,6 @@
 
   <canvas id="canvas"></canvas>
   <div id="dark-overlay"></div>
-
   <div id="cursor"></div>
 
   <div id="loader">
@@ -676,8 +681,8 @@
       </p>
     </div>
     <div class="cierre-ctas" data-anim="fade-up">
-      <a href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" class="cta-primary" data-i18n="c_cta1">Descubrir la experiencia</a>
-      <a href="https://wa.me/34603502986?text=Hola%2C%20quiero%20solicitar%20el%20dossier%20de%20inversi%C3%B3n%20de%20Olive%20Soul" class="cta-secondary" data-i18n="c_cta2">Solicitar dossier de inversión</a>
+      <a href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" class="cta-primary" data-i18n="c_cta1" id="wa-btn-cierre">Descubrir la experiencia</a>
+      <button onclick="window.openDossierModal()" class="cta-secondary" data-i18n="c_cta2">Solicitar dossier de inversión</button>
     </div>
   </section>
 
@@ -701,7 +706,6 @@
   <script>
   (function () {
 
-    /* ══════════ TRANSLATIONS ══════════ */
     const TRANSLATIONS = {
       es: {
         nav_proyectos: 'Proyectos',
@@ -917,6 +921,13 @@
       }
     };
 
+    const WA_URLS = {
+      es: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul',
+      en: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience',
+      it: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul',
+      fr: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul',
+    };
+
     let currentLang = 'es';
 
     function switchLang(lang) {
@@ -936,16 +947,8 @@
         b.classList.toggle('active', b.dataset.lang === lang)
       );
       document.documentElement.lang = lang;
-
-      // Atualizar links do WhatsApp no cierre
-      const waUrls = {
-        es: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul',
-        en: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience',
-        it: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul',
-        fr: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul',
-      };
-      const cta1 = document.querySelector('.cierre-ctas .cta-primary');
-      if (cta1) cta1.href = waUrls[lang];
+      const waBtn = document.getElementById('wa-btn-cierre');
+      if (waBtn) waBtn.href = WA_URLS[lang];
     }
 
     document.querySelectorAll('.lang-btn').forEach(b =>
@@ -1120,7 +1123,6 @@
             scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
           });
       });
-
       document.querySelectorAll('[data-anim="slide-right"]').forEach(el => {
         gsap.fromTo(el,
           { opacity: 0, x: 55 },
@@ -1128,7 +1130,6 @@
             scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
           });
       });
-
       document.querySelectorAll('[data-anim="clip"]').forEach(el => {
         gsap.fromTo(el,
           { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
@@ -1136,7 +1137,6 @@
             scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none reverse' }
           });
       });
-
       document.querySelectorAll('[data-anim-list]').forEach(list => {
         const items = list.querySelectorAll('li');
         gsap.fromTo(items,
@@ -1149,6 +1149,7 @@
 
   })();
   </script>
+  <script src="modal-dossier.js"></script>
 
 </body>
 </html>
