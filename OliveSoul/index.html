@@ -6,1150 +6,731 @@
   <title>Olive Soul — Fincas privadas en el Bajo Maestrazgo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500;600&family=Bebas+Neue&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --bg:          #0a0a0a;
-      --text:        #f5f0e8;
-      --olive:       #6B7B3A;
-      --olive-muted: rgba(107,123,58,0.25);
-      --muted:       rgba(245,240,232,0.45);
-      --font:        'Bebas Neue', sans-serif;
+      --bg:#F5F0E8; --bg2:#EDEADE; --bg-dark:#1a1a18;
+      --olive:#6B7B3A; --olive-dark:#4A5528; --olive-light:rgba(107,123,58,0.1);
+      --terracota:#C4714A; --teal:#7BA8A4; --ink:#141414;
+      --text:#1a1a18; --muted:rgba(26,26,24,0.45);
+      --line:rgba(26,26,24,0.12); --line-strong:rgba(26,26,24,0.25);
+      --font:'Aileron','Inter',sans-serif;
     }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font); overflow-x:hidden; -webkit-font-smoothing:antialiased; text-transform:lowercase; cursor:none; }
+    h1,h2,h3,h4,h5,h6 { text-transform:uppercase; }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--olive); border-radius:10px; }
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
 
-    html { scroll-behavior: auto; }
+    /* CURSOR */
+    #cursor { position:fixed; width:16px; height:16px; background:var(--olive); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:width .3s,height .3s,background .3s,border .3s; mix-blend-mode:multiply; display:none; }
+    @media(min-width:1024px){#cursor{display:block;}}
+    #cursor.hovering { width:48px; height:48px; background:transparent; border:1.5px solid var(--olive); }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-weight: 400;
-      overflow-x: hidden;
-      cursor: none;
-    }
+    /* TYPOGRAPHY */
+    .editorial-headline { font-family:var(--font); font-weight:400; line-height:1.05; letter-spacing:0.02em; text-transform:uppercase; }
+    .editorial-body { font-family:var(--font); font-weight:400; line-height:1.7; font-size:1.125rem; letter-spacing:0.04em; }
+    .eyebrow { font-family:var(--font); font-size:0.75rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; opacity:0.8; display:block; margin-bottom:1rem; color:var(--olive); }
 
-    /* ——— CURSOR ——— */
-    #cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--olive);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%, -50%);
-      transition: width .3s ease, height .3s ease, background .3s ease, border .3s ease;
-      will-change: left, top;
-    }
-    #cursor.expand {
-      width: 36px; height: 36px;
-      background: transparent;
-      border: 1px solid rgba(107,123,58,0.7);
-    }
+    /* WAVE BG */
+    .wave-bg { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+    .wave-bg svg { width:100%; height:100%; }
 
-    /* ——— LOADER ——— */
-    #loader {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2.5rem;
-    }
-    .loader-brand {
-      font-size: 1.1rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--text);
-      font-weight: 400;
-      opacity: 0;
-      animation: ld-fade 0.8s ease 0.4s forwards;
-    }
-    .loader-bar-wrap {
-      width: 180px; height: 1px;
-      background: rgba(245,240,232,0.1);
-      overflow: hidden;
-    }
-    #loader-bar {
-      height: 100%; width: 0;
-      background: var(--olive);
-      transition: width .06s linear;
-    }
-    @keyframes ld-fade { to { opacity: 1; } }
+    /* IMG ZOOM */
+    .img-zoom img { transition:transform 1.5s cubic-bezier(0.16,1,0.3,1); }
+    .img-zoom:hover img { transform:scale(1.08); }
 
-    /* ——— HEADER ——— */
-    #site-header {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 500;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2rem 5vw;
-      transition: background .4s ease;
-    }
-    #site-header.scrolled {
-      background: rgba(10,10,10,0.90);
-      backdrop-filter: blur(12px);
-    }
-    .header-logo {
-      font-size: 1.1rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      font-weight: 400;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .header-right {
-      display: flex; align-items: center; gap: 2.5rem;
-    }
-    .header-nav {
-      display: flex; gap: 2.5rem;
-    }
-    .header-nav a {
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color .3s;
-      font-weight: 400;
-    }
-    .header-nav a:hover { color: var(--text); }
+    /* NAVBAR */
+    #navbar { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:1.5rem 5vw; transition:all .7s ease; }
+    #navbar.scrolled { background:rgba(245,240,232,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,0,0,0.05); padding-top:1rem; padding-bottom:1rem; }
+    .nav-logo { height:40px; width:auto; transition:transform .5s; }
+    .nav-logo:hover { transform:scale(1.05); }
+    @media(max-width:1023px){.nav-logo{height:32px;}}
+    .nav-right { display:flex; align-items:center; gap:3rem; }
+    .lang-switcher { display:flex; align-items:center; gap:0.5rem; }
+    .lang-btn { background:none; border:none; font-family:var(--font); font-size:0.6rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(107,123,58,0.4); cursor:pointer; transition:color .3s; padding:0 2px; }
+    .lang-btn.active,.lang-btn:hover { color:var(--olive); }
+    .lang-sep { color:rgba(107,123,58,0.2); font-size:0.55rem; }
+    .nav-links { display:none; gap:2.5rem; list-style:none; }
+    @media(min-width:1024px){.nav-links{display:flex;}}
+    .nav-links a { font-size:0.85rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--olive); text-decoration:none; transition:color .3s; }
+    .nav-links a:hover { color:var(--olive-dark); }
+    .nav-dossier-btn { display:none; padding:0.75rem 2rem; background:var(--olive); color:white; border:none; font-family:var(--font); font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:background .3s; border-radius:2px; }
+    @media(min-width:1024px){.nav-dossier-btn{display:block;}}
+    .nav-dossier-btn:hover { background:var(--olive-dark); }
+    .mobile-menu-btn { display:block; background:none; border:none; cursor:pointer; color:var(--olive); }
+    @media(min-width:1024px){.mobile-menu-btn{display:none;}}
 
-    /* ——— LANG SWITCHER ——— */
-    .lang-switcher {
-      display: flex; align-items: center; gap: 0.4rem;
-    }
-    .lang-btn {
-      background: none; border: none;
-      color: var(--muted);
-      font-size: 0.62rem; letter-spacing: 0.15em;
-      cursor: none; font-family: var(--font);
-      font-weight: 400;
-      transition: color .3s;
-      padding: 0 2px;
-    }
-    .lang-btn.active, .lang-btn:hover { color: var(--text); }
-    .lang-sep { color: rgba(245,240,232,0.15); font-size: 0.55rem; }
+    /* MOBILE MENU */
+    #mobile-menu { position:fixed; inset:0; background:var(--ink); z-index:2000; padding:2.5rem; display:flex; flex-direction:column; transform:translateY(-100%); transition:transform .5s cubic-bezier(0.16,1,0.3,1); }
+    #mobile-menu.open { transform:translateY(0); }
+    .mobile-menu-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:4rem; }
+    .mobile-menu-close { background:none; border:none; color:white; cursor:pointer; font-size:2rem; line-height:1; }
+    .mobile-menu-links { display:flex; flex-direction:column; gap:1.5rem; }
+    .mobile-menu-links a { font-size:2rem; color:rgba(255,255,255,0.4); text-decoration:none; text-transform:lowercase; transition:color .3s; }
+    .mobile-menu-links a:hover { color:white; }
+    .mobile-menu-footer { margin-top:auto; }
+    .mobile-dossier-btn { width:100%; background:var(--olive); color:white; border:none; padding:1.5rem; font-family:var(--font); font-size:0.75rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; cursor:pointer; }
 
-    /* ——— HERO ——— */
-    #hero {
-      position: relative;
-      z-index: 2;
-      height: 100vh;
-      display: flex;
-      align-items: flex-end;
-      padding: 0 5vw 9vh;
-      overflow: hidden;
-    }
-    #hero::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to top,
-        rgba(10,10,10,0.80) 0%,
-        rgba(10,10,10,0.30) 45%,
-        transparent 100%);
-      pointer-events: none; z-index: 1;
-    }
-    .hero-content { position: relative; z-index: 2; max-width: 950px; }
+    /* BUTTONS */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:1rem; padding:1rem 2.5rem; font-family:var(--font); font-size:0.65rem; font-weight:700; letter-spacing:0.25em; text-transform:uppercase; border-radius:2px; cursor:pointer; transition:all .7s; border:none; text-decoration:none; }
+    .btn-primary { background:var(--olive); color:white; box-shadow:0 20px 40px rgba(107,123,58,0.2); }
+    .btn-primary:hover { background:var(--olive-dark); }
+    .btn-secondary { background:transparent; color:var(--olive); border:1px solid rgba(107,123,58,0.2); }
+    .btn-secondary:hover { border-color:var(--olive); background:rgba(107,123,58,0.05); }
+    .btn-tertiary { background:white; color:black; border:1px solid rgba(0,0,0,0.05); }
+    .btn-tertiary:hover { background:var(--olive); color:white; }
+    .btn-light { background:transparent; color:white; border:1px solid rgba(255,255,255,0.2); backdrop-filter:blur(8px); }
+    .btn-light:hover { border-color:white; }
 
-    .hero-eyebrow {
-      position: absolute;
-      top: 5rem;
-      left: 5vw;
-      z-index: 2;
-      display: block;
-      font-size: 0.75rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--olive);
-      opacity: 0;
-    }
-    .hero-title {
-      font-size: clamp(7rem, 12vw, 15rem);
-      font-weight: 400;
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      margin-bottom: 2.5rem;
-    }
-    .hero-title .word {
-      display: inline-block;
-      overflow: hidden;
-      line-height: 1.05;
-      margin-right: 0.15em;
-    }
-    .hero-title .word span { display: inline-block; transform: translateY(110%); }
+    /* SECTIONS */
+    section { position:relative; overflow:hidden; }
+    .section-inner { position:relative; z-index:10; max-width:1280px; margin:0 auto; padding:6rem 5vw; }
+    @media(min-width:768px){.section-inner{padding:10rem 5vw;}}
+    .section-header { margin-bottom:4rem; }
+    .section-header h2 { font-size:clamp(2.5rem,7vw,6rem); max-width:900px; margin-top:1.5rem; }
 
-    .hero-tagline {
-      font-size: clamp(1.4rem, 2.2vw, 2.2rem);
-      font-style: normal;
-      letter-spacing: 0.06em;
-      color: rgba(245,240,232,0.75);
-      margin-bottom: 1.3rem;
-      line-height: 1.5;
-      font-weight: 400;
-      opacity: 0;
-    }
-    .hero-body-text {
-      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
-      line-height: 2;
-      letter-spacing: 0.04em;
-      color: rgba(245,240,232,0.65);
-      max-width: 52ch;
-      margin-bottom: 3rem;
-      font-weight: 400;
-      opacity: 0;
-    }
-    .hero-ctas {
-      display: flex; align-items: center; gap: 3rem;
-      opacity: 0;
-    }
-    .cta-primary {
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--olive);
-      padding-bottom: 0.25rem;
-      transition: color .3s, border-color .3s;
-    }
-    .cta-primary:hover { color: var(--olive); }
-    .cta-secondary {
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      background: none;
-      border: none;
-      border-bottom: 1px solid transparent;
-      padding-bottom: 0.25rem;
-      font-family: var(--font);
-      cursor: pointer;
-      transition: color .3s;
-    }
-    .cta-secondary:hover { color: var(--text); }
+    /* GRID */
+    .grid-2 { display:grid; grid-template-columns:1fr; gap:3rem; align-items:stretch; }
+    @media(min-width:1024px){.grid-2{grid-template-columns:1fr 1fr; gap:6rem;}}
 
-    .scroll-indicator {
-      position: absolute; bottom: 3rem; right: 5vw;
-      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--muted); z-index: 2; opacity: 0;
-    }
-    .scroll-arrow { animation: arrow-pulse 2s ease-in-out infinite; font-size: 0.9rem; }
-    @keyframes arrow-pulse {
-      0%, 100% { transform: translateY(0); opacity: 0.8; }
-      50% { transform: translateY(7px); opacity: 0.3; }
-    }
+    /* HERO */
+    #hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--bg); padding:0 6vw; }
+    .hero-content { position:relative; z-index:10; text-align:center; display:flex; flex-direction:column; align-items:center; max-width:900px; width:100%; }
+    .hero-logo { height:10rem; width:auto; object-fit:contain; margin-bottom:1.5rem; opacity:0; transform:scale(0.95); transition:opacity 1.5s ease,transform 1.5s ease; }
+    @media(min-width:768px){.hero-logo{height:18rem;}}
+    .hero-logo.visible { opacity:1; transform:scale(1); }
+    .hero-subtitle { font-size:clamp(1rem,2vw,1.5rem); font-weight:700; letter-spacing:0.3em; text-transform:lowercase; color:var(--olive); margin-bottom:1rem; opacity:0; transform:translateY(30px); transition:opacity 1s .3s,transform 1s .3s; }
+    .hero-subtitle.visible { opacity:1; transform:translateY(0); }
+    .hero-desc { font-size:clamp(0.9rem,1.5vw,1.1rem); color:rgba(20,20,20,0.6); max-width:500px; margin:0 auto 2.5rem; line-height:1.7; letter-spacing:0.04em; opacity:0; transform:translateY(20px); transition:opacity 1s .5s,transform 1s .5s; }
+    .hero-desc.visible { opacity:1; transform:translateY(0); }
+    .hero-ctas { display:flex; flex-direction:column; gap:1.5rem; align-items:center; opacity:0; transform:translateY(20px); transition:opacity 1s .7s,transform 1s .7s; }
+    @media(min-width:768px){.hero-ctas{flex-direction:row;}}
+    .hero-ctas.visible { opacity:1; transform:translateY(0); }
 
-    /* ——— CANVAS ——— */
-    #canvas {
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      display: block;
-      width: 100%; height: 100%;
-    }
+    /* ESSENCE */
+    #essence { background:var(--bg); }
+    .essence-img { width:100%; height:100%; min-height:400px; border-radius:2px; overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.15); }
+    .essence-img img { width:100%; height:100%; object-fit:cover; }
+    .essence-link { display:inline-flex; align-items:center; gap:1rem; margin-top:3rem; font-size:0.65rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--olive); text-decoration:none; transition:gap .3s; }
+    .essence-link:hover { gap:1.5rem; }
+    .essence-link-line { width:48px; height:1px; background:rgba(107,123,58,0.3); transition:width .3s,background .3s; }
+    .essence-link:hover .essence-link-line { width:80px; background:var(--olive); }
 
-    /* ——— DARK OVERLAY ——— */
-    #dark-overlay {
-      position: fixed; inset: 0;
-      z-index: 1; pointer-events: none;
-      background: rgba(10,10,10,0.20);
-    }
+    /* LOCATION */
+    #location { background:var(--bg); }
+    .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem 2.5rem; margin:3rem 0 4rem; }
+    .stat-item { border-left:1px solid rgba(0,0,0,0.05); padding-left:1.5rem; opacity:0; transform:translateY(20px); transition:opacity .6s,transform .6s; }
+    .stat-item.visible { opacity:1; transform:translateY(0); }
+    .stat-val { font-size:2.5rem; font-family:var(--font); color:var(--olive); line-height:1; margin-bottom:0.5rem; }
+    .stat-label { font-size:0.6rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); }
+    .loc-map-wrap { position:relative; width:100%; border-radius:2px; overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.15); }
+    .loc-map-wrap img { width:100%; height:100%; min-height:400px; object-fit:cover; }
+    .loc-badge { position:absolute; bottom:-3rem; right:-3rem; width:14rem; height:14rem; background:var(--olive); display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:white; padding:2.5rem; }
+    @media(min-width:1280px){.loc-badge{display:flex;}}
+    .loc-badge span { font-size:0.65rem; font-weight:700; letter-spacing:0.3em; line-height:1.6; }
 
-    /* ——— CONTENT SECTIONS ——— */
-    .content-section {
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 13vh 5vw;
-      border-top: 1px solid var(--olive-muted);
-    }
-    .content-section::before {
-      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background: linear-gradient(
-        90deg,
-        rgba(10,10,10,0.55) 0%,
-        rgba(10,10,10,0.28) 38%,
-        rgba(10,10,10,0.05) 62%,
-        transparent 100%
-      );
-    }
-    .content-section.alt-bg { justify-content: flex-end; }
-    .content-section.alt-bg::before {
-      background: linear-gradient(
-        -90deg,
-        rgba(10,10,10,0.55) 0%,
-        rgba(10,10,10,0.28) 38%,
-        rgba(10,10,10,0.05) 62%,
-        transparent 100%
-      );
-    }
+    /* ARCHITECTURE */
+    #architecture { background:var(--bg); }
+    .arch-features { display:grid; grid-template-columns:repeat(3,1fr); gap:2.5rem; margin:3rem 0 4rem; }
+    .arch-feat { display:flex; flex-direction:column; gap:1rem; }
+    .arch-feat-icon { color:var(--olive); }
+    .arch-feat-label { font-size:0.6rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); }
+    .arch-img { width:100%; height:100%; min-height:400px; border-radius:2px; overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.15); }
+    .arch-img img { width:100%; height:100%; object-fit:cover; }
 
-    .section-inner { max-width: 45vw; position: relative; z-index: 1; }
+    /* PROJECTS */
+    #projects { background:var(--bg); }
+    .projects-header { text-align:center; margin-bottom:5rem; }
+    .projects-header h2 { font-size:clamp(2rem,7vw,7rem); margin:1.5rem 0; }
+    .projects-header p { font-size:clamp(0.9rem,1.5vw,1.2rem); color:rgba(0,0,0,0.5); max-width:700px; margin:0 auto; }
+    .projects-grid { display:grid; grid-template-columns:1fr; gap:4rem; }
+    @media(min-width:768px){.projects-grid{grid-template-columns:repeat(3,1fr);}}
+    .project-card { opacity:0; transform:translateY(40px); transition:opacity .8s,transform .8s; }
+    .project-card.visible { opacity:1; transform:translateY(0); }
+    .project-card-img { aspect-ratio:3/4; overflow:hidden; border-radius:2px; margin-bottom:2.5rem; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.15); }
+    .project-card-img img { width:100%; height:100%; object-fit:cover; transition:transform 1.5s cubic-bezier(0.16,1,0.3,1); }
+    .project-card:hover .project-card-img img { transform:scale(1.08); }
+    .project-card-icon { position:absolute; top:2rem; left:2rem; width:3.5rem; height:3.5rem; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--olive); box-shadow:0 8px 24px rgba(0,0,0,0.1); }
+    .project-card-plus { position:absolute; bottom:2rem; right:2rem; width:3rem; height:3rem; background:var(--olive); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; cursor:pointer; border:none; transition:transform .3s; box-shadow:0 8px 24px rgba(107,123,58,0.3); }
+    .project-card-plus:hover { transform:scale(1.1); }
+    .project-card h3 { font-size:1.8rem; font-family:var(--font); text-transform:uppercase; margin-bottom:0.75rem; transition:color .3s; }
+    .project-card:hover h3 { color:var(--olive); }
+    .project-card-sub { font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--olive); margin-bottom:1.5rem; }
+    .project-card-desc { font-size:0.95rem; color:rgba(0,0,0,0.6); line-height:1.7; margin-bottom:2.5rem; }
+    .project-card-link { display:inline-flex; align-items:center; gap:1rem; font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; background:none; border:none; cursor:pointer; color:var(--ink); transition:gap .3s; font-family:var(--font); }
+    .project-card-link:hover { gap:1.5rem; }
 
-    .section-label {
-      display: block;
-      font-size: 0.8rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--olive);
-      margin-bottom: 1.5rem;
-    }
-    .section-heading {
-      font-size: clamp(3.5rem, 6vw, 7rem);
-      font-weight: 400;
-      line-height: 1;
-      letter-spacing: 0.02em;
-      margin-bottom: 2.5rem;
-      color: var(--text);
-    }
-    .section-body {
-      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
-      line-height: 2;
-      letter-spacing: 0.04em;
-      color: rgba(245,240,232,0.90);
-      margin-bottom: 1.4rem;
-      font-weight: 400;
-    }
-    .section-note {
-      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
-      letter-spacing: 0.04em;
-      color: var(--olive);
-      margin-top: 2rem;
-      line-height: 1.75;
-      font-weight: 400;
-    }
+    /* LIFESTYLE */
+    #lifestyle { background:var(--bg); }
+    .lifestyle-header { padding:6rem 5vw 0; max-width:1280px; margin:0 auto; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; gap:2.5rem; }
+    @media(min-width:1024px){.lifestyle-header{flex-direction:row; padding:10rem 5vw 0;}}
+    .lifestyle-header h2 { font-size:clamp(2rem,6vw,6rem); max-width:800px; line-height:1.05; }
+    .lifestyle-scroll { display:flex; gap:2rem; overflow-x:auto; padding:4rem 5vw; scrollbar-width:none; }
+    .lifestyle-scroll::-webkit-scrollbar { display:none; }
+    .lifestyle-img { min-width:85vw; aspect-ratio:16/10; border-radius:2px; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.15); flex-shrink:0; transition:transform .5s; }
+    @media(min-width:768px){.lifestyle-img{min-width:50vw;}}
+    @media(min-width:1024px){.lifestyle-img{min-width:40vw;}}
+    .lifestyle-img:hover { transform:translateY(-10px); }
+    .lifestyle-img img { width:100%; height:100%; object-fit:cover; }
+    .lifestyle-text { padding:0 5vw 6rem; max-width:1280px; margin:0 auto; }
+    .lifestyle-text p { font-size:clamp(0.9rem,1.5vw,1.2rem); color:rgba(0,0,0,0.6); max-width:700px; line-height:1.7; margin-top:3rem; }
 
-    .feature-list { list-style: none; margin: 1.8rem 0 0.5rem; }
-    .feature-list li {
-      font-size: clamp(1.05rem, 1.2vw, 1.2rem);
-      letter-spacing: 0.04em;
-      color: rgba(245,240,232,0.85);
-      padding: 1rem 0 1rem 1.6rem;
-      border-bottom: 1px solid rgba(245,240,232,0.10);
-      position: relative;
-      font-weight: 400;
-      line-height: 1.5;
-    }
-    .feature-list li::before {
-      content: '—';
-      position: absolute; left: 0;
-      color: var(--olive);
-      font-size: 0.75rem;
-    }
+    /* INVESTMENT */
+    #investment { background:var(--bg); }
+    .invest-img-wrap { position:relative; border-radius:2px; overflow:hidden; border:1px solid rgba(0,0,0,0.1); padding:1.5rem; background:rgba(255,255,255,0.05); }
+    .invest-img-wrap img { width:100%; height:100%; min-height:400px; object-fit:cover; opacity:0.7; }
+    .invest-corner-tl { position:absolute; top:-2.5rem; left:-2.5rem; width:10rem; height:10rem; border-top:1px solid rgba(107,123,58,0.4); border-left:1px solid rgba(107,123,58,0.4); }
+    .invest-corner-br { position:absolute; bottom:-2.5rem; right:-2.5rem; width:10rem; height:10rem; border-bottom:1px solid rgba(107,123,58,0.4); border-right:1px solid rgba(107,123,58,0.4); }
+    .invest-metrics { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem 3rem; margin:3rem 0 4rem; }
+    .invest-metric { display:flex; align-items:flex-start; gap:1.5rem; opacity:0; transform:translateX(20px); transition:opacity .6s,transform .6s; }
+    .invest-metric.visible { opacity:1; transform:translateX(0); }
+    .invest-metric-icon { width:3rem; height:3rem; background:rgba(0,0,0,0.05); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--olive); flex-shrink:0; }
+    .invest-metric-val { font-size:2rem; font-family:var(--font); color:var(--ink); line-height:1; margin-bottom:0.25rem; }
+    .invest-metric-label { font-size:0.55rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.3); line-height:1.4; }
 
-    /* ——— PLUS BUTTON ——— */
-    .plus-btn {
-      position: absolute;
-      bottom: 7vh; right: 5vw;
-      width: 52px; height: 52px;
-      border: 1px solid white;
-      background: white;
-      color: var(--olive);
-      font-size: 1.5rem;
-      font-family: var(--font);
-      font-weight: 400;
-      cursor: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .3s, color .3s, border-color .3s;
-      letter-spacing: 0;
-      line-height: 1;
-      text-decoration: none;
-    }
-    .plus-btn:hover { background: var(--olive); color: white; border-color: var(--olive); }
+    /* COMMITMENT */
+    #commitment { background:var(--bg); }
+    .commitment-inner { display:flex; flex-direction:column; align-items:center; text-align:center; }
+    .commitment-logo-wrap { width:100%; max-width:900px; aspect-ratio:21/9; border-radius:2px; overflow:hidden; margin-bottom:6rem; box-shadow:0 40px 80px rgba(0,0,0,0.15); background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; padding:3rem; }
+    .commitment-logo-wrap img { width:100%; height:100%; object-fit:contain; }
+    .commitment-inner h2 { font-size:clamp(2rem,7vw,7rem); max-width:1000px; margin:1.5rem 0 2rem; }
+    .commitment-inner p { font-size:clamp(0.9rem,1.5vw,1.2rem); color:rgba(0,0,0,0.6); max-width:700px; line-height:1.7; margin-bottom:4rem; }
 
-    /* ——— CIERRE ——— */
-    .cierre-section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 14vh 8vw;
-      background: rgba(10,10,10,0.70);
-      position: relative;
-      z-index: 2;
-      overflow: hidden;
-      border-top: 1px solid var(--olive-muted);
-    }
-    .cierre-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 60%, rgba(107,123,58,0.07) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .cierre-eyebrow {
-      display: block;
-      font-size: 0.8rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--olive);
-      margin-bottom: 2.5rem;
-      position: relative; z-index: 1;
-    }
-    .cierre-heading-wrap {
-      overflow: hidden;
-      position: relative; z-index: 1;
-      margin: 0 auto 5rem;
-    }
-    .cierre-heading {
-      font-size: clamp(4rem, 9vw, 11rem);
-      font-weight: 400;
-      line-height: 0.95;
-      letter-spacing: 0.02em;
-      max-width: 750px;
-      padding-bottom: 0.18em;
-      overflow: visible;
-    }
-    .cierre-lines {
-      max-width: 480px;
-      margin-bottom: 2rem;
-      position: relative; z-index: 1;
-    }
-    .cierre-lines p {
-      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
-      line-height: 2;
-      letter-spacing: 0.04em;
-      color: rgba(245,240,232,0.80);
-      font-weight: 400;
-    }
-    .cierre-lines p.italic { font-style: normal; }
-    .cierre-ctas {
-      display: flex; align-items: center; gap: 3rem;
-      margin-top: 3rem;
-      position: relative; z-index: 1;
-    }
+    /* CTA FINAL */
+    #cta-final { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; background:var(--olive); }
+    .cta-content { position:relative; z-index:10; text-align:center; color:white; max-width:1200px; padding:0 5vw; }
+    .cta-content h2 { font-size:clamp(3rem,10vw,12rem); line-height:0.85; margin-bottom:2.5rem; color:white; }
+    .cta-content p { font-size:clamp(0.9rem,1.5vw,1.5rem); color:rgba(255,255,255,0.8); margin-bottom:1rem; }
+    .cta-buttons { display:flex; flex-direction:column; gap:1.5rem; align-items:center; margin-top:4rem; justify-content:center; }
+    @media(min-width:768px){.cta-buttons{flex-direction:row; flex-wrap:wrap;}}
+    .cta-bottom { position:absolute; bottom:2.5rem; left:0; right:0; padding:0 5vw; display:flex; justify-content:space-between; align-items:center; color:rgba(255,255,255,0.6); font-size:0.6rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; }
+    .cta-social { display:flex; gap:2rem; }
+    .cta-social a { color:rgba(255,255,255,0.6); transition:color .3s; text-decoration:none; }
+    .cta-social a:hover { color:white; }
 
-    /* ——— FOOTER ——— */
-    footer {
-      padding: 3.5rem 5vw;
-      border-top: 1px solid var(--olive-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg);
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      position: relative; z-index: 2;
-    }
-    .footer-brand {
-      font-size: 0.78rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 400;
-    }
-    .footer-nav { display: flex; gap: 2rem; }
-    .footer-nav a {
-      font-size: 0.78rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color .3s;
-      font-weight: 400;
-    }
-    .footer-nav a:hover { color: var(--text); }
-    .footer-copy {
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      color: rgba(245,240,232,0.2);
-      font-weight: 400;
-    }
+    /* FOOTER */
+    footer { background:var(--olive); color:rgba(255,255,255,0.6); padding:6rem 5vw; border-top:1px solid rgba(255,255,255,0.1); }
+    .footer-grid { display:grid; grid-template-columns:1fr; gap:3rem; max-width:1280px; margin:0 auto; }
+    @media(min-width:768px){.footer-grid{grid-template-columns:2fr 1fr 1fr; gap:5rem;}}
+    .footer-logo { height:3rem; width:auto; filter:brightness(0) invert(1); opacity:0.9; margin-bottom:2.5rem; }
+    .footer-desc { font-size:0.9rem; color:rgba(255,255,255,0.8); line-height:1.7; max-width:340px; margin-bottom:2.5rem; }
+    .footer-social { display:flex; gap:1.5rem; }
+    .footer-social a { width:2.5rem; height:2.5rem; border-radius:50%; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.6); text-decoration:none; transition:all .5s; }
+    .footer-social a:hover { background:white; color:var(--olive); }
+    .footer-col-title { font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:white; margin-bottom:2.5rem; }
+    .footer-links { list-style:none; }
+    .footer-links li { margin-bottom:1.5rem; }
+    .footer-links a { font-size:0.9rem; color:rgba(255,255,255,0.6); text-decoration:none; transition:color .3s; }
+    .footer-links a:hover { color:white; }
+    .footer-contact-item { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.5rem; font-size:0.9rem; color:rgba(255,255,255,0.8); }
+    .footer-bottom { max-width:1280px; margin:4rem auto 0; padding-top:3rem; border-top:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; gap:1rem; justify-content:space-between; align-items:center; }
+    @media(min-width:768px){.footer-bottom{flex-direction:row;}}
+    .footer-bottom p,.footer-bottom a { font-size:0.6rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.6); text-decoration:none; }
+    .footer-bottom a:hover { color:white; }
+    .footer-legal { display:flex; gap:3rem; }
 
-    /* ——— MOBILE ——— */
-    @media (max-width: 768px) {
-      #site-header { padding: 1.4rem 6vw; }
-      .header-nav { display: none; }
-      .lang-switcher { gap: 0.3rem; }
+    /* MODAL */
+    #project-modal { display:none; position:fixed; inset:0; z-index:5000; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:1rem; }
+    #project-modal.open { display:flex; }
+    .modal-inner { background:var(--bg); width:100%; max-width:900px; max-height:90vh; overflow-y:auto; border-radius:2px; box-shadow:0 50px 100px rgba(0,0,0,0.3); position:relative; }
+    .modal-close { position:absolute; top:1.5rem; right:1.5rem; width:2.5rem; height:2.5rem; background:rgba(107,123,58,0.1); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--olive); cursor:pointer; transition:all .3s; z-index:10; font-size:1.2rem; }
+    .modal-close:hover { background:var(--olive); color:white; }
+    .modal-body { padding:2.5rem; }
+    @media(min-width:768px){.modal-body{padding:4rem;}}
+    .modal-eyebrow { font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--olive); margin-bottom:1rem; display:block; }
+    .modal-title { font-size:clamp(2rem,5vw,4rem); text-transform:uppercase; margin-bottom:1rem; }
+    .modal-tagline { font-size:1.3rem; color:rgba(107,123,58,0.8); margin-bottom:3rem; }
+    .modal-section { border-top:1px solid rgba(0,0,0,0.05); padding-top:2rem; margin-top:3rem; }
+    .modal-section-title { font-size:0.7rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--olive); margin-bottom:1.5rem; }
+    .modal-section p { font-size:1rem; color:rgba(0,0,0,0.7); line-height:1.7; margin-bottom:1.5rem; }
+    .modal-bullets { list-style:none; }
+    .modal-bullets li { display:flex; gap:1rem; align-items:flex-start; margin-bottom:1rem; font-size:0.95rem; color:rgba(0,0,0,0.6); }
+    .modal-bullet-dot { width:6px; height:6px; background:var(--olive); border-radius:50%; margin-top:0.45rem; flex-shrink:0; }
+    .modal-footer { margin-top:4rem; padding-top:2.5rem; border-top:1px solid rgba(0,0,0,0.1); display:flex; justify-content:center; }
 
-      #hero { padding: 0 6vw 10vh; }
-      .hero-title { font-size: clamp(3.8rem, 13vw, 7rem); }
-      .hero-tagline { font-size: clamp(1rem, 4vw, 1.3rem); }
-      .hero-body-text { display: none; }
-      .hero-ctas { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
-
-      .content-section { padding: 10vh 6vw; min-height: 80vh; }
-      .section-inner { max-width: 100%; }
-      .section-heading { font-size: clamp(2rem, 8vw, 3.5rem); }
-
-      .plus-btn { width: 44px; height: 44px; font-size: 1.3rem; bottom: 3vh; right: 6vw; }
-
-      .cierre-section { padding: 12vh 6vw; }
-      .cierre-heading { font-size: clamp(3rem, 11vw, 6rem); }
-      .cierre-ctas { flex-direction: column; align-items: center; gap: 1.5rem; }
-      .cierre-lines { max-width: 100%; }
-
-      footer { padding: 2.5rem 6vw; flex-direction: column; align-items: flex-start; }
-      .footer-nav { flex-wrap: wrap; gap: 1rem 1.5rem; }
-    }
-
-    /* ——— ANIMATION INITIAL STATES ——— */
-    .hero-eyebrow,
-    .hero-tagline,
-    .hero-body-text,
-    .hero-ctas,
-    .scroll-indicator { opacity: 0; }
+    /* SCROLL REVEAL */
+    .reveal { opacity:0; transform:translateY(40px); transition:opacity .9s cubic-bezier(0.16,1,0.3,1),transform .9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.from-left { transform:translateX(-60px); }
+    .reveal.from-right { transform:translateX(60px); }
+    .reveal.scale-in { transform:scale(0.9); }
+    .reveal.visible { opacity:1; transform:none; }
+    .delay-1 { transition-delay:.1s; }
+    .delay-2 { transition-delay:.2s; }
+    .delay-3 { transition-delay:.3s; }
+    .delay-4 { transition-delay:.4s; }
   </style>
 </head>
 <body>
 
-  <canvas id="canvas"></canvas>
-  <div id="dark-overlay"></div>
-  <div id="cursor"></div>
+<div id="cursor"></div>
 
-  <div id="loader">
-    <div class="loader-brand">Olive Soul</div>
-    <div class="loader-bar-wrap"><div id="loader-bar"></div></div>
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <div class="mobile-menu-header">
+    <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul" style="height:2rem;filter:brightness(0) invert(1)" referrerpolicy="no-referrer">
+    <button class="mobile-menu-close" id="mobile-close">&#x2715;</button>
   </div>
+  <div class="mobile-menu-links">
+    <a href="alma.html" data-i18n="nav_alma">alma</a>
+    <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
+    <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
+    <a href="proyectos.html" data-i18n="nav_proyectos">proyectos</a>
+    <a href="inversion-gestion.html" data-i18n="nav_inversion">inversión</a>
+  </div>
+  <div class="mobile-menu-footer">
+    <button class="mobile-dossier-btn" onclick="window.openDossierModal()">Solicitar Dossier Completo</button>
+  </div>
+</div>
 
-  <!-- HEADER -->
-  <header id="site-header">
-    <a href="#hero" class="header-logo">Olive Soul</a>
-    <div class="header-right">
-      <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="es">ES</button>
-        <span class="lang-sep">|</span>
-        <button class="lang-btn" data-lang="en">EN</button>
-        <span class="lang-sep">|</span>
-        <button class="lang-btn" data-lang="it">IT</button>
-        <span class="lang-sep">|</span>
-        <button class="lang-btn" data-lang="fr">FR</button>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="/"><img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="nav-logo" referrerpolicy="no-referrer"></a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="es">es</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="en">en</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="it">it</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn" data-lang="fr">fr</button>
+    </div>
+    <ul class="nav-links">
+      <li><a href="alma.html" data-i18n="nav_alma">ALMA</a></li>
+      <li><a href="ubicacion.html" data-i18n="nav_ubicacion">UBICACIÓN</a></li>
+      <li><a href="arquitectura.html" data-i18n="nav_arquitectura">ARQUITECTURA</a></li>
+      <li><a href="proyectos.html" data-i18n="nav_proyectos">PROYECTOS</a></li>
+      <li><a href="inversion-gestion.html" data-i18n="nav_inversion">INVERSIÓN</a></li>
+    </ul>
+    <button class="nav-dossier-btn" onclick="window.openDossierModal()" data-i18n="dossier">SOLICITAR DOSSIER</button>
+    <button class="mobile-menu-btn" id="mobile-open" aria-label="Menu">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wave-bg" id="hero-waves"></div>
+  <div class="hero-content">
+    <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="hero-logo" id="hero-logo" referrerpolicy="no-referrer">
+    <h2 class="hero-subtitle" id="hero-subtitle" data-i18n="hero_subtitle">vivir entre olivos milenarios. habitar el tiempo.</h2>
+    <p class="hero-desc" id="hero-desc" data-i18n="hero_desc">Un territorio mediterráneo en el norte de Valencia donde la arquitectura contemporánea, los olivares centenarios y una comunidad consciente convergen en una sola forma de vida.</p>
+    <div class="hero-ctas" id="hero-ctas">
+      <button class="btn btn-primary" onclick="document.getElementById('essence').scrollIntoView({behavior:'smooth'})" data-i18n="hero_btn_discover">Descubrir la experiencia
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+      <button class="btn btn-secondary" onclick="window.openDossierModal()" data-i18n="hero_btn_dossier">Solicitar Dossier Completo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ESENCIA -->
+<section id="essence">
+  <div class="wave-bg" id="essence-waves"></div>
+  <div class="section-inner">
+    <div class="grid-2">
+      <div class="reveal from-left" style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="section-header">
+            <span class="eyebrow" data-i18n="essence_eyebrow">El alma del proyecto</span>
+            <h2 class="editorial-headline" data-i18n="essence_title">Olive Soul es un manifiesto de vida. Un regreso a lo esencial.</h2>
+          </div>
+          <div style="color:rgba(0,0,0,0.7);display:flex;flex-direction:column;gap:2rem;font-size:1rem;line-height:1.7;letter-spacing:0.04em;">
+            <p data-i18n="essence_p1">No construimos casas, recuperamos un legado. Olive Soul nace para proteger el mayor tesoro del Bajo Maestrazgo: sus olivos milenarios. Un proyecto donde la arquitectura se rinde ante la naturaleza para crear un refugio de paz, silencio y autenticidad.</p>
+            <p data-i18n="essence_p2">Aquí, el lujo no es lo material, sino el tiempo. El tiempo para ver crecer los olivos, para sentir la brisa del Mediterráneo y para formar parte de una comunidad que valora la tierra tanto como nosotros.</p>
+          </div>
+        </div>
+        <a href="alma.html" class="essence-link">
+          <span data-i18n="essence_link">Conocer el Alma del Proyecto</span>
+          <div class="essence-link-line"></div>
+        </a>
       </div>
-      <nav class="header-nav">
-        <a href="#proyectos" data-i18n="nav_proyectos">Proyectos</a>
-        <a href="#arquitectura" data-i18n="nav_arquitectura">Arquitectura</a>
-        <a href="#ubicacion" data-i18n="nav_ubicacion">Ubicación</a>
-        <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section id="hero">
-    <span class="hero-eyebrow" data-i18n="hero_eyebrow">Bajo Maestrazgo · Mediterráneo · España</span>
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <div class="word"><span>Olive</span></div>
-        <div class="word"><span>Soul</span></div>
-      </h1>
-      <p class="hero-tagline" data-i18n="hero_tagline">Vivir entre olivos milenarios. Habitar el tiempo.</p>
-      <p class="hero-body-text" data-i18n="hero_body">Un refugio mediterráneo donde la tierra, la arquitectura y la memoria ancestral se encuentran para crear un legado privado, sofisticado y atemporal en el norte de Valencia.</p>
-      <div class="hero-ctas">
-        <a href="#que-es" class="cta-primary" data-i18n="hero_cta1">Descubrir la experiencia</a>
-        <a href="#contacto" class="cta-secondary" data-i18n="hero_cta2">Quiero invertir</a>
+      <div class="reveal from-right scale-in essence-img img-zoom">
+        <img src="https://revistaoeste.com/oestegeral/wp-content/uploads/2026/03/1-103-750x375.jpg" alt="Ancient olive tree" referrerpolicy="no-referrer">
       </div>
     </div>
-    <div class="scroll-indicator">
-      <span data-i18n="scroll">Scroll</span>
-      <div class="scroll-arrow">↓</div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- LA ESENCIA -->
-  <section id="que-es" class="content-section">
-    <div class="section-inner">
-      <span class="section-label" data-anim="fade-up" data-i18n="s1_label">005 / La esencia</span>
-      <h2 class="section-heading" data-anim="fade-up" data-i18n="s1_heading">Un territorio<br>con alma</h2>
-      <p class="section-body" data-anim="fade-up" data-i18n="s1_body">Olive Soul nace en el corazón del Bajo Maestrazgo, donde el olivo no es un árbol: es símbolo, economía, cultura y legado espiritual del Mediterráneo.</p>
-      <ul class="feature-list" data-anim-list>
-        <li data-i18n="s1_f1">Respeto profundo por el territorio y su herencia</li>
-        <li data-i18n="s1_f2">Eco-hábitat equilibrado, autosuficiente y sostenible</li>
-        <li data-i18n="s1_f3">Arquitectura contemporánea integrada en el paisaje ancestral</li>
-        <li data-i18n="s1_f4">Comunidad activa, creativa e internacional</li>
+<!-- LOCATION -->
+<section id="location">
+  <div class="wave-bg" id="loc-waves"></div>
+  <div class="section-inner">
+    <div class="grid-2">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow" data-i18n="loc_eyebrow">Dónde estamos</span>
+            <h2 class="editorial-headline" data-i18n="loc_title">Entre el mar y la montaña. A cinco minutos de ninguna parte.</h2>
+          </div>
+          <p class="reveal delay-1" style="color:rgba(0,0,0,0.6);font-size:1rem;line-height:1.7;margin-bottom:1rem;" data-i18n="loc_desc">El Bajo Maestrazgo es un enclave declarado Patrimonio UNESCO por su concentración única de olivos milenarios monumentales.</p>
+          <div class="stats-grid">
+            <div class="stat-item"><div class="stat-val">15 min</div><div class="stat-label">Del mar Mediterráneo</div></div>
+            <div class="stat-item delay-1"><div class="stat-val">40 min</div><div class="stat-label">Aeropuerto de Castellón</div></div>
+            <div class="stat-item delay-2"><div class="stat-val">5</div><div class="stat-label">Parques naturales</div></div>
+            <div class="stat-item delay-3"><div class="stat-val">9</div><div class="stat-label">Puertos deportivos</div></div>
+            <div class="stat-item delay-2"><div class="stat-val">+4.670</div><div class="stat-label">Olivos monumentales</div></div>
+            <div class="stat-item delay-3"><div class="stat-val">UNESCO</div><div class="stat-label">Patrimonio reconocido</div></div>
+          </div>
+        </div>
+        <button class="btn btn-secondary reveal" onclick="window.location.href='ubicacion.html'" style="width:fit-content;">Explorar la Ubicación</button>
+      </div>
+      <div class="reveal from-right" style="position:relative;">
+        <div class="loc-map-wrap img-zoom">
+          <img src="https://i.postimg.cc/k4P4fXkK/frame0001.jpg" alt="Bajo Maestrazgo" referrerpolicy="no-referrer">
+        </div>
+        <div class="loc-badge">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>BAJO MAESTRAZGO, VALENCIA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="wave-bg" id="arch-waves"></div>
+  <div class="section-inner">
+    <div class="grid-2">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow" data-i18n="arch_eyebrow">Cómo se construye</span>
+            <h2 class="editorial-headline" data-i18n="arch_title">La arquitectura no invade el territorio. Lo interpreta.</h2>
+          </div>
+          <div class="reveal delay-1" style="color:rgba(0,0,0,0.7);display:flex;flex-direction:column;gap:1.5rem;font-size:1rem;line-height:1.7;margin-bottom:3rem;">
+            <p data-i18n="arch_p1">Cada vivienda de Olive Soul ha sido concebida como una pieza que pertenece al paisaje antes de pertenecer al propietario. Volúmenes simples, piedra natural, madera tratada, luz bien orientada.</p>
+            <p data-i18n="arch_p2">Las unidades —desde 100 m² construidos en fincas de más de una hectárea— responden a estrategias bioclimáticas pasivas: ventilación cruzada, protección solar integrada, energía solar autosuficiente y sistemas propios de gestión del agua.</p>
+          </div>
+          <div class="arch-features reveal delay-2">
+            <div class="arch-feat">
+              <div class="arch-feat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg></div>
+              <span class="arch-feat-label">Ventilación Cruzada</span>
+            </div>
+            <div class="arch-feat">
+              <div class="arch-feat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="6.36" x2="19.78" y2="4.92"/></svg></div>
+              <span class="arch-feat-label">Energía Solar</span>
+            </div>
+            <div class="arch-feat">
+              <div class="arch-feat-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
+              <span class="arch-feat-label">Gestión de Agua</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:2rem;" class="reveal delay-3">
+          <button class="btn btn-primary" onclick="window.location.href='arquitectura.html'" data-i18n="arch_btn">Ver Arquitectura y Diseño
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <button class="btn btn-secondary" onclick="window.open('https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20hablar%20con%20el%20equipo%20de%20Olive%20Soul','_blank')" data-i18n="arch_btn_team">Hablar con Nuestro Equipo</button>
+        </div>
+      </div>
+      <div class="reveal from-right scale-in arch-img img-zoom">
+        <img src="https://i.postimg.cc/RFTMd11V/Whats-App-Image-2026-03-23-at-14-25-14.jpg" alt="Architecture" referrerpolicy="no-referrer">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wave-bg" id="proj-waves"></div>
+  <div class="section-inner">
+    <div class="projects-header reveal">
+      <span class="eyebrow" data-i18n="proj_eyebrow">Tres maneras de habitar Olive Soul</span>
+      <h2 class="editorial-headline" data-i18n="proj_title">Elige cómo quieres vivir aquí.</h2>
+      <p data-i18n="proj_desc">Cada tipología responde a una forma distinta de entender la vida en el olivar. Las tres comparten el mismo paisaje, los mismos materiales y la misma filosofía. Lo que cambia es el ritmo.</p>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-card-img">
+          <img src="https://i.postimg.cc/SKgd9Rj7/Proyecto_Piedra_Seca_Vivienda_Tipo_1_(1)_p_%C3%ADginas_imagens_3.jpg" alt="Finca Unitaria" referrerpolicy="no-referrer">
+          <div class="project-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <button class="project-card-plus" onclick="openModal('Finca Unitaria')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+        <h3>Finca Unitaria</h3>
+        <p class="project-card-sub">Privacidad total en el olivar.</p>
+        <p class="project-card-desc">Una vivienda individual en más de una hectárea de olivar mediterráneo. Para quienes entienden la soledad como un privilegio.</p>
+        <button class="project-card-link" onclick="openModal('Finca Unitaria')">Ver Finca Unitaria <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--olive)"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      </div>
+      <div class="project-card delay-2">
+        <div class="project-card-img">
+          <img src="https://i.postimg.cc/XJsRXsck/Vivienda_Tipo_5_(2)_imagens_17.jpg" alt="Cohousing" referrerpolicy="no-referrer">
+          <div class="project-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <button class="project-card-plus" onclick="openModal('Cohousing')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+        <h3>Cohousing</h3>
+        <p class="project-card-sub">Comunidad elegida. Privacidad garantizada.</p>
+        <p class="project-card-desc">Viviendas autónomas articuladas en torno a espacios comunes de calidad. Para quienes quieren vecinos con criterio.</p>
+        <button class="project-card-link" onclick="openModal('Cohousing')">Ver Cohousing <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--olive)"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      </div>
+      <div class="project-card delay-4">
+        <div class="project-card-img">
+          <img src="https://i.postimg.cc/zfrZQbGq/Vivienda_Tipo_5_(2)_imagens_13.jpg" alt="Coliving" referrerpolicy="no-referrer">
+          <div class="project-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+          <button class="project-card-plus" onclick="openModal('Coliving')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+        <h3>Coliving</h3>
+        <p class="project-card-sub">Flexibilidad sin renunciar al entorno.</p>
+        <p class="project-card-desc">Unidades optimizadas dentro de un conjunto donde la vida sucede en los espacios compartidos. Para quienes viven en movimiento.</p>
+        <button class="project-card-link" onclick="openModal('Coliving')">Ver Coliving <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--olive)"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE -->
+<section id="lifestyle">
+  <div class="wave-bg" id="life-waves"></div>
+  <div class="lifestyle-header">
+    <div class="reveal" style="max-width:800px;">
+      <span class="eyebrow">Cómo se vive aquí</span>
+      <h2 class="editorial-headline" style="font-size:clamp(2rem,6vw,6rem);line-height:1.05;margin-top:1.5rem;">Seguir el ciclo de las estaciones. Cosechar el propio aceite. Eso es el slow living mediterráneo.</h2>
+    </div>
+    <button class="btn btn-secondary reveal" onclick="window.location.href='estilo.html'" style="white-space:nowrap;display:none;" id="lifestyle-btn">Explorar Estilo de Vida</button>
+  </div>
+  <div class="lifestyle-scroll">
+    <div class="lifestyle-img"><img src="https://www.revistanegociorural.com.br/wp-content/uploads/2025/02/Colheita-Olivas-de-Gramado-2023-Foto-de-Sergio-Azevedo241-Capa-1024x768.jpg" alt="Lifestyle 1" referrerpolicy="no-referrer"></div>
+    <div class="lifestyle-img"><img src="https://i.postimg.cc/85B1w8QW/E760770C-1FA4-4A2B-91DD-58987A2FA7FC.png" alt="Lifestyle 2" referrerpolicy="no-referrer"></div>
+  </div>
+  <div class="lifestyle-text">
+    <p class="reveal">En Olive Soul el tiempo tiene otra textura. Los días se organizan alrededor de la luz, la cosecha, la mesa y la conversación. La gastronomía del territorio —aceite virgen extra de producción propia, pescado del Mediterráneo, vinos de la comarca— no es un amenity. Es parte estructural de la experiencia.</p>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section id="investment">
+  <div class="wave-bg" id="invest-waves"></div>
+  <div class="section-inner">
+    <div class="grid-2" style="align-items:stretch;">
+      <div class="reveal from-left" style="position:relative;order:2;">
+        <div class="invest-img-wrap img-zoom">
+          <img src="https://i.postimg.cc/hGRWYC0h/man-and-woman-collecting-olives-in-crates-at-farm-2023-11-27-05-30-01-utc-(1).jpg" alt="Investment" referrerpolicy="no-referrer">
+        </div>
+        <div class="invest-corner-tl"></div>
+        <div class="invest-corner-br"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;order:1;">
+        <div>
+          <div class="section-header reveal">
+            <span class="eyebrow">Por qué invertir</span>
+            <h2 class="editorial-headline">Un activo patrimonial con identidad y escasez real.</h2>
+          </div>
+          <p class="reveal delay-1" style="color:rgba(0,0,0,0.6);font-size:1rem;line-height:1.7;margin-bottom:3rem;">La región ha registrado una valorización superior al 30% en los últimos diez años. Las fincas con olivares monumentales en entornos protegidos son, por definición, un recurso no replicable.</p>
+          <div class="invest-metrics">
+            <div class="invest-metric"><div class="invest-metric-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div><div class="invest-metric-val">+30%</div><div class="invest-metric-label">Valorización en 10 años</div></div></div>
+            <div class="invest-metric delay-1"><div class="invest-metric-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/></svg></div><div><div class="invest-metric-val">+4.670</div><div class="invest-metric-label">Olivos monumentales</div></div></div>
+            <div class="invest-metric delay-2"><div class="invest-metric-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="invest-metric-val">UNESCO</div><div class="invest-metric-label">Patrimonio protegido</div></div></div>
+            <div class="invest-metric delay-3"><div class="invest-metric-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="invest-metric-val">POSITIVO</div><div class="invest-metric-label">Impacto cultural</div></div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;" class="reveal delay-3">
+          <button class="btn btn-tertiary" onclick="window.location.href='inversion-gestion.html'">Explorar la Oportunidad</button>
+          <button class="btn btn-secondary" onclick="window.openDossierModal()">Solicitar Dossier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMITMENT -->
+<section id="commitment">
+  <div class="wave-bg" id="commit-waves"></div>
+  <div class="section-inner">
+    <div class="commitment-inner">
+      <div class="commitment-logo-wrap reveal scale-in">
+        <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul" referrerpolicy="no-referrer">
+      </div>
+      <span class="eyebrow reveal">Nuestra responsabilidad</span>
+      <h2 class="editorial-headline reveal delay-1">Salvar los olivos ancestrales es nuestra razón de existir.</h2>
+      <p class="reveal delay-2">Uno de los objetivos fundacionales de Olive Soul es rescatar olivos centenarios y milenarios en riesgo, convirtiéndolos en activos vivos custodiados por sus propietarios. A través del apadrinamiento, cada residente participa en el cuidado y la cosecha de su propio olivo.</p>
+      <button class="btn btn-secondary reveal delay-3">Conocer Nuestro Compromiso</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="wave-bg" id="cta-waves"></div>
+  <div class="cta-content reveal scale-in">
+    <h2 class="editorial-headline">Habitar el legado.</h2>
+    <div style="margin-bottom:2rem;">
+      <p>Para quienes buscan algo más que una propiedad.</p>
+      <p>Para quienes entienden que el verdadero lujo es el tiempo, el espacio y la autenticidad.</p>
+      <p>Para quienes sienten que los olivos milenarios tienen algo que decirles.</p>
+    </div>
+    <div class="cta-buttons">
+      <button class="btn btn-tertiary" onclick="document.getElementById('essence').scrollIntoView({behavior:'smooth'})">Descubrir la Experiencia</button>
+      <button class="btn btn-light" onclick="window.open('https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20hablar%20con%20el%20equipo%20de%20Olive%20Soul','_blank')">Hablar con Nuestro Equipo</button>
+      <button class="btn btn-light" onclick="window.openDossierModal()">Solicitar Dossier Completo</button>
+    </div>
+  </div>
+  <div class="cta-bottom">
+    <span>Olive Soul &middot; 2026</span>
+    <div class="cta-social">
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul" class="footer-logo" referrerpolicy="no-referrer">
+      <p class="footer-desc" data-i18n="footer_desc">Un proyecto de vida consciente en el Bajo Maestrazgo. Arquitectura contemporánea, territorio milenario y comunidad regenerativa.</p>
+      <div class="footer-social">
+        <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <h4 class="footer-col-title" data-i18n="footer_nav">Navegación</h4>
+      <ul class="footer-links">
+        <li><a href="proyectos.html" data-i18n="nav_proyectos">PROYECTOS</a></li>
+        <li><a href="arquitectura.html" data-i18n="nav_arquitectura">ARQUITECTURA</a></li>
+        <li><a href="ubicacion.html" data-i18n="nav_ubicacion">UBICACIÓN</a></li>
+        <li><a href="alma.html" data-i18n="nav_alma">ALMA</a></li>
+        <li><a href="inversion-gestion.html" data-i18n="nav_inversion">INVERSIÓN</a></li>
       </ul>
-      <a href="proyectos.html" class="cta-primary" data-anim="fade-up" data-i18n="s1_link" style="display:inline-block;margin-top:2rem">Conocer el proyecto</a>
     </div>
-  </section>
-
-  <!-- PROYECTOS -->
-  <section id="proyectos" class="content-section alt-bg">
-    <div class="section-inner">
-      <span class="section-label" data-anim="slide-right" data-i18n="s2_label">006 / Proyectos</span>
-      <h2 class="section-heading" data-anim="slide-right" data-i18n="s2_heading">Cuatro formas<br>de pertenecer</h2>
-      <p class="section-body" data-anim="slide-right" data-i18n="s2_body">Desde la finca privada hasta la inversión en hospitalidad — Olive Soul ofrece modelos de acceso adaptados a distintos perfiles y visiones.</p>
-      <ul class="feature-list" data-anim-list>
-        <li data-i18n="s2_f1">Finca unitaria privada con olivar en producción</li>
-        <li data-i18n="s2_f2">Coliving: villa compartida en cuatro unidades independientes</li>
-        <li data-i18n="s2_f3">Cohousing: proyecto comunitario en entorno de 2 ha</li>
-        <li data-i18n="s2_f4">Inversión en hospitalidad: turismo y eventos culturales</li>
-      </ul>
-      <a href="proyectos.html" class="cta-primary" data-anim="slide-right" data-i18n="s2_link" style="display:inline-block;margin-top:2rem">Ver todos los proyectos</a>
+    <div>
+      <h4 class="footer-col-title" data-i18n="footer_contact">Contacto</h4>
+      <div class="footer-contact-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink:0;margin-top:2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Bajo Maestrazgo, Castellón, España</div>
+      <div class="footer-contact-item"><span style="width:6px;height:6px;background:white;border-radius:50%;margin-top:6px;flex-shrink:0;"></span>info@olivesoul.com</div>
+      <div class="footer-contact-item"><span style="width:6px;height:6px;background:white;border-radius:50%;margin-top:6px;flex-shrink:0;"></span>+34 603 502 986</div>
     </div>
-    <a class="plus-btn" href="proyectos.html" aria-label="Ver proyectos">+</a>
-  </section>
-
-  <!-- ARQUITECTURA -->
-  <section id="arquitectura" class="content-section">
-    <div class="section-inner">
-      <span class="section-label" data-anim="fade-up" data-i18n="s3_label">007 / Arquitectura</span>
-      <h2 class="section-heading" data-anim="fade-up" data-i18n="s3_heading">Arquitectura en diálogo<br>con el paisaje</h2>
-      <p class="section-body" data-anim="fade-up" data-i18n="s3_body">Firmada por Jaime Sanahuja (Sanahuja &amp; Partners). Piedra natural, diseño luminoso, eficiencia energética y autosuficiencia.</p>
-      <ul class="feature-list" data-anim-list>
-        <li data-i18n="s3_f1">Fincas de más de 1 hectárea con olivares en producción</li>
-        <li data-i18n="s3_f2">Viviendas desde 100 m², personalizables y sostenibles</li>
-        <li data-i18n="s3_f3">Materiales nobles integrados en el entorno mediterráneo</li>
-      </ul>
-      <a href="arquitectura.html" class="cta-primary" data-anim="fade-up" data-i18n="s3_link" style="display:inline-block;margin-top:2rem">Ver arquitectura</a>
+  </div>
+  <div class="footer-bottom">
+    <p data-i18n="footer_rights">&copy; 2026 Olive Soul &middot; Todos los derechos reservados</p>
+    <div class="footer-legal">
+      <a href="#" data-i18n="legal_notice">Aviso Legal</a>
+      <a href="#" data-i18n="privacy_policy">Política de Privacidad</a>
+      <a href="#" data-i18n="cookies_policy">Cookies</a>
     </div>
-    <a class="plus-btn" href="arquitectura.html" aria-label="Ver arquitectura">+</a>
-  </section>
+  </div>
+</footer>
 
-  <!-- UBICACIÓN -->
-  <section id="ubicacion" class="content-section alt-bg">
-    <div class="section-inner">
-      <span class="section-label" data-anim="slide-right" data-i18n="s4_label">008 / Ubicación</span>
-      <h2 class="section-heading" data-anim="slide-right" data-i18n="s4_heading">Entre el Mediterráneo<br>y la montaña</h2>
-      <p class="section-body" data-anim="slide-right" data-i18n="s4_body">Bajo Maestrazgo, norte de Valencia. Declarado patrimonio UNESCO por su concentración única de olivos milenarios monumentales.</p>
-      <ul class="feature-list" data-anim-list>
-        <li data-i18n="s4_f1">15 min del mar Mediterráneo</li>
-        <li data-i18n="s4_f2">Rodeado de 5 parques naturales</li>
-        <li data-i18n="s4_f3">9 puertos deportivos a menos de 50 km</li>
-        <li data-i18n="s4_f4">Campo de golf a 7 km</li>
-        <li data-i18n="s4_f5">40 min del aeropuerto de Castellón</li>
-      </ul>
-      <a href="ubicacion.html" class="cta-primary" data-anim="slide-right" data-i18n="s4_link" style="display:inline-block;margin-top:2rem">Descubrir la ubicación</a>
-    </div>
-    <a class="plus-btn" href="ubicacion.html" aria-label="Ver ubicación">+</a>
-  </section>
+<!-- MODAL -->
+<div id="project-modal" onclick="closeModal(event)">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModalDirect()">&#x2715;</button>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
 
-  <!-- ESTILO DE VIDA -->
-  <section id="estilo-de-vida" class="content-section">
-    <div class="section-inner">
-      <span class="section-label" data-anim="fade-up" data-i18n="s5_label">009 / Estilo de vida</span>
-      <h2 class="section-heading" data-anim="fade-up" data-i18n="s5_heading">Slow living<br>mediterráneo</h2>
-      <ul class="feature-list" data-anim-list>
-        <li data-i18n="s5_f1">Producir tu propio aceite prensado en frío</li>
-        <li data-i18n="s5_f2">Caminar entre olivos milenarios</li>
-        <li data-i18n="s5_f3">Gastronomía mediterránea de proximidad</li>
-        <li data-i18n="s5_f4">Espacios de meditación en piedra seca ancestral</li>
-        <li data-i18n="s5_f5">El ciclo natural de las estaciones como ritmo vital</li>
-      </ul>
-      <a href="estilo.html" class="cta-primary" data-anim="fade-up" data-i18n="s5_link" style="display:inline-block;margin-top:2rem">Descubrir el estilo de vida</a>
-    </div>
-    <a class="plus-btn" href="estilo.html" aria-label="Ver estilo de vida">+</a>
-  </section>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="modal-dossier.js"></script>
+<script>
+(function(){
 
-  <!-- COMUNIDAD -->
-  <section id="comunidad" class="content-section alt-bg">
-    <div class="section-inner">
-      <span class="section-label" data-anim="slide-right" data-i18n="s6_label">010 / Comunidad</span>
-      <h2 class="section-heading" data-anim="slide-right" data-i18n="s6_heading">Una comunidad<br>internacional<br>consciente</h2>
-      <p class="section-body" data-anim="slide-right" data-i18n="s6_body">Olive Soul evoluciona hacia un ecosistema vivo: coliving, coworking, encuentros culturales, arte y gastronomía en un territorio único.</p>
-    </div>
-  </section>
+  /* TRANSLATIONS */
+  const T={
+    es:{nav_alma:'ALMA',nav_ubicacion:'UBICACIÓN',nav_arquitectura:'ARQUITECTURA',nav_proyectos:'PROYECTOS',nav_inversion:'INVERSIÓN',hero_subtitle:'vivir entre olivos milenarios. habitar el tiempo.',hero_desc:'Un territorio mediterráneo en el norte de Valencia donde la arquitectura contemporánea, los olivares centenarios y una comunidad consciente convergen en una sola forma de vida.',hero_btn_discover:'Descubrir la experiencia',hero_btn_dossier:'Solicitar Dossier Completo',essence_eyebrow:'El alma del proyecto',essence_title:'Olive Soul es un manifiesto de vida. Un regreso a lo esencial.',essence_p1:'No construimos casas, recuperamos un legado. Olive Soul nace para proteger el mayor tesoro del Bajo Maestrazgo: sus olivos milenarios.',essence_p2:'Aquí, el lujo no es lo material, sino el tiempo.',essence_link:'Conocer el Alma del Proyecto',loc_eyebrow:'Dónde estamos',loc_title:'Entre el mar y la montaña. A cinco minutos de ninguna parte.',loc_desc:'El Bajo Maestrazgo es un enclave declarado Patrimonio UNESCO.',arch_eyebrow:'Cómo se construye',arch_title:'La arquitectura no invade el territorio. Lo interpreta.',arch_p1:'Cada vivienda de Olive Soul ha sido concebida como una pieza que pertenece al paisaje antes de pertenecer al propietario.',arch_p2:'Las unidades responden a estrategias bioclimáticas pasivas.',arch_btn:'Ver Arquitectura y Diseño',arch_btn_team:'Hablar con Nuestro Equipo',proj_eyebrow:'Tres maneras de habitar Olive Soul',proj_title:'Elige cómo quieres vivir aquí.',proj_desc:'Cada tipología responde a una forma distinta de entender la vida en el olivar.',footer_desc:'Un proyecto de vida consciente en el Bajo Maestrazgo.',footer_nav:'Navegación',footer_contact:'Contacto',footer_rights:'© 2026 Olive Soul · Todos los derechos reservados',legal_notice:'Aviso Legal',privacy_policy:'Política de Privacidad',cookies_policy:'Cookies',dossier:'SOLICITAR DOSSIER'},
+    en:{nav_alma:'SOUL',nav_ubicacion:'LOCATION',nav_arquitectura:'ARCHITECTURE',nav_proyectos:'PROJECTS',nav_inversion:'INVESTMENT',hero_subtitle:'living among ancient olive trees. inhabiting time.',hero_desc:'A Mediterranean territory in the north of Valencia where contemporary architecture, centuries-old olive groves and a conscious community converge.',hero_btn_discover:'Discover the experience',hero_btn_dossier:'Request Full Dossier',essence_eyebrow:'The soul of the project',essence_title:'Olive Soul is a manifesto of life. A return to the essential.',essence_p1:'We do not build houses, we recover a legacy. Olive Soul was born to protect the greatest treasure of Bajo Maestrazgo: its millennial olive trees.',essence_p2:'Here, luxury is not material, but time.',essence_link:'Discover the Soul of the Project',loc_eyebrow:'Where we are',loc_title:'Between the sea and the mountain. Five minutes from nowhere.',loc_desc:'Bajo Maestrazgo is declared a UNESCO World Heritage site.',arch_eyebrow:'How it is built',arch_title:'Architecture does not invade the territory. It interprets it.',arch_p1:'Each Olive Soul home has been conceived as a piece that belongs to the landscape before belonging to the owner.',arch_p2:'The units respond to passive bioclimatic strategies.',arch_btn:'View Architecture and Design',arch_btn_team:'Talk to Our Team',proj_eyebrow:'Three ways to inhabit Olive Soul',proj_title:'Choose how you want to live here.',proj_desc:'Each typology responds to a different way of understanding life in the olive grove.',footer_desc:'A conscious life project in Bajo Maestrazgo.',footer_nav:'Navigation',footer_contact:'Contact',footer_rights:'© 2026 Olive Soul · All rights reserved',legal_notice:'Legal Notice',privacy_policy:'Privacy Policy',cookies_policy:'Cookies',dossier:'REQUEST DOSSIER'},
+    it:{nav_alma:'ANIMA',nav_ubicacion:'POSIZIONE',nav_arquitectura:'ARCHITETTURA',nav_proyectos:'PROGETTI',nav_inversion:'INVESTIMENTO',hero_subtitle:'vivere tra ulivi millenari. abitare il tempo.',hero_desc:"Un territorio mediterraneo nel nord di Valencia dove l'architettura contemporanea e gli uliveti secolari convergono.",hero_btn_discover:"Scopri l'esperienza",hero_btn_dossier:'Richiedi il Dossier Completo',essence_eyebrow:"L'anima del progetto",essence_title:"Olive Soul è un manifesto di vita. Un ritorno all'essenziale.",essence_p1:"Non costruiamo case, recuperiamo un lascito.",essence_p2:'Qui, il lusso non è materiale, ma tempo.',essence_link:"Scopri l'Anima del Progetto",loc_eyebrow:'Dove siamo',loc_title:'Tra il mare e la montagna. A cinque minuti dal nulla.',loc_desc:"Il Bajo Maestrazgo è dichiarato Patrimonio dell'Umanità dall'UNESCO.",arch_eyebrow:'Come si costruisce',arch_title:"L'architettura non invade il territorio. Lo interpreta.",arch_p1:"Ogni casa Olive Soul è concepita come un pezzo che appartiene al paesaggio.",arch_p2:"Le unità rispondono a strategie bioclimatiche passive.",arch_btn:'Vedi Architettura e Design',arch_btn_team:'Parla con il Nostro Team',proj_eyebrow:'Tre modi di abitare Olive Soul',proj_title:'Scegli come vuoi vivere qui.',proj_desc:"Ogni tipologia risponde a un modo diverso di intendere la vita nell'uliveto.",footer_desc:'Un progetto di vita consapevole nel Bajo Maestrazgo.',footer_nav:'Navigazione',footer_contact:'Contatto',footer_rights:'© 2026 Olive Soul · Tutti i diritti riservati',legal_notice:'Avviso Legale',privacy_policy:'Informativa sulla Privacy',cookies_policy:'Cookies',dossier:'RICHIEDI DOSSIER'},
+    fr:{nav_alma:'ÂME',nav_ubicacion:'EMPLACEMENT',nav_arquitectura:'ARCHITECTURE',nav_proyectos:'PROJETS',nav_inversion:'INVESTISSEMENT',hero_subtitle:'vivre parmi les oliviers millénaires. habiter le temps.',hero_desc:"Un territoire méditerranéen au nord de Valence où l'architecture contemporaine et les oliveraies centenaires convergent.",hero_btn_discover:"Découvrir l'expérience",hero_btn_dossier:'Demander le Dossier Complet',essence_eyebrow:"L'âme du projet",essence_title:"Olive Soul est un manifeste de vie. Un retour à l'essentiel.",essence_p1:"Nous ne construisons pas des maisons, nous récupérons un héritage.",essence_p2:"Ici, le luxe n'est pas matériel, mais temporel.",essence_link:"Découvrir l'Âme du Projet",loc_eyebrow:'Où nous sommes',loc_title:'Entre mer et montagne. À cinq minutes de nulle part.',loc_desc:"Le Bajo Maestrazgo est déclaré patrimoine mondial par l'UNESCO.",arch_eyebrow:"Comment c'est construit",arch_title:"L'architecture n'envahit pas le territoire. Elle l'interprète.",arch_p1:"Chaque maison Olive Soul a été conçue comme une pièce qui appartient au paysage.",arch_p2:"Les unités répondent à des stratégies bioclimatiques passives.",arch_btn:"Voir l'Architecture et le Design",arch_btn_team:'Parler à Notre Équipe',proj_eyebrow:"Trois façons d'habiter Olive Soul",proj_title:'Choisissez comment vous voulez vivre ici.',proj_desc:"Chaque typologie répond à une manière différente de comprendre la vie dans l'oliveraie.",footer_desc:'Un projet de vie consciente dans le Bajo Maestrazgo.',footer_nav:'Navigation',footer_contact:'Contact',footer_rights:'© 2026 Olive Soul · Tous droits réservés',legal_notice:'Mentions Légales',privacy_policy:'Politique de Confidentialité',cookies_policy:'Cookies',dossier:'DEMANDER DOSSIER'}
+  };
 
-  <!-- COMPROMISO -->
-  <section id="compromiso" class="content-section">
-    <div class="section-inner">
-      <span class="section-label" data-anim="fade-up" data-i18n="s7_label">011 / Compromiso</span>
-      <h2 class="section-heading" data-anim="fade-up" data-i18n="s7_heading">Custodiar<br>olivos milenarios</h2>
-      <p class="section-body" data-anim="fade-up" data-i18n="s7_body">Los propietarios pueden convertirse en custodios de ejemplares únicos, participando en su cuidado, cosecha y producción de aceite de autor.</p>
-      <p class="section-note" data-anim="fade-up" data-i18n="s7_note">No es solo inversión. Es responsabilidad cultural.</p>
-    </div>
-  </section>
+  const WA={es:'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20Olive%20Soul',en:'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20Olive%20Soul',it:'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20su%20Olive%20Soul',fr:'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20Olive%20Soul'};
 
-  <!-- CIERRE -->
-  <section id="contacto" class="cierre-section">
-    <span class="cierre-eyebrow" data-anim="fade-up" data-i18n="c_label">012 / Habitar el legado</span>
-    <div class="cierre-heading-wrap" data-anim="clip">
-      <h2 class="cierre-heading" data-i18n="c_heading">Habitar<br>el legado.</h2>
-    </div>
-    <div class="cierre-lines">
-      <p data-anim="fade-up" data-i18n="c_body1">
-        Olive Soul no es un desarrollo inmobiliario convencional.<br>
-        Es un territorio con alma.<br>
-        Es un activo patrimonial con identidad.<br>
-        Es una experiencia transformadora.
-      </p>
-    </div>
-    <div class="cierre-lines" style="margin-top:1.5rem">
-      <p class="italic" data-anim="fade-up" data-i18n="c_body2">
-        Para quienes buscan una segunda residencia sofisticada.<br>
-        Para quienes desean un refugio rural con profundidad cultural.<br>
-        Para quienes entienden que el verdadero lujo es el tiempo, el espacio y la autenticidad.
-      </p>
-    </div>
-    <div class="cierre-ctas" data-anim="fade-up">
-      <a href="https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul" class="cta-primary" data-i18n="c_cta1" id="wa-btn-cierre">Descubrir la experiencia</a>
-      <button onclick="window.openDossierModal()" class="cta-secondary" data-i18n="c_cta2">Solicitar dossier de inversión</button>
-    </div>
-  </section>
+  function switchLang(lang){
+    document.documentElement.lang=lang;
+    const tr=T[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(tr[k]!==undefined)el.textContent=tr[k];});
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  }
+  document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>switchLang(b.dataset.lang)));
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-brand">Olive Soul</div>
-    <nav class="footer-nav">
-      <a href="#proyectos" data-i18n="nav_proyectos">Proyectos</a>
-      <a href="#arquitectura" data-i18n="nav_arquitectura">Arquitectura</a>
-      <a href="#ubicacion" data-i18n="nav_ubicacion">Ubicación</a>
-      <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
-    </nav>
-    <div class="footer-copy">© 2025 Olive Soul · Bajo Maestrazgo, España</div>
-  </footer>
+  /* CURSOR */
+  const cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>cursor.classList.remove('hovering'));
+  });
 
-  <!-- ════════════ SCRIPTS ════════════ -->
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  /* NAVBAR */
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>50),{passive:true});
 
-  <script>
-  (function () {
+  /* MOBILE MENU */
+  document.getElementById('mobile-open').addEventListener('click',()=>document.getElementById('mobile-menu').classList.add('open'));
+  document.getElementById('mobile-close').addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open'));
 
-    const TRANSLATIONS = {
-      es: {
-        nav_proyectos: 'Proyectos',
-        nav_arquitectura: 'Arquitectura', nav_ubicacion: 'Ubicación', nav_contacto: 'Contacto',
-        hero_eyebrow: 'Bajo Maestrazgo · Mediterráneo · España',
-        hero_tagline: 'Vivir entre olivos milenarios. Habitar el tiempo.',
-        hero_body: 'Un refugio mediterráneo donde la tierra, la arquitectura y la memoria ancestral se encuentran para crear un legado privado, sofisticado y atemporal en el norte de Valencia.',
-        hero_cta1: 'Descubrir la experiencia', hero_cta2: 'Quiero invertir',
-        scroll: 'Scroll',
-        s1_label: '005 / La esencia', s1_heading: 'Un territorio\ncon alma',
-        s1_body: 'Olive Soul nace en el corazón del Bajo Maestrazgo, donde el olivo no es un árbol: es símbolo, economía, cultura y legado espiritual del Mediterráneo.',
-        s1_f1: 'Respeto profundo por el territorio y su herencia',
-        s1_f2: 'Eco-hábitat equilibrado, autosuficiente y sostenible',
-        s1_f3: 'Arquitectura contemporánea integrada en el paisaje ancestral',
-        s1_f4: 'Comunidad activa, creativa e internacional',
-        s1_link: 'Conocer el proyecto',
-        s2_label: '006 / Proyectos', s2_heading: 'Cuatro formas\nde pertenecer',
-        s2_body: 'Desde la finca privada hasta la inversión en hospitalidad — Olive Soul ofrece modelos de acceso adaptados a distintos perfiles y visiones.',
-        s2_f1: 'Finca unitaria privada con olivar en producción',
-        s2_f2: 'Coliving: villa compartida en cuatro unidades independientes',
-        s2_f3: 'Cohousing: proyecto comunitario en entorno de 2 ha',
-        s2_f4: 'Inversión en hospitalidad: turismo y eventos culturales',
-        s2_link: 'Ver todos los proyectos',
-        s3_label: '007 / Arquitectura', s3_heading: 'Arquitectura en diálogo\ncon el paisaje',
-        s3_body: 'Firmada por Jaime Sanahuja (Sanahuja & Partners). Piedra natural, diseño luminoso, eficiencia energética y autosuficiencia.',
-        s3_f1: 'Fincas de más de 1 hectárea con olivares en producción',
-        s3_f2: 'Viviendas desde 100 m², personalizables y sostenibles',
-        s3_f3: 'Materiales nobles integrados en el entorno mediterráneo',
-        s3_link: 'Ver arquitectura',
-        s4_label: '008 / Ubicación', s4_heading: 'Entre el Mediterráneo\ny la montaña',
-        s4_body: 'Bajo Maestrazgo, norte de Valencia. Declarado patrimonio UNESCO por su concentración única de olivos milenarios monumentales.',
-        s4_f1: '15 min del mar Mediterráneo',
-        s4_f2: 'Rodeado de 5 parques naturales',
-        s4_f3: '9 puertos deportivos a menos de 50 km',
-        s4_f4: 'Campo de golf a 7 km',
-        s4_f5: '40 min del aeropuerto de Castellón',
-        s4_link: 'Descubrir la ubicación',
-        s5_label: '009 / Estilo de vida', s5_heading: 'Slow living\nmediterráneo',
-        s5_f1: 'Producir tu propio aceite prensado en frío',
-        s5_f2: 'Caminar entre olivos milenarios',
-        s5_f3: 'Gastronomía mediterránea de proximidad',
-        s5_f4: 'Espacios de meditación en piedra seca ancestral',
-        s5_f5: 'El ciclo natural de las estaciones como ritmo vital',
-        s5_link: 'Descubrir el estilo de vida',
-        s6_label: '010 / Comunidad', s6_heading: 'Una comunidad\ninternacional\nconsciente',
-        s6_body: 'Olive Soul evoluciona hacia un ecosistema vivo: coliving, coworking, encuentros culturales, arte y gastronomía en un territorio único.',
-        s7_label: '011 / Compromiso', s7_heading: 'Custodiar\nolivos milenarios',
-        s7_body: 'Los propietarios pueden convertirse en custodios de ejemplares únicos, participando en su cuidado, cosecha y producción de aceite de autor.',
-        s7_note: 'No es solo inversión. Es responsabilidad cultural.',
-        c_label: '012 / Habitar el legado', c_heading: 'Habitar\nel legado.',
-        c_body1: 'Olive Soul no es un desarrollo inmobiliario convencional.\nEs un territorio con alma.\nEs un activo patrimonial con identidad.\nEs una experiencia transformadora.',
-        c_body2: 'Para quienes buscan una segunda residencia sofisticada.\nPara quienes desean un refugio rural con profundidad cultural.\nPara quienes entienden que el verdadero lujo es el tiempo, el espacio y la autenticidad.',
-        c_cta1: 'Descubrir la experiencia', c_cta2: 'Solicitar dossier de inversión',
-      },
-      en: {
-        nav_proyectos: 'Projects',
-        nav_arquitectura: 'Architecture', nav_ubicacion: 'Location', nav_contacto: 'Contact',
-        hero_eyebrow: 'Bajo Maestrazgo · Mediterranean · Spain',
-        hero_tagline: 'Living among millenary olive trees. Inhabiting time.',
-        hero_body: 'A Mediterranean refuge where land, architecture and ancestral memory converge to create a private, sophisticated and timeless legacy in northern Valencia.',
-        hero_cta1: 'Discover the experience', hero_cta2: 'I want to invest',
-        scroll: 'Scroll',
-        s1_label: '005 / The essence', s1_heading: 'A territory\nwith soul',
-        s1_body: 'Olive Soul is born in the heart of Bajo Maestrazgo, where the olive tree is not just a tree: it is symbol, economy, culture and the spiritual legacy of the Mediterranean.',
-        s1_f1: 'Deep respect for the territory and its heritage',
-        s1_f2: 'Balanced, self-sufficient and sustainable eco-habitat',
-        s1_f3: 'Contemporary architecture integrated in the ancestral landscape',
-        s1_f4: 'Active, creative and international community',
-        s1_link: 'Know the project',
-        s2_label: '006 / Projects', s2_heading: 'Four ways\nto belong',
-        s2_body: 'From the private estate to hospitality investment — Olive Soul offers access models adapted to different profiles and visions.',
-        s2_f1: 'Private unitary estate with producing olive grove',
-        s2_f2: 'Coliving: shared villa in four independent units',
-        s2_f3: 'Cohousing: community project in a 2-hectare setting',
-        s2_f4: 'Hospitality investment: tourism and cultural events',
-        s2_link: 'See all projects',
-        s3_label: '007 / Architecture', s3_heading: 'Architecture in dialogue\nwith the landscape',
-        s3_body: 'Signed by Jaime Sanahuja (Sanahuja & Partners). Natural stone, luminous design, energy efficiency and self-sufficiency.',
-        s3_f1: 'Estates of over 1 hectare with producing olive groves',
-        s3_f2: 'Homes from 100 m², customisable and sustainable',
-        s3_f3: 'Noble materials integrated in the Mediterranean setting',
-        s3_link: 'See architecture',
-        s4_label: '008 / Location', s4_heading: 'Between the Mediterranean\nand the mountains',
-        s4_body: 'Bajo Maestrazgo, northern Valencia. Declared UNESCO heritage for its unique concentration of monumental millenary olive trees.',
-        s4_f1: '15 min from the Mediterranean Sea',
-        s4_f2: 'Surrounded by 5 natural parks',
-        s4_f3: '9 marinas within 50 km',
-        s4_f4: 'Golf course 7 km away',
-        s4_f5: '40 min from Castellón airport',
-        s4_link: 'Discover the location',
-        s5_label: '009 / Lifestyle', s5_heading: 'Mediterranean\nslow living',
-        s5_f1: 'Produce your own cold-pressed olive oil',
-        s5_f2: 'Walk among millenary olive trees',
-        s5_f3: 'Mediterranean proximity gastronomy',
-        s5_f4: 'Meditation spaces in ancestral dry stone',
-        s5_f5: 'The natural cycle of the seasons as vital rhythm',
-        s5_link: 'Discover the lifestyle',
-        s6_label: '010 / Community', s6_heading: 'A conscious\ninternational\ncommunity',
-        s6_body: 'Olive Soul evolves into a living ecosystem: coliving, coworking, cultural gatherings, art and gastronomy in a unique territory.',
-        s7_label: '011 / Commitment', s7_heading: 'Custodians of\nmillenary olives',
-        s7_body: 'Owners can become custodians of unique specimens, participating in their care, harvest and artisan oil production.',
-        s7_note: 'This is not just investment. It is cultural responsibility.',
-        c_label: '012 / Inhabit the legacy', c_heading: 'Inhabit\nthe legacy.',
-        c_body1: 'Olive Soul is not a conventional real estate development.\nIt is a territory with soul.\nIt is a heritage asset with identity.\nIt is a transformative experience.',
-        c_body2: 'For those seeking a sophisticated second residence.\nFor those who desire a rural retreat with cultural depth.\nFor those who understand that true luxury is time, space and authenticity.',
-        c_cta1: 'Discover the experience', c_cta2: 'Request investment dossier',
-      },
-      it: {
-        nav_proyectos: 'Progetti',
-        nav_arquitectura: 'Architettura', nav_ubicacion: 'Posizione', nav_contacto: 'Contatto',
-        hero_eyebrow: 'Bajo Maestrazgo · Mediterraneo · Spagna',
-        hero_tagline: 'Vivere tra ulivi millenari. Abitare il tempo.',
-        hero_body: 'Un rifugio mediterraneo dove la terra, l\'architettura e la memoria ancestrale si incontrano per creare un legato privato, sofisticato e senza tempo nel nord di Valencia.',
-        hero_cta1: 'Scoprire l\'esperienza', hero_cta2: 'Voglio investire',
-        scroll: 'Scorri',
-        s1_label: '005 / L\'essenza', s1_heading: 'Un territorio\ncon anima',
-        s1_body: 'Olive Soul nasce nel cuore del Bajo Maestrazgo, dove l\'ulivo non è un albero: è simbolo, economia, cultura e lascito spirituale del Mediterraneo.',
-        s1_f1: 'Profondo rispetto per il territorio e la sua eredità',
-        s1_f2: 'Eco-habitat equilibrato, autosufficiente e sostenibile',
-        s1_f3: 'Architettura contemporanea integrata nel paesaggio ancestrale',
-        s1_f4: 'Comunità attiva, creativa e internazionale',
-        s1_link: 'Conoscere il progetto',
-        s2_label: '006 / Progetti', s2_heading: 'Quattro modi\ndi appartenere',
-        s2_body: 'Dalla tenuta privata all\'investimento in ospitalità — Olive Soul offre modelli di accesso adattati a diversi profili e visioni.',
-        s2_f1: 'Tenuta unitaria privata con uliveto in produzione',
-        s2_f2: 'Coliving: villa condivisa in quattro unità indipendenti',
-        s2_f3: 'Cohousing: progetto comunitario in un contesto di 2 ha',
-        s2_f4: 'Investimento in ospitalità: turismo ed eventi culturali',
-        s2_link: 'Vedere tutti i progetti',
-        s3_label: '007 / Architettura', s3_heading: 'Architettura in dialogo\ncon il paesaggio',
-        s3_body: 'Firmata da Jaime Sanahuja (Sanahuja & Partners). Pietra naturale, design luminoso, efficienza energetica e autosufficienza.',
-        s3_f1: 'Tenute di oltre 1 ettaro con uliveti in produzione',
-        s3_f2: 'Abitazioni da 100 m², personalizzabili e sostenibili',
-        s3_f3: 'Materiali pregiati integrati nell\'ambiente mediterraneo',
-        s3_link: 'Vedere l\'architettura',
-        s4_label: '008 / Posizione', s4_heading: 'Tra il Mediterraneo\ne la montagna',
-        s4_body: 'Bajo Maestrazgo, nord di Valencia. Dichiarato patrimonio UNESCO per la sua unica concentrazione di ulivi millenari monumentali.',
-        s4_f1: '15 min dal Mar Mediterraneo',
-        s4_f2: 'Circondato da 5 parchi naturali',
-        s4_f3: '9 porti sportivi entro 50 km',
-        s4_f4: 'Campo da golf a 7 km',
-        s4_f5: '40 min dall\'aeroporto di Castellón',
-        s4_link: 'Scoprire la posizione',
-        s5_label: '009 / Stile di vita', s5_heading: 'Slow living\nmediterraneo',
-        s5_f1: 'Produrre il proprio olio spremuto a freddo',
-        s5_f2: 'Camminare tra ulivi millenari',
-        s5_f3: 'Gastronomia mediterranea di prossimità',
-        s5_f4: 'Spazi di meditazione in pietra a secco ancestrale',
-        s5_f5: 'Il ciclo naturale delle stagioni come ritmo vitale',
-        s5_link: 'Scoprire lo stile di vita',
-        s6_label: '010 / Comunità', s6_heading: 'Una comunità\ninternazionale\nconsapevole',
-        s6_body: 'Olive Soul evolve verso un ecosistema vivo: coliving, coworking, incontri culturali, arte e gastronomia in un territorio unico.',
-        s7_label: '011 / Impegno', s7_heading: 'Custodi di\nulivi millenari',
-        s7_body: 'I proprietari possono diventare custodi di esemplari unici, partecipando alla loro cura, raccolta e produzione di olio d\'autore.',
-        s7_note: 'Non è solo investimento. È responsabilità culturale.',
-        c_label: '012 / Abitare il lascito', c_heading: 'Abitare\nil lascito.',
-        c_body1: 'Olive Soul non è uno sviluppo immobiliare convenzionale.\nÈ un territorio con anima.\nÈ un asset patrimoniale con identità.\nÈ un\'esperienza trasformativa.',
-        c_body2: 'Per chi cerca una seconda residenza sofisticata.\nPer chi desidera un rifugio rurale con profondità culturale.\nPer chi capisce che il vero lusso è il tempo, lo spazio e l\'autenticità.',
-        c_cta1: 'Scoprire l\'esperienza', c_cta2: 'Richiedere il dossier di investimento',
-      },
-      fr: {
-        nav_proyectos: 'Projets',
-        nav_arquitectura: 'Architecture', nav_ubicacion: 'Localisation', nav_contacto: 'Contact',
-        hero_eyebrow: 'Bajo Maestrazgo · Méditerranée · Espagne',
-        hero_tagline: 'Vivre parmi les oliviers millénaires. Habiter le temps.',
-        hero_body: 'Un refuge méditerranéen où la terre, l\'architecture et la mémoire ancestrale se rencontrent pour créer un legs privé, sophistiqué et intemporel dans le nord de Valence.',
-        hero_cta1: 'Découvrir l\'expérience', hero_cta2: 'Je veux investir',
-        scroll: 'Défiler',
-        s1_label: '005 / L\'essence', s1_heading: 'Un territoire\navec une âme',
-        s1_body: 'Olive Soul naît au cœur du Bajo Maestrazgo, où l\'olivier n\'est pas un arbre : c\'est un symbole, une économie, une culture et un legs spirituel de la Méditerranée.',
-        s1_f1: 'Respect profond pour le territoire et son héritage',
-        s1_f2: 'Éco-habitat équilibré, autosuffisant et durable',
-        s1_f3: 'Architecture contemporaine intégrée dans le paysage ancestral',
-        s1_f4: 'Communauté active, créative et internationale',
-        s1_link: 'Connaître le projet',
-        s2_label: '006 / Projets', s2_heading: 'Quatre façons\nd\'appartenir',
-        s2_body: 'De la propriété privée à l\'investissement en hospitalité — Olive Soul propose des modèles d\'accès adaptés à différents profils et visions.',
-        s2_f1: 'Propriété unitaire privée avec oliveraie en production',
-        s2_f2: 'Coliving : villa partagée en quatre unités indépendantes',
-        s2_f3: 'Cohousing : projet communautaire dans un cadre de 2 ha',
-        s2_f4: 'Investissement en hospitalité : tourisme et événements culturels',
-        s2_link: 'Voir tous les projets',
-        s3_label: '007 / Architecture', s3_heading: 'Architecture en dialogue\navec le paysage',
-        s3_body: 'Signée par Jaime Sanahuja (Sanahuja & Partners). Pierre naturelle, design lumineux, efficacité énergétique et autosuffisance.',
-        s3_f1: 'Propriétés de plus d\'1 hectare avec oliveraies en production',
-        s3_f2: 'Logements à partir de 100 m², personnalisables et durables',
-        s3_f3: 'Matériaux nobles intégrés dans l\'environnement méditerranéen',
-        s3_link: 'Voir l\'architecture',
-        s4_label: '008 / Localisation', s4_heading: 'Entre la Méditerranée\net la montagne',
-        s4_body: 'Bajo Maestrazgo, nord de Valence. Déclaré patrimoine UNESCO pour sa concentration unique d\'oliviers millénaires monumentaux.',
-        s4_f1: '15 min de la mer Méditerranée',
-        s4_f2: 'Entouré de 5 parcs naturels',
-        s4_f3: '9 marinas à moins de 50 km',
-        s4_f4: 'Terrain de golf à 7 km',
-        s4_f5: '40 min de l\'aéroport de Castellón',
-        s4_link: 'Découvrir la localisation',
-        s5_label: '009 / Style de vie', s5_heading: 'Slow living\nméditerranéen',
-        s5_f1: 'Produire sa propre huile pressée à froid',
-        s5_f2: 'Se promener parmi les oliviers millénaires',
-        s5_f3: 'Gastronomie méditerranéenne de proximité',
-        s5_f4: 'Espaces de méditation en pierre sèche ancestrale',
-        s5_f5: 'Le cycle naturel des saisons comme rythme vital',
-        s5_link: 'Découvrir le style de vie',
-        s6_label: '010 / Communauté', s6_heading: 'Une communauté\ninternationale\nconsciente',
-        s6_body: 'Olive Soul évolue vers un écosystème vivant : coliving, coworking, rencontres culturelles, art et gastronomie dans un territoire unique.',
-        s7_label: '011 / Engagement', s7_heading: 'Gardiens des\noliviers millénaires',
-        s7_body: 'Les propriétaires peuvent devenir gardiens d\'exemplaires uniques, participant à leur soin, leur récolte et leur production d\'huile d\'auteur.',
-        s7_note: 'Ce n\'est pas seulement un investissement. C\'est une responsabilité culturelle.',
-        c_label: '012 / Habiter le legs', c_heading: 'Habiter\nle legs.',
-        c_body1: 'Olive Soul n\'est pas un développement immobilier conventionnel.\nC\'est un territoire avec une âme.\nC\'est un actif patrimonial avec une identité.\nC\'est une expérience transformatrice.',
-        c_body2: 'Pour ceux qui cherchent une résidence secondaire sophistiquée.\nPour ceux qui désirent un refuge rural avec une profondeur culturelle.\nPour ceux qui comprennent que le vrai luxe est le temps, l\'espace et l\'authenticité.',
-        c_cta1: 'Découvrir l\'expérience', c_cta2: 'Demander le dossier d\'investissement',
-      }
-    };
+  /* HERO ENTRANCE */
+  window.addEventListener('load',()=>{
+    setTimeout(()=>{
+      document.getElementById('hero-logo').classList.add('visible');
+      document.getElementById('hero-subtitle').classList.add('visible');
+      document.getElementById('hero-desc').classList.add('visible');
+      document.getElementById('hero-ctas').classList.add('visible');
+    },200);
+    if(window.innerWidth>=1024)document.getElementById('lifestyle-btn').style.display='';
+  });
 
-    const WA_URLS = {
-      es: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul',
-      en: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience',
-      it: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul',
-      fr: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul',
-    };
-
-    let currentLang = 'es';
-
-    function switchLang(lang) {
-      currentLang = lang;
-      const T = TRANSLATIONS[lang];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        if (T[key] !== undefined) {
-          if (el.innerHTML.includes('<br>') || T[key].includes('\n')) {
-            el.innerHTML = T[key].replace(/\n/g, '<br>');
-          } else {
-            el.textContent = T[key];
-          }
-        }
-      });
-      document.querySelectorAll('.lang-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.lang === lang)
-      );
-      document.documentElement.lang = lang;
-      const waBtn = document.getElementById('wa-btn-cierre');
-      if (waBtn) waBtn.href = WA_URLS[lang];
-    }
-
-    document.querySelectorAll('.lang-btn').forEach(b =>
-      b.addEventListener('click', () => switchLang(b.dataset.lang))
-    );
-
-    /* ══════════ CURSOR ══════════ */
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
+  /* WAVES */
+  function createWaves(id,colors,opacity){
+    const c=document.getElementById(id);if(!c)return;
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 1920 1080');svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+    svg.style.cssText='width:100%;height:100%;';
+    colors.forEach((color,i)=>{
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d',`M-100,${400+i*50} C200,${200+i*20} 400,${500-i*30} 700,${300+i*10} S1100,${150+i*40} 1500,${350-i*20} S1900,${450+i*10} 2200,${300+i*30}`);
+      path.setAttribute('fill','none');path.setAttribute('stroke',color);
+      path.setAttribute('stroke-width',(1.5-i*0.2).toString());
+      path.setAttribute('opacity',(opacity-i*0.04).toString());
+      svg.appendChild(path);
+      gsap.to(path,{x:-80,duration:10+i*4,repeat:-1,yoyo:true,ease:'sine.inOut',delay:i*2});
     });
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-    });
+    c.appendChild(svg);
+  }
+  const o='#6B7B3A',t='#C4714A',te='#7BA8A4';
+  createWaves('hero-waves',[o,t,te,o],0.22);
+  createWaves('essence-waves',[o,t,te,o],0.10);
+  createWaves('loc-waves',[o,t,te,o],0.10);
+  createWaves('arch-waves',[o,t,te,o],0.12);
+  createWaves('proj-waves',[o,t,te,o],0.10);
+  createWaves('life-waves',[o,t,te,o],0.10);
+  createWaves('invest-waves',[o,t,te,o],0.10);
+  createWaves('commit-waves',[o,t,te,o],0.10);
+  createWaves('cta-waves',['#F5F0E8','#EDEADE','#F5F0E8'],0.10);
 
-    /* ══════════ CANVAS + FRAME PRELOADER ══════════ */
-    const FRAME_COUNT  = 176;
-    const ANIM_START   = 0;
-    const ANIM_END     = 1;
-    const frames       = new Array(FRAME_COUNT);
-    let   loadedCount  = 0;
-    let   currentFrame = 0;
-    let   loadingDone  = false;
+  /* SCROLL REVEAL */
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal,.stat-item,.invest-metric,.project-card').forEach(el=>obs.observe(el));
 
-    const canvas    = document.getElementById('canvas');
-    const ctx       = canvas.getContext('2d');
-    const loaderEl  = document.getElementById('loader');
-    const loaderBar = document.getElementById('loader-bar');
+  /* MODAL */
+  const PROJECTS={
+    'Finca Unitaria':{tagline:'El privilegio de habitar el olivar en completa intimidad.',sections:[{title:'Concepto',content:'Una vivienda individual implantada con discreción en una finca de cuatro hectáreas de olivar mediterráneo.',bullets:['Privacidad total — Unidad aislada, sin vecinos visibles.','Baja densidad — El paisaje manda.','Escala doméstica — Volúmenes simples y proporcionados.']},{title:'Experiencia',content:'Despertar con el olivar como único horizonte.',bullets:['Interior–exterior continuo — Grandes ventanales.','Silencio elegido.','Presencia plena.']},{title:'Arquitectura',content:'Contemporánea en forma, mediterránea en alma.',bullets:['Piedra natural local.','Morteros minerales.','Madera tratada en pérgolas.','Pavimentos continuos.']},{title:'Para quién es',content:'Para el creativo que necesita distancia. Para la pareja que busca intensidad sin interrupciones.'}]},
+    'Cohousing':{tagline:'Vivir en comunidad sin renunciar a lo propio.',sections:[{title:'Concepto',content:'Un modelo de vida intencional donde cada residente elige su entorno humano.',bullets:['Comunidad intencional.','Unidades autónomas.','Zonas comunes de calidad.']},{title:'Experiencia',content:'Cruzarse con alguien entre los olivos, no por obligación.',bullets:['Recorridos peatonales rurales.','Ritmo propio.','Espacios intermedios.']},{title:'Arquitectura',content:'El mismo lenguaje mediterráneo articulado en conjunto.',bullets:['Dispersión en el olivar.','Zonas comunes integradas.','Estrategia bioclimática colectiva.']},{title:'Para quién es',content:'Para familias que quieren que sus hijos crezcan con referencias diversas.'}]},
+    'Coliving':{tagline:'Flexibilidad con criterio. Vida compartida para quienes no quieren detenerse.',sections:[{title:'Concepto',content:'Unidades compactas dentro de un conjunto donde la vida sucede en espacios compartidos.',bullets:['Superficie optimizada.','Espacios comunes de alto valor.','Flexibilidad de estancia.']},{title:'Experiencia',content:'La cena que no estaba planeada. La conversación que se convierte en proyecto.',bullets:['Interacción facilitada.','Entorno que inspira.','Calidad sensorial pasiva.']},{title:'Arquitectura',content:'El confort bioclimático mediterráneo como razón de ser.',bullets:['Orientación y ventilación cruzada.','Voladizos y celosías.','Energía solar fotovoltaica.','Materialidad cálida.']},{title:'Para quién es',content:'Para el nómada digital que necesita un entorno con identidad.'}]}
+  };
 
-    function resizeCanvas() {
-      canvas.width  = window.innerWidth  * devicePixelRatio;
-      canvas.height = window.innerHeight * devicePixelRatio;
-      canvas.style.width  = window.innerWidth  + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      drawFrame(currentFrame);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+  window.openModal=function(name){
+    const data=PROJECTS[name];if(!data)return;
+    document.getElementById('modal-body').innerHTML=`<span class="modal-eyebrow">Proyecto</span><h2 class="modal-title">${name}</h2><p class="modal-tagline">${data.tagline}</p>${data.sections.map(s=>`<div class="modal-section"><h3 class="modal-section-title">${s.title}</h3><p>${s.content}</p>${s.bullets?`<ul class="modal-bullets">${s.bullets.map(b=>`<li><div class="modal-bullet-dot"></div><span>${b}</span></li>`).join('')}</ul>`:''}</div>`).join('')}<div class="modal-footer"><button class="btn btn-primary" onclick="closeModalDirect()">Cerrar Detalles</button></div>`;
+    document.getElementById('project-modal').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+  window.closeModal=function(e){if(e.target===document.getElementById('project-modal'))closeModalDirect();};
+  window.closeModalDirect=function(){document.getElementById('project-modal').classList.remove('open');document.body.style.overflow='';};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
 
-    function drawFrame(idx) {
-      const img = frames[idx];
-      if (!img || !img.complete || !img.naturalWidth) return;
-      const cw = canvas.width, ch = canvas.height;
-      const iw = img.naturalWidth, ih = img.naturalHeight;
-      const scale = Math.max(cw / iw, ch / ih);
-      const dw = iw * scale, dh = ih * scale;
-      const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
-      ctx.fillStyle = '#0a0a0a';
-      ctx.fillRect(0, 0, cw, ch);
-      ctx.drawImage(img, dx, dy, dw, dh);
-    }
-
-    function framePath(i) {
-      return 'frames/frame' + String(i + 1).padStart(4, '0') + '.jpg';
-    }
-
-    function finishLoad() {
-      if (loadingDone) return;
-      loadingDone = true;
-      loaderBar.style.width = '100%';
-      setTimeout(() => {
-        gsap.to(loaderEl, {
-          opacity: 0, duration: 0.9, ease: 'power2.inOut',
-          onComplete: () => {
-            loaderEl.style.display = 'none';
-            initAnimations();
-          }
-        });
-      }, 350);
-    }
-
-    let phase1Done = false;
-    for (let i = 0; i < 10; i++) {
-      (function(idx) {
-        const img = new Image();
-        img.onload = function() {
-          loadedCount++;
-          loaderBar.style.width = Math.round(loadedCount / FRAME_COUNT * 100) + '%';
-          if (idx === 0) { drawFrame(0); }
-          if (!phase1Done && loadedCount >= 10) {
-            phase1Done = true;
-            loadRemainingFrames();
-          }
-        };
-        img.src = framePath(idx);
-        frames[idx] = img;
-      })(i);
-    }
-
-    function loadRemainingFrames() {
-      for (let i = 10; i < FRAME_COUNT; i++) {
-        (function(idx) {
-          const img = new Image();
-          img.onload = function() {
-            loadedCount++;
-            loaderBar.style.width = Math.round(loadedCount / FRAME_COUNT * 100) + '%';
-            if (loadedCount >= FRAME_COUNT) finishLoad();
-          };
-          img.src = framePath(idx);
-          frames[idx] = img;
-        })(i);
-      }
-    }
-
-    setTimeout(finishLoad, 6000);
-
-    /* ══════════ LENIS ══════════ */
-    const lenis = new Lenis({
-      duration: 1.35,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true
-    });
-
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(time => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
-
-    /* ══════════ SMOOTH ANCHOR SCROLL ══════════ */
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        const href = link.getAttribute('href');
-        if (href === '#') return;
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) lenis.scrollTo(target, { offset: -80, duration: 1.4 });
-      });
-    });
-
-    /* ══════════ HEADER SCROLL STATE ══════════ */
-    const header = document.getElementById('site-header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
-
-    /* ══════════ CANVAS FRAME BINDING ══════════ */
-    ScrollTrigger.create({
-      trigger: document.documentElement,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: true,
-      onUpdate: self => {
-        const p = self.progress;
-        const clamped = Math.max(0, Math.min(1, (p - ANIM_START) / (ANIM_END - ANIM_START)));
-        const idx = Math.min(Math.floor(clamped * FRAME_COUNT), FRAME_COUNT - 1);
-        if (idx !== currentFrame) {
-          currentFrame = idx;
-          requestAnimationFrame(() => drawFrame(currentFrame));
-        }
-      }
-    });
-
-    /* ══════════ ANIMATIONS ══════════ */
-    function initAnimations() {
-      const words = document.querySelectorAll('.hero-title .word span');
-      gsap.to(words, { y: 0, duration: 1.5, ease: 'power4.out', stagger: 0.1, delay: 0.1 });
-      gsap.to('.hero-eyebrow',    { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: 0.5 });
-      gsap.to('.hero-tagline',    { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: 0.75 });
-      gsap.to('.hero-body-text',  { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: 0.95 });
-      gsap.to('.hero-ctas',       { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', delay: 1.15 });
-      gsap.to('.scroll-indicator',{ opacity: 1,       duration: 1.0, ease: 'power2.out', delay: 1.8 });
-      setupScrollAnimations();
-    }
-
-    function setupScrollAnimations() {
-      document.querySelectorAll('[data-anim="fade-up"]').forEach(el => {
-        gsap.fromTo(el,
-          { opacity: 0, y: 45 },
-          { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
-          });
-      });
-      document.querySelectorAll('[data-anim="slide-right"]').forEach(el => {
-        gsap.fromTo(el,
-          { opacity: 0, x: 55 },
-          { opacity: 1, x: 0, duration: 0.95, ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
-          });
-      });
-      document.querySelectorAll('[data-anim="clip"]').forEach(el => {
-        gsap.fromTo(el,
-          { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
-          { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 1.4, ease: 'power4.inOut',
-            scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none reverse' }
-          });
-      });
-      document.querySelectorAll('[data-anim-list]').forEach(list => {
-        const items = list.querySelectorAll('li');
-        gsap.fromTo(items,
-          { opacity: 0, y: 28 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', stagger: 0.1,
-            scrollTrigger: { trigger: list, start: 'top 82%', toggleActions: 'play none none reverse' }
-          });
-      });
-    }
-
-  })();
-  </script>
-  <script src="modal-dossier.js"></script>
-
+})();
+</script>
 </body>
 </html>

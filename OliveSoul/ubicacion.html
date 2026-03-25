@@ -9,10 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --bg: #E8E0D0;
-            --bg2: #D4C9B0;
+            --bg: #F5F0E8;
+            --bg2: #EDEADE;
             --bg-olive: #4A5C2A;
             --bg-terracota: #C4714A;
             --bg-dark: #1a1a18;
@@ -37,6 +38,7 @@
             letter-spacing: 0.04em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            text-transform: lowercase;
         }
 
         /* Cursor */
@@ -58,6 +60,17 @@
             border: 1px solid var(--olive); 
         }
 
+        /* Wave Backgrounds */
+        .wave-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: visible;
+        }
+
         /* Header */
         #site-header { 
             position: fixed; 
@@ -73,6 +86,12 @@
             backdrop-filter: blur(12px); 
             border-bottom: 1px solid var(--line); 
         }
+        .header-logo img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .header-logo { 
             font-family: var(--font); 
             font-size: 1.2rem; 
@@ -80,6 +99,8 @@
             color: var(--text); 
             text-decoration: none; 
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
         }
         .header-right { display: flex; align-items: center; gap: 2.5rem; }
         .header-nav { display: flex; gap: 2rem; }
@@ -567,7 +588,9 @@
     <div id="cursor"></div>
 
     <header id="site-header">
-        <a href="index.html" class="header-logo">Olive Soul</a>
+        <a href="index.html" class="header-logo">
+            <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="h-10 w-auto object-contain" referrerPolicy="no-referrer">
+        </a>
         <div class="header-right">
             <div class="lang-switcher">
                 <button class="lang-btn active" data-lang="es">ES</button>
@@ -579,10 +602,10 @@
                 <button class="lang-btn" data-lang="fr">FR</button>
             </div>
             <nav class="header-nav">
-                <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
-                <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
-                <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
-                <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+                <a href="proyectos.html" data-i18n="nav_proyectos">proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
+                <a href="alma.html" data-i18n="nav_alma">alma</a>
             </nav>
         </div>
     </header>
@@ -748,8 +771,13 @@
             <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
             <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
             <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
-            <a href="estilo.html" data-i18n="nav_estilo">Estilo</a>
+            <a href="alma.html" data-i18n="nav_alma">Alma</a>
         </nav>
+        <div class="footer-legal">
+            <a href="#" data-i18n="legal_notice">Aviso Legal</a>
+            <a href="#" data-i18n="privacy_policy">Política de Privacidad</a>
+            <a href="#" data-i18n="cookies_policy">Política de Cookies</a>
+        </div>
         <div class="footer-copy" data-i18n="footer_rights">© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAÑA</div>
     </footer>
 
@@ -758,7 +786,7 @@
         // Translations
         const T = {
             es: {
-                nav_inicio: 'INICIO', nav_proyectos: 'PROYECTOS', nav_arquitectura: 'ARQUITECTURA', nav_ubicacion: 'UBICACIÓN', nav_estilo: 'ESTILO',
+                nav_inicio: 'INICIO', nav_proyectos: 'PROYECTOS', nav_arquitectura: 'ARQUITECTURA', nav_ubicacion: 'UBICACIÓN', nav_alma: 'ALMA',
                 hero_label: '008 — UBICACIÓN', hero_t1: 'ENTRE EL', hero_t2: 'MEDITERRÁNEO', hero_t3: 'Y LA MONTAÑA', scroll: 'SCROLL',
                 stat_olivos: 'OLIVOS MONUMENTALES', stat_parques: 'PARQUES NATURALES', stat_med: 'DEL MEDITERRÁNEO',
                 statement: 'OLIVE SOUL SE SITÚA EN EL CORAZÓN DEL BAJO MAESTRAZGO — UN TERRITORIO DECLARADO PATRIMONIO UNESCO POR SU EXTRAORDINARIA CONCENTRACIÓN DE OLIVOS MILENARIOS MONUMENTALES. UN LUGAR QUE MUCHOS DEFINEN COMO LA OTRA TOSCANA O LA PROVENZA VALENCIANA.',
@@ -769,10 +797,11 @@
                 conn_aero_cas: 'AEROPUERTO DE CASTELLÓN', conn_aero_val: 'AEROPUERTO DE VALENCIA', conn_aero_bcn: 'AEROPUERTO DE BARCELONA', conn_aero_reus: 'AEROPUERTO DE REUS',
                 conn_med: 'MAR MEDITERRÁNEO', conn_ap7: 'AUTOPISTA AP-7', conn_ap7_val: 'ACCESO DIRECTO', conn_puertos: 'PUERTOS DEPORTIVOS', conn_puertos_val: '9 A MENOS DE 50 KM', conn_golf: 'CAMPO DE GOLF',
                 cta_team: 'HABLAR CON NUESTRO EQUIPO', cta_dossier: 'RECIBIR EL DOSSIER COMPLETO', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAÑA',
+                legal_notice: 'AVISO LEGAL', privacy_policy: 'POLÍTICA DE PRIVACIDAD', cookies_policy: 'POLÍTICA DE COOKIES',
                 wa: 'https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20la%20experiencia%20de%20Olive%20Soul'
             },
             en: {
-                nav_inicio: 'HOME', nav_proyectos: 'PROJECTS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCATION', nav_estilo: 'LIFESTYLE',
+                nav_inicio: 'HOME', nav_proyectos: 'PROJECTS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCATION', nav_alma: 'SOUL',
                 hero_label: '008 — LOCATION', hero_t1: 'BETWEEN THE', hero_t2: 'MEDITERRANEAN', hero_t3: 'AND THE MOUNTAINS', scroll: 'SCROLL',
                 stat_olivos: 'MONUMENTAL OLIVE TREES', stat_parques: 'NATURAL PARKS', stat_med: 'FROM THE MEDITERRANEAN',
                 statement: 'OLIVE SOUL IS LOCATED IN THE HEART OF BAJO MAESTRAZGO — A TERRITORY DECLARED UNESCO HERITAGE FOR ITS EXTRAORDINARY CONCENTRATION OF MONUMENTAL MILLENARY OLIVE TREES. A PLACE THAT MANY DEFINE AS THE OTHER TUSCANY OR THE VALENCIAN PROVENCE.',
@@ -783,10 +812,11 @@
                 conn_aero_cas: 'CASTELLÓN AIRPORT', conn_aero_val: 'VALENCIA AIRPORT', conn_aero_bcn: 'BARCELONA AIRPORT', conn_aero_reus: 'REUS AIRPORT',
                 conn_med: 'MEDITERRANEAN SEA', conn_ap7: 'AP-7 HIGHWAY', conn_ap7_val: 'DIRECT ACCESS', conn_puertos: 'SPORTS MARINAS', conn_puertos_val: '9 WITHIN 50 KM', conn_golf: 'GOLF COURSE',
                 cta_team: 'TALK TO OUR TEAM', cta_dossier: 'RECEIVE THE FULL DOSSIER', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, SPAIN',
+                legal_notice: 'LEGAL NOTICE', privacy_policy: 'PRIVACY POLICY', cookies_policy: 'COOKIES POLICY',
                 wa: 'https://wa.me/34603502986?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Olive%20Soul%20experience'
             },
             it: {
-                nav_inicio: 'HOME', nav_proyectos: 'PROGETTI', nav_arquitectura: 'ARCHITETTURA', nav_ubicacion: 'POSIZIONE', nav_estilo: 'STILE DI VITA',
+                nav_inicio: 'HOME', nav_proyectos: 'PROGETTI', nav_arquitectura: 'ARCHITETTURA', nav_ubicacion: 'POSIZIONE', nav_alma: 'ANIMA',
                 hero_label: '008 — POSIZIONE', hero_t1: 'TRA IL', hero_t2: 'MEDITERRANEO', hero_t3: 'E LA MONTAGNA', scroll: 'SCROLL',
                 stat_olivos: 'ULIVI MONUMENTALI', stat_parques: 'PARCHI NATURALI', stat_med: 'DAL MEDITERRANEO',
                 statement: 'OLIVE SOUL SI TROVA NEL CUORE DEL BAJO MAESTRAZGO — UN TERRITORIO DICHIARATO PATRIMONIO UNESCO PER LA SUA STRAORDINARIA CONCENTRAZIONE DI ULIVI MILLENARI MONUMENTALI. UN LUOGO CHE MOLTI DEFINISCONO COME L\'ALTRA TOSCANA O LA PROVENZA VALENCIANA.',
@@ -797,10 +827,11 @@
                 conn_aero_cas: 'AEROPORTO DI CASTELLÓN', conn_aero_val: 'AEROPORTO DI VALENCIA', conn_aero_bcn: 'AEROPORTO DI BARCELLONA', conn_aero_reus: 'AEROPORTO DI REUS',
                 conn_med: 'MAR MEDITERRANEO', conn_ap7: 'AUTOSTRADA AP-7', conn_ap7_val: 'ACCESSO DIRETTO', conn_puertos: 'PORTI SPORTIVI', conn_puertos_val: '9 A MENO DI 50 KM', conn_golf: 'CAMPO DA GOLF',
                 cta_team: 'PARLA CON IL NOSTRO TEAM', cta_dossier: 'RICEVI IL DOSSIER COMPLETO', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, SPAGNA',
+                legal_notice: 'AVVISO LEGALE', privacy_policy: 'INFORMATIVA SULLA PRIVACY', cookies_policy: 'POLITICA SUI COOKIE',
                 wa: 'https://wa.me/34603502986?text=Ciao%2C%20vorrei%20sapere%20di%20pi%C3%B9%20sull%27esperienza%20di%20Olive%20Soul'
             },
             fr: {
-                nav_inicio: 'ACCUEIL', nav_proyectos: 'PROJETS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCALISATION', nav_estilo: 'STYLE DE VIE',
+                nav_inicio: 'ACCUEIL', nav_proyectos: 'PROJETS', nav_arquitectura: 'ARCHITECTURE', nav_ubicacion: 'LOCALISATION', nav_alma: 'ÂME',
                 hero_label: '008 — LOCALISATION', hero_t1: 'ENTRE LA', hero_t2: 'MÉDITERRANÉE', hero_t3: 'ET LA MONTAGNE', scroll: 'SCROLL',
                 stat_olivos: 'OLIVIERS MONUMENTAUX', stat_parques: 'PARCS NATURELS', stat_med: 'DE LA MÉDITERRANÉE',
                 statement: 'OLIVE SOUL SE SITUE AU CŒUR DU BAJO MAESTRAZGO — UN TERRITOIRE DÉCLARÉ PATRIMOINE UNESCO POUR SON EXTRAORDINAIRE CONCENTRATION D\'OLIVIERS MILLÉNAIRES MONUMENTAUX. UN LIEU QUE BEAUCOUP DÉFINISSENT COMME L\'AUTRE TOSCANE OU LA PROVENCE VALENCIENNE.',
@@ -811,6 +842,7 @@
                 conn_aero_cas: 'AÉROPORT DE CASTELLÓN', conn_aero_val: 'AÉROPORT DE VALENCE', conn_aero_bcn: 'AÉROPORT DE BARCELONE', conn_aero_reus: 'AÉROPORT DE REUS',
                 conn_med: 'MER MÉDITERRANÉE', conn_ap7: 'AUTOROUTE AP-7', conn_ap7_val: 'ACCÈS DIRECT', conn_puertos: 'PORTS DE PLAISANCE', conn_puertos_val: '9 À MOINS DE 50 KM', conn_golf: 'TERRAIN DE GOLF',
                 cta_team: 'PARLER À NOTRE ÉQUIPE', cta_dossier: 'RECEVOIR LE DOSSIER COMPLET', footer_rights: '© 2025 OLIVE SOUL · BAJO MAESTRAZGO, ESPAGNE',
+                legal_notice: 'MENTIONS LÉGALES', privacy_policy: 'POLITIQUE DE CONFIDENTIALITÉ', cookies_policy: 'POLITIQUE RELATIVE AUX COOKIES',
                 wa: 'https://wa.me/34603502986?text=Bonjour%2C%20je%20voudrais%20en%20savoir%20plus%20sur%20l%27exp%C3%A9rience%20Olive%20Soul'
             }
         };
@@ -843,64 +875,68 @@
         });
 
         // Wave Generator
-        function createWaves(section, type) {
+        const lightWaves = [
+            { color: '#6B7B3A', opacity: 0.18, width: 0.5 },
+            { color: '#C4714A', opacity: 0.13, width: 0.3 },
+            { color: '#7BA8A4', opacity: 0.12, width: 0.3 },
+            { color: '#6B7B3A', opacity: 0.08, width: 0.2 }
+        ];
+        const darkWaves = [
+            { color: '#F5F0E8', opacity: 0.15, width: 0.5 },
+            { color: '#F5F0E8', opacity: 0.1,  width: 0.3 },
+            { color: '#F5F0E8', opacity: 0.08, width: 0.3 },
+            { color: '#F5F0E8', opacity: 0.05, width: 0.2 }
+        ];
+
+        function createWaves(container, waveConfigs) {
+            if (!container) return;
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            svg.setAttribute("class", "wave-bg");
             svg.setAttribute("viewBox", "0 0 100 100");
             svg.setAttribute("preserveAspectRatio", "none");
+            svg.style.width = "100%";
+            svg.style.height = "100%";
+            svg.style.position = "absolute";
+            svg.style.top = "0";
+            svg.style.left = "0";
+            svg.style.pointerEvents = "none";
+            svg.style.zIndex = "0";
 
-            const colors = type === 'light' 
-                ? [
-                    { stroke: "#6B7B3A", opacity: 0.2, width: 1.5 },
-                    { stroke: "#C4714A", opacity: 0.15, width: 1 },
-                    { stroke: "#7BA8A4", opacity: 0.12, width: 1 },
-                    { stroke: "#C49A3A", opacity: 0.1, width: 0.8 }
-                ]
-                : [
-                    { stroke: "#F5F0E8", opacity: 0.15, width: 1.5 },
-                    { stroke: "#F5F0E8", opacity: 0.1, width: 1 },
-                    { stroke: "#F5F0E8", opacity: 0.07, width: 1 },
-                    { stroke: "#F5F0E8", opacity: 0.04, width: 0.8 }
-                ];
-
-            const paths = [
-                "M-20,25 C15,12 35,40 55,22 S80,8 110,28",
-                "M-20,42 C15,28 35,58 55,38 S80,22 110,44",
-                "M-20,60 C15,46 35,74 55,54 S80,38 110,62",
-                "M-20,76 C15,62 35,88 55,70 S80,54 110,78"
-            ];
-
-            paths.forEach((d, i) => {
+            waveConfigs.forEach((config, i) => {
                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path.setAttribute("d", d);
                 path.setAttribute("fill", "none");
-                path.setAttribute("stroke", colors[i].stroke);
-                path.setAttribute("opacity", colors[i].opacity);
-                path.setAttribute("stroke-width", colors[i].width);
+                path.setAttribute("stroke", config.color);
+                path.setAttribute("stroke-width", config.width);
+                path.setAttribute("opacity", config.opacity);
                 svg.appendChild(path);
-                
-                gsap.to(path, { 
-                    x: i % 2 === 0 ? -10 : 10, 
-                    duration: 12 + i * 4, 
-                    repeat: -1, 
-                    yoyo: true, 
-                    ease: 'sine.inOut', 
-                    delay: i * 1.5 
+
+                gsap.to({}, {
+                    duration: 3 + i,
+                    repeat: -1,
+                    onUpdate: function() {
+                        const time = Date.now() / 1000;
+                        const freq = 0.5 + (i * 0.1);
+                        const amp = 10 + (i * 5);
+                        const offset = i * 20;
+                        let d = `M-20,${50 + offset} `;
+                        for (let x = -20; x <= 120; x += 10) {
+                            const y = 50 + offset + Math.sin(x * 0.05 + time * freq) * amp;
+                            d += `L${x},${y} `;
+                        }
+                        path.setAttribute("d", d);
+                    }
                 });
             });
-
-            section.prepend(svg);
+            container.prepend(svg);
         }
 
         // Initialize Waves
-        createWaves(document.querySelector('.hero-section'), 'light');
-        createWaves(document.querySelector('.hero-right'), 'light'); // Subtle version handled by CSS opacity if needed, but prompt asked for waves in every section
-        createWaves(document.querySelector('.statement-section'), 'dark');
-        createWaves(document.querySelector('.big-stats-section'), 'light');
-        createWaves(document.querySelector('.intro-section'), 'light');
-        createWaves(document.querySelector('.large-map-section'), 'dark');
-        createWaves(document.querySelector('.conexiones-section'), 'light');
-        createWaves(document.querySelector('.cta-section'), 'dark');
+        createWaves(document.querySelector('.hero-section'), lightWaves);
+        createWaves(document.querySelector('.statement-section'), darkWaves);
+        createWaves(document.querySelector('.big-stats-section'), lightWaves);
+        createWaves(document.querySelector('.intro-section'), lightWaves);
+        createWaves(document.querySelector('.large-map-section'), darkWaves);
+        createWaves(document.querySelector('.conexiones-section'), lightWaves);
+        createWaves(document.querySelector('.cta-section'), darkWaves);
 
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
             --bg: #F5F0E8;
@@ -33,6 +34,7 @@
             letter-spacing: 0.04em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            text-transform: lowercase;
         }
 
         /* Cursor */
@@ -81,6 +83,12 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--line);
         }
+        .header-logo img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .header-logo {
             font-family: var(--font);
             font-size: 1.2rem;
@@ -88,6 +96,8 @@
             color: var(--text);
             text-decoration: none;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
         }
         .header-right { display: flex; align-items: center; gap: 2.5rem; }
         .header-nav { display: flex; gap: 2rem; }
@@ -285,15 +295,18 @@
             padding: 15vh 8vw;
             border-top: 1px solid var(--line-strong);
         }
-        .section-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 2rem;
-            margin-bottom: 6rem;
-            position: relative;
-            z-index: 1;
+        .carousel-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 0.9;
+            color: var(--text);
+            text-transform: uppercase;
+            position: absolute;
+            top: 5vh;
+            left: 8vw;
+            z-index: 20;
+            margin-bottom: 0;
+            padding-left: 0;
+            pointer-events: none;
         }
         .section-title {
             font-size: clamp(3rem, 6vw, 7rem);
@@ -398,11 +411,12 @@
             align-items: center;
         }
         .arquiteto-photo {
-            width: 320px;
-            aspect-ratio: 3/4;
+            width: 240px;
+            aspect-ratio: 1/1;
             background: var(--bg2);
             overflow: hidden;
             border: 1px solid var(--line-strong);
+            border-radius: 50%;
         }
         .arquiteto-photo img {
             width: 100%;
@@ -527,7 +541,9 @@
 
     <!-- Header -->
     <header id="site-header">
-        <a href="/" class="header-logo">Olive Soul</a>
+        <a href="/" class="header-logo">
+            <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="h-10 w-auto object-contain" referrerPolicy="no-referrer">
+        </a>
         <div class="header-right">
             <div class="lang-switcher">
                 <button class="lang-btn active" onclick="switchLang('es')">ES</button>
@@ -539,10 +555,10 @@
                 <button class="lang-btn" onclick="switchLang('fr')">FR</button>
             </div>
             <nav class="header-nav">
-                <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
-                <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
-                <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
-                <a href="#" data-i18n="nav_estilo">Estilo</a>
+                <a href="proyectos.html" data-i18n="nav_proyectos">proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
+                <a href="alma.html" data-i18n="nav_alma">alma</a>
             </nav>
         </div>
     </header>
@@ -575,11 +591,12 @@
         </div>
     </section>
 
-<!-- Carousel Section -->
+<!-- Carousel Section: Piedras Secas -->
 <section class="carousel-section">
     <div class="wave-bg" id="carousel-waves" style="opacity: 0.5;"></div>
-    <div class="carousel-container">
-        <div class="carousel-track" id="carousel-track">
+    <h2 class="carousel-title">Proyecto Piedras Secas</h2>
+    <div class="carousel-container" data-carousel-id="piedras-secas">
+        <div class="carousel-track">
             <div class="carousel-slide"><img src="https://i.postimg.cc/K8FvtcNd/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-0.jpg" alt="Architecture 1"></div>
             <div class="carousel-slide"><img src="https://i.postimg.cc/vmZYSPCk/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-1.jpg" alt="Architecture 2"></div>
             <div class="carousel-slide"><img src="https://i.postimg.cc/xd1fFsBx/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-2.jpg" alt="Architecture 3"></div>
@@ -598,12 +615,81 @@
             <div class="carousel-slide"><img src="https://i.postimg.cc/Znp4yXy9/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-15.jpg" alt="Architecture 16"></div>
             <div class="carousel-slide"><img src="https://i.postimg.cc/hvTc7N7Q/Proyecto-Piedra-Seca-Vivienda-Tipo-1-(1)-p-iginas-imagens-16.jpg" alt="Architecture 17"></div>
         </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn prev-btn">←</button>
+            <span class="carousel-counter">01 / 17</span>
+            <button class="carousel-btn next-btn">→</button>
+        </div>
     </div>
-    <div class="carousel-caption" data-i18n="arch_carousel_caption">INTEGRACIÓN PAISAJÍSTICA Y PUREZA FORMAL</div>
-    <div class="carousel-controls">
-        <button class="carousel-btn" onclick="prevSlide()">PREV</button>
-        <span class="carousel-counter" id="carousel-counter">01 / 17</span>
-        <button class="carousel-btn" onclick="nextSlide()">NEXT</button>
+</section>
+
+<!-- Carousel Section: Mediterraneo -->
+<section class="carousel-section">
+    <h2 class="carousel-title">Mediterraneo</h2>
+    <div class="carousel-container" data-carousel-id="mediterraneo">
+        <div class="carousel-track">
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Bb1wnfLz/Vivienda-Tipo-5-(2)-imagens-0.jpg" alt="Mediterraneo 1"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/jC03W3yd/Vivienda-Tipo-5-(2)-imagens-1.jpg" alt="Mediterraneo 2"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/gcXYZwvd/Vivienda-Tipo-5-(2)-imagens-10.jpg" alt="Mediterraneo 3"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/447J9Kzg/Vivienda-Tipo-5-(2)-imagens-11.jpg" alt="Mediterraneo 4"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/BZLqK8xq/Vivienda-Tipo-5-(2)-imagens-12.jpg" alt="Mediterraneo 5"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/qBhk3t8q/Vivienda-Tipo-5-(2)-imagens-13.jpg" alt="Mediterraneo 6"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/XNRncV8q/Vivienda-Tipo-5-(2)-imagens-14.jpg" alt="Mediterraneo 7"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/mD363t8q/Vivienda-Tipo-5-(2)-imagens-15.jpg" alt="Mediterraneo 8"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/J0vH8v8q/Vivienda-Tipo-5-(2)-imagens-16.jpg" alt="Mediterraneo 9"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Z5vH8v8q/Vivienda-Tipo-5-(2)-imagens-17.jpg" alt="Mediterraneo 10"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/8PzH8v8q/Vivienda-Tipo-5-(2)-imagens-2.jpg" alt="Mediterraneo 11"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/9QzH8v8q/Vivienda-Tipo-5-(2)-imagens-3.jpg" alt="Mediterraneo 12"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/RrzH8v8q/Vivienda-Tipo-5-(2)-imagens-4.jpg" alt="Mediterraneo 13"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/SrzH8v8q/Vivienda-Tipo-5-(2)-imagens-5.jpg" alt="Mediterraneo 14"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/TrzH8v8q/Vivienda-Tipo-5-(2)-imagens-6.jpg" alt="Mediterraneo 15"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/UrzH8v8q/Vivienda-Tipo-5-(2)-imagens-7.jpg" alt="Mediterraneo 16"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/VrzH8v8q/Vivienda-Tipo-5-(2)-imagens-8.jpg" alt="Mediterraneo 17"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/WrzH8v8q/Vivienda-Tipo-5-(2)-imagens-9.jpg" alt="Mediterraneo 18"></div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn prev-btn">←</button>
+            <span class="carousel-counter">01 / 18</span>
+            <button class="carousel-btn next-btn">→</button>
+        </div>
+    </div>
+</section>
+
+<!-- Carousel Section: Maestrazgo -->
+<section class="carousel-section">
+    <h2 class="carousel-title">Maestrazgo</h2>
+    <div class="carousel-container" data-carousel-id="maestrazgo">
+        <div class="carousel-track">
+            <div class="carousel-slide"><img src="https://i.postimg.cc/d1F8yMfw/Vivienda-Tipo-2-3-p-iginas-imagens-0.jpg" alt="Maestrazgo 1"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/50m857cQ/Vivienda-Tipo-2-3-p-iginas-imagens-1.jpg" alt="Maestrazgo 2"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/j2dPMHKG/Vivienda-Tipo-2-3-p-iginas-imagens-10.jpg" alt="Maestrazgo 3"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/RhsfyWVs/Vivienda-Tipo-2-3-p-iginas-imagens-11.jpg" alt="Maestrazgo 4"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/0jWmFz2L/Vivienda-Tipo-2-3-p-iginas-imagens-12.jpg" alt="Maestrazgo 5"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/908TKDQ2/Vivienda-Tipo-2-3-p-iginas-imagens-13.jpg" alt="Maestrazgo 6"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Y0ngZvCt/Vivienda-Tipo-2-3-p-iginas-imagens-14.jpg" alt="Maestrazgo 7"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/mkXMJPg2/Vivienda-Tipo-2-3-p-iginas-imagens-15.jpg" alt="Maestrazgo 8"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/SQDWJv7G/Vivienda-Tipo-2-3-p-iginas-imagens-16.jpg" alt="Maestrazgo 9"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/fWBxJrjr/Vivienda-Tipo-2-3-p-iginas-imagens-17.jpg" alt="Maestrazgo 10"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/fWBxJrj1/Vivienda-Tipo-2-3-p-iginas-imagens-18.jpg" alt="Maestrazgo 11"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/bY3QsB9P/Vivienda-Tipo-2-3-p-iginas-imagens-19.jpg" alt="Maestrazgo 12"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/NMxR8JhK/Vivienda-Tipo-2-3-p-iginas-imagens-2.jpg" alt="Maestrazgo 13"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/8PcLWmZg/Vivienda-Tipo-2-3-p-iginas-imagens-20.jpg" alt="Maestrazgo 14"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/TY1nmJt6/Vivienda-Tipo-2-3-p-iginas-imagens-21.jpg" alt="Maestrazgo 15"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/CL5bDsc5/Vivienda-Tipo-2-3-p-iginas-imagens-22.jpg" alt="Maestrazgo 16"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/c4CfYBF8/Vivienda-Tipo-2-3-p-iginas-imagens-23.jpg" alt="Maestrazgo 17"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Qtqcg4LT/Vivienda-Tipo-2-3-p-iginas-imagens-3.jpg" alt="Maestrazgo 18"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/fLvY724t/Vivienda-Tipo-2-3-p-iginas-imagens-4.jpg" alt="Maestrazgo 19"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/QCx1fQsk/Vivienda-Tipo-2-3-p-iginas-imagens-5.jpg" alt="Maestrazgo 20"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/Xq7dsf3g/Vivienda-Tipo-2-3-p-iginas-imagens-6.jpg" alt="Maestrazgo 21"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/PJrYSWh3/Vivienda-Tipo-2-3-p-iginas-imagens-7.jpg" alt="Maestrazgo 22"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/C5LkcGYJ/Vivienda-Tipo-2-3-p-iginas-imagens-8.jpg" alt="Maestrazgo 23"></div>
+            <div class="carousel-slide"><img src="https://i.postimg.cc/NFfmd6YV/Vivienda-Tipo-2-3-p-iginas-imagens-9.jpg" alt="Maestrazgo 24"></div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn prev-btn">←</button>
+            <span class="carousel-counter">01 / 24</span>
+            <button class="carousel-btn next-btn">→</button>
+        </div>
     </div>
 </section>
 
@@ -696,7 +782,10 @@
             <a href="proyectos.html" data-i18n="nav_proyectos">Proyectos</a>
             <a href="arquitectura.html" data-i18n="nav_arquitectura">Arquitectura</a>
             <a href="ubicacion.html" data-i18n="nav_ubicacion">Ubicación</a>
-            <a href="#" data-i18n="nav_estilo">Estilo</a>
+            <a href="alma.html" data-i18n="nav_alma">Alma</a>
+            <a href="#" data-i18n="footer_privacy">Política de Privacidad</a>
+            <a href="#" data-i18n="footer_legal">Aviso Legal</a>
+            <a href="#" data-i18n="footer_cookies">Política de Cookies</a>
         </nav>
         <span class="footer-copy" data-i18n="footer_rights">© 2025 Olive Soul · Bajo Maestrazgo, España</span>
     </footer>
@@ -709,7 +798,7 @@
                 nav_proyectos: 'PROYECTOS',
                 nav_arquitectura: 'ARQUITECTURA',
                 nav_ubicacion: 'UBICACIÓN',
-                nav_estilo: 'ESTILO',
+                nav_alma: 'ALMA',
                 arch_hero_label: '007 — ARQUITECTURA',
                 arch_hero_t1: 'ARQUITECTURA',
                 arch_hero_t2: 'EN DIÁLOGO',
@@ -729,18 +818,20 @@
                 arch_pilar4_text: 'Encuadres precisos que convierten el paisaje en arte vivo.',
                 arch_body2: 'La filosofía de Olive Soul se aleja de la ostentación para abrazar el lujo silencioso. Es una arquitectura que respira, que entiende el paso del tiempo y que celebra la imperfección de lo natural. Cada proyecto es una pieza única, adaptada a la topografía y a la orientación de la finca.',
                 arch_note: 'NOTA: TODAS LAS VIVIENDAS CUENTAN CON CERTIFICACIÓN ENERGÉTICA CLASE A Y SISTEMAS DE RECOGIDA DE AGUAS PLUVIALES.',
-                arch_philosophy_quote: 'EL LUJO ES EL ESPACIO, EL SILENCIO Y LA LUZ.',
-                arch_bio: 'Jaime Sanahuja, fundador de Sanahuja & Partners, es un referente de la arquitectura mediterránea contemporánea. Su obra se caracteriza por la búsqueda de la esencia, la sobriedad y la integración armónica en el entorno. En Olive Soul, Sanahuja vuelca décadas de experiencia para crear un lenguaje arquitectónico que es, a la vez, vanguardista y profundamente arraigado a la tradición del Maestrazgo.',
+                       arch_bio: 'Jaime Sanahuja, fundador de Sanahuja & Partners, es un referente de la arquitectura mediterránea contemporánea. Su obra se caracteriza por la búsqueda de la esencia, la sobriedad y la integración armónica en el entorno. En Olive Soul, Sanahuja vuelca décadas de experiencia para crear un lenguaje arquitectónico que es, a la vez, vanguardista y profundamente arraigado a la tradición del Maestrazgo.',
                 arch_link_text: 'VISITAR SANAHUJA & PARTNERS',
                 cta_team: 'HABLAR CON NUESTRO EQUIPO',
                 cta_dossier: 'RECIBIR EL DOSSIER COMPLETO',
-                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, España'
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, España',
+                footer_privacy: 'Política de Privacidad',
+                footer_legal: 'Aviso Legal',
+                footer_cookies: 'Política de Cookies'
             },
             en: {
                 nav_proyectos: 'PROJECTS',
                 nav_arquitectura: 'ARCHITECTURE',
                 nav_ubicacion: 'LOCATION',
-                nav_estilo: 'STYLE',
+                nav_alma: 'SOUL',
                 arch_hero_label: '007 — ARCHITECTURE',
                 arch_hero_t1: 'ARCHITECTURE',
                 arch_hero_t2: 'IN DIALOGUE',
@@ -765,13 +856,16 @@
                 arch_link_text: 'VISIT SANAHUJA & PARTNERS',
                 cta_team: 'TALK TO OUR TEAM',
                 cta_dossier: 'RECEIVE THE FULL DOSSIER',
-                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spain'
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spain',
+                footer_privacy: 'Privacy Policy',
+                footer_legal: 'Legal Notice',
+                footer_cookies: 'Cookies Policy'
             },
             it: {
                 nav_proyectos: 'PROGETTI',
                 nav_arquitectura: 'ARCHITETTURA',
                 nav_ubicacion: 'POSIZIONE',
-                nav_estilo: 'STILE',
+                nav_alma: 'ANIMA',
                 arch_hero_label: '007 — ARCHITETTURA',
                 arch_hero_t1: 'ARCHITETTURA',
                 arch_hero_t2: 'IN DIALOGO',
@@ -796,13 +890,16 @@
                 arch_link_text: 'VISITA SANAHUJA & PARTNERS',
                 cta_team: 'PARLA CON IL NOSTRO TEAM',
                 cta_dossier: 'RICEVI IL DOSSIER COMPLETO',
-                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spagna'
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Spagna',
+                footer_privacy: 'Informativa sulla Privacy',
+                footer_legal: 'Note Legali',
+                footer_cookies: 'Politica sui Cookie'
             },
             fr: {
                 nav_proyectos: 'PROJETS',
                 nav_arquitectura: 'ARCHITECTURE',
                 nav_ubicacion: 'EMPLACEMENT',
-                nav_estilo: 'STYLE',
+                nav_alma: 'ÂME',
                 arch_hero_label: '007 — ARCHITECTURE',
                 arch_hero_t1: 'ARCHITECTURE',
                 arch_hero_t2: 'EN DIALOGUE',
@@ -820,14 +917,17 @@
                 arch_pilar3_text: 'Conception bioclimatique qui minimise l\'impact environnemental.',
                 arch_pilar4_label: 'DIALOGUE VISUEL',
                 arch_pilar4_text: 'Cadrages précis qui transforment le paysage en art vivant.',
-                arch_body2: 'La philosophie Olive Soul s\'éloigne de l\'ostentation pour embrasser le luxe silencieux. C\'est une architecture qui respire, qui comprend le passage du temps et qui célèbre l\'imperfection du naturel. Chaque projet est une pièce unique, adaptée à la topographie et à l\'orientation du domaine.',
+                arch_body2: 'La philosophie Olive Soul s\'éloigne de l\'ostentation pour embrasser le luxe silencieux. C\'est une architecture qui respira, qui comprend le passage du temps et qui célèbre l\'imperfection du naturel. Chaque projet est une pièce unique, adaptée à la topographie et à l\'orientation du domaine.',
                 arch_note: 'NOTE : TOUTES LES MAISONS ONT UNE CERTIFICATION ÉNERGÉTIQUE DE CLASSE A ET DES SYSTÈMES DE COLLECTE DES EAUX DE PLUIE.',
                 arch_philosophy_quote: 'LE LUXE, C\'EST L\'ESPACE, LE SILENCE ET LA LUMIÈRE.',
                 arch_bio: 'Jaime Sanahuja, fondateur de Sanahuja & Partners, est une référence de l\'architecture méditerranéenne contemporaine. Son œuvre se caractérise par la recherche de l\'essence, la sobriété et l\'intégration harmonieuse dans l\'environnement. Chez Olive Soul, Sanahuja met à profit des décennies d\'expérience pour créer un langage architectural à la fois avant-gardiste et profondément enraciné dans la tradition du Maestrazgo.',
                 arch_link_text: 'VISITER SANAHUJA & PARTNERS',
                 cta_team: 'PARLER À NOTRE ÉQUIPE',
                 cta_dossier: 'RECEVOIR LE DOSSIER COMPLET',
-                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Espagne'
+                footer_rights: '© 2025 Olive Soul · Bajo Maestrazgo, Espagne',
+                footer_privacy: 'Politique de Confidentialité',
+                footer_legal: 'Mentions Légales',
+                footer_cookies: 'Politique relative aux Cookies'
             }
         };
 
@@ -912,28 +1012,31 @@
         createWaves('footer-waves', darkWaves);
 
         // Carousel
-        let currentSlide = 0;
-const slides = document.querySelectorAll('.carousel-slide');
-const counter = document.getElementById('carousel-counter');
-const totalSlides = 17;
+        document.querySelectorAll('.carousel-container').forEach(container => {
+            const track = container.querySelector('.carousel-track');
+            const slides = container.querySelectorAll('.carousel-slide');
+            const counter = container.querySelector('.carousel-counter');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
 
-slides[0].classList.add('active');
+            slides[0].classList.add('active');
 
-function updateCarousel() {
-    slides.forEach(s => s.classList.remove('active'));
-    slides[currentSlide].classList.add('active');
-    counter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
-}
+            function updateCarousel() {
+                slides.forEach(s => s.classList.remove('active'));
+                slides[currentSlide].classList.add('active');
+                counter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+            }
 
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarousel();
-}
+            container.querySelector('.next-btn').addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateCarousel();
+            });
 
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateCarousel();
-}
+            container.querySelector('.prev-btn').addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            });
+        });
 
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);

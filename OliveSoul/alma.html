@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alma — Olive Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: '#6B7B3A',
+                        'olive-dark': '#4A5528',
+                        paper: '#F5F0E8',
+                        ink: '#141414',
+                    },
+                    fontFamily: {
+                        bebas: ['Bebas Neue', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #F5F0E8;
+            color: #141414;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-transform: lowercase;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        .wave-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .wave-bg svg { width: 100%; height: 100%; object-fit: cover; }
+        
+        .section-padding {
+            padding: 120px 5vw;
+        }
+        
+        .editorial-headline {
+            font-size: clamp(3rem, 8vw, 10rem);
+            line-height: 0.85;
+            margin-bottom: 2rem;
+        }
+        
+        .editorial-body {
+            font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+        }
+
+        .eyebrow {
+            font-size: 0.8rem;
+            letter-spacing: 0.4em;
+            color: #6B7B3A;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+        .btn-olive {
+            background: #6B7B3A;
+            color: white;
+        }
+        .btn-olive:hover {
+            background: #4A5528;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            border: 1px solid rgba(20, 20, 20, 0.2);
+            color: #141414;
+        }
+        .btn-outline:hover {
+            border-color: #6B7B3A;
+            color: #6B7B3A;
+        }
+
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 5vw;
+            transition: all 0.5s;
+        }
+        #site-header.scrolled {
+            background: rgba(245, 240, 232, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5vw;
+        }
+        .header-logo {
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: #6B7B3A;
+        }
+        .header-nav { display: flex; gap: 2.5rem; }
+        .header-nav a {
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            color: #6B7B3A;
+            font-weight: bold;
+        }
+        .header-nav a:hover { color: #141414; }
+
+        .topic-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(107, 123, 58, 0.1);
+            padding: 3rem;
+            transition: all 0.5s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .topic-card:hover {
+            background: white;
+            border-color: #6B7B3A;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .testimonial-img {
+            filter: grayscale(100%);
+            transition: filter 1s;
+        }
+        .testimonial-img:hover {
+            filter: grayscale(0%);
+        }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .section-padding { padding: 80px 5vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="site-header">
+        <a href="index.html" class="header-logo">
+            <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="h-10 w-auto object-contain" referrerPolicy="no-referrer">
+        </a>
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-2 text-[0.6rem] font-bold tracking-[0.2em]">
+                <button onclick="switchLang('es')" class="lang-btn active transition-colors uppercase text-olive" data-lang="es">es</button>
+                <span class="text-black/10">|</span>
+                <button onclick="switchLang('en')" class="lang-btn transition-colors uppercase text-black/30 hover:text-olive" data-lang="en">en</button>
+                <span class="text-black/10">|</span>
+                <button onclick="switchLang('it')" class="lang-btn transition-colors uppercase text-black/30 hover:text-olive" data-lang="it">it</button>
+                <span class="text-black/10">|</span>
+                <button onclick="switchLang('fr')" class="lang-btn transition-colors uppercase text-black/30 hover:text-olive" data-lang="fr">fr</button>
+            </div>
+            <nav class="header-nav">
+                <a href="proyectos.html" data-i18n="nav_proyectos">proyectos</a>
+                <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
+                <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
+                <a href="alma.html" data-i18n="nav_alma">alma</a>
+                <a href="inversion-gestion.html" data-i18n="nav_inversion">inversión</a>
+            </nav>
+            <button class="px-6 py-2 bg-olive text-white text-base font-bold tracking-widest rounded-sm hover:bg-olive-dark transition-colors" data-i18n="dossier">
+                SOLICITAR DOSSIER
+            </button>
+        </div>
+    </header>
+
+    <!-- SECCIÓN 01 — LO QUE NOS MUEVE -->
+    <section class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden">
+        <div class="wave-bg" id="waves-hero"></div>
+        <div class="relative z-10 max-w-5xl">
+            <h2 class="eyebrow scroll-reveal" style="color: #141414; font-size: 1.2rem;">Lo que nos mueve</h2>
+            <h1 class="editorial-headline scroll-reveal">
+                Hay proyectos que construyen casas.<br>
+                <span class="text-olive">Olive Soul custodia un territorio.</span>
+            </h1>
+            <p class="editorial-body max-w-3xl mx-auto scroll-reveal">
+                El alma de este proyecto no está en los planos ni en las cifras. Está en los olivos que llevan mil años ordenando este paisaje, en la energía del Mediterráneo que lo impregna todo, y en la comunidad de personas que han elegido habitarlo con conciencia.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 02 — EL CORAZÓN DEL PROYECTO -->
+    <section class="section-padding relative overflow-hidden">
+        <div class="wave-bg" id="waves-heart"></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-stretch relative z-10">
+            <div class="flex flex-col justify-center">
+                <h2 class="editorial-headline text-5xl md:text-7xl mb-8 scroll-reveal">El corazón del proyecto</h2>
+                <h3 class="text-2xl mb-8 text-olive scroll-reveal">Mil años de memoria viva.</h3>
+                <div class="editorial-body space-y-6 text-black/70 scroll-reveal">
+                    <p>El Bajo Maestrazgo alberga la mayor concentración de olivos monumentales del mundo: más de 4.670 ejemplares centenarios y milenarios que siguen produciendo, creciendo y transformando a quienes se acercan a ellos. No son decoración. No son paisaje de fondo. Son la razón de ser de Olive Soul.</p>
+                    <p>Cada árbol es un archivo vivo. Un testigo de civilizaciones, de cosechas, de guerras y de paces. Habitarlos no es simplemente vivir en el campo: es insertarse en una línea del tiempo que va mucho más allá de la propia vida. Algo en esa escala cambia la perspectiva. Ordena las prioridades. Devuelve el sentido de lo esencial.</p>
+                    <p>Uno de los compromisos fundacionales de Olive Soul es rescatar olivos en riesgo de desaparición. A través del apadrinamiento, cada propietario puede convertirse en custodio de uno de estos ejemplares únicos: participar en su cuidado, en su cosecha, en la producción del aceite que ese árbol lleva generando desde antes de que existiera el país en el que vivimos.</p>
+                </div>
+                <div class="mt-12 p-8 border border-olive/20 bg-olive/5 scroll-reveal">
+                    <p class="text-xl tracking-widest text-olive font-bold">+4.670 olivos monumentales · Patrimonio UNESCO · Recurso no replicable</p>
+                </div>
+            </div>
+            <div class="relative flex items-stretch scroll-reveal">
+                <img src="https://picsum.photos/seed/olive-heart/1000/1200" alt="Olivos milenarios" class="w-full h-full object-cover rounded-sm shadow-2xl" referrerPolicy="no-referrer">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 03 — UNA FORMA DE VIVIR -->
+    <section class="section-padding relative overflow-hidden bg-white/30">
+        <div class="wave-bg" id="waves-living"></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-stretch relative z-10">
+            <div class="order-2 lg:order-1 relative flex items-stretch scroll-reveal">
+                <img src="https://picsum.photos/seed/slow-living/1000/1200" alt="Slow living mediterráneo" class="w-full h-full object-cover rounded-sm shadow-2xl" referrerPolicy="no-referrer">
+            </div>
+            <div class="order-1 lg:order-2 flex flex-col justify-center">
+                <h2 class="editorial-headline text-5xl md:text-7xl mb-8 scroll-reveal">Una forma de vivir</h2>
+                <h3 class="text-2xl mb-8 text-olive scroll-reveal">El tiempo aquí tiene otra textura.</h3>
+                <div class="editorial-body space-y-6 text-black/70 scroll-reveal">
+                    <p>Vivir en Olive Soul es aprender a moverse al ritmo de las estaciones. La primavera trae la floración y el aroma de las hierbas silvestres. El verano, la luz larga y el mar a quince minutos. El otoño, la cosecha y el ritual del prensado en frío. El invierno, el silencio del olivar y el fuego que convoca.</p>
+                    <p>Este es el slow living mediterráneo en su forma más genuina: no una estética importada, sino una manera de habitar que este territorio lleva practicando desde la Vía Augusta romana. Una vida donde la gastronomía no es entretenimiento sino cultura, donde el aceite de producción propia no es un capricho sino un vínculo con la tierra, donde el cuerpo y la mente encuentran el equilibrio que los entornos urbanos sistemáticamente destruyen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 04 — LO QUE SUCEDE AQUÍ -->
+    <section class="section-padding relative overflow-hidden">
+        <div class="wave-bg" id="waves-happen"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-24">
+                <h2 class="editorial-headline scroll-reveal">Lo que sucede aquí</h2>
+                <p class="editorial-body text-olive scroll-reveal">Una vida que no necesita itinerario. Pero que ofrece uno extraordinario.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <!-- Topic 1 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/harvest/800/1000" alt="Cosecha" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Cosecha y prensado de aceite propio</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Participar en la recogida de la aceituna y en el prensado artesanal en frío. Producir el propio aceite virgen extra. Un ritual que conecta con el ciclo más antiguo del Mediterráneo.</p>
+                    </div>
+                </div>
+                <!-- Topic 2 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/routes/800/1000" alt="Rutas" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Rutas entre olivos milenarios</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Recorridos temáticos guiados entre los ejemplares monumentales del territorio. Historia, botánica, energía y silencio. Un paisaje que se lee de otra manera cuando alguien te lo cuenta.</p>
+                    </div>
+                </div>
+                <!-- Topic 3 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/art/800/1000" alt="Arte" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l5 5"/><path d="M9.5 14.5L16 21"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Arte, escultura y bosque artístico</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Olive Soul concibe un olivar artístico donde esculturas contemporáneas dialogan con los árboles centenarios. Un espacio de creación, contemplación y exposición permanente al aire libre.</p>
+                    </div>
+                </div>
+                <!-- Topic 4 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/meditation/800/1000" alt="Meditación" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Meditación y bienestar en piedra seca</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Las antiguas construcciones de piedra seca del territorio como espacios de práctica meditativa y reconexión. Arquitectura vernácula al servicio del bienestar interior.</p>
+                    </div>
+                </div>
+                <!-- Topic 5 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/gastronomy/800/1000" alt="Gastronomía" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Gastronomía mediterránea y eventos culturales</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Cenas en el olivar, mercados de producto local, eventos de temporada, fiestas seculares del territorio. La dieta mediterránea vivida desde la proximidad al producto, no desde el menú.</p>
+                    </div>
+                </div>
+                <!-- Topic 6 -->
+                <div class="group relative overflow-hidden rounded-sm scroll-reveal h-[450px]">
+                    <img src="https://picsum.photos/seed/masterclass/800/1000" alt="Masterclasses" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute inset-0 p-10 flex flex-col justify-end text-white">
+                        <div class="w-12 h-12 bg-olive rounded-full flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h4 class="text-3xl mb-4">Masterclasses y networking creativo</h4>
+                        <p class="editorial-body text-base text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Encuentros internacionales, talleres temáticos, programas de crecimiento personal, cerámica tradicional y arteterapia. Una comunidad que aprende, crea y se conecta desde un entorno que inspira.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 05 — TESTIMONIO -->
+    <section class="section-padding relative overflow-hidden bg-olive text-white">
+        <div class="wave-bg" id="waves-testimony" style="opacity: 0.1;"></div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
+            <div class="relative scroll-reveal flex justify-center">
+                <img src="https://i.postimg.cc/d3hYb3qv/Whats-App-Image-2026-03-24-at-17-58-02.jpg" alt="Jose Pedro Estepa" class="w-2/3 h-auto rounded-sm shadow-2xl testimonial-img" referrerPolicy="no-referrer">
+                <div class="absolute -bottom-8 -right-8 w-48 h-48 border-b-2 border-r-2 border-white/20"></div>
+            </div>
+            <div class="flex flex-col justify-center">
+                <div class="editorial-body text-2xl md:text-3xl leading-relaxed mb-12 scroll-reveal">
+                    "Para mí, Olive Soul no es un proyecto: es un cambio de piel. Es la decisión de habitar el tiempo lento que marcan los olivos centenarios y milenarios junto al Mediterráneo. Vivir en un olivar es dejar atrás el ruido y entrar en una vida más esencial. Aquí, cada árbol contiene memoria y te ordena por dentro."
+                </div>
+                <div class="editorial-body text-xl md:text-2xl leading-relaxed mb-12 scroll-reveal">
+                    "Siento una energía profundamente sanadora, que te arraiga y te eleva. Olive Soul propone un hábitat con una arquitectura integrada en el territorio, inspirada en él. Los árboles no solo acompañan: son fuente de inspiración para la vida y la creación artística. Y una felicidad compartida aparece sin esfuerzo, como la luz entre sus ramas."
+                </div>
+                <div class="scroll-reveal">
+                    <h4 class="text-3xl mb-2">Jose Pedro Estepa</h4>
+                    <p class="text-white/60 tracking-widest uppercase text-sm">Cineasta Documentalista · Fundador y Promotor de Olive Soul</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 06 — QUIÉNES SOMOS -->
+    <section class="section-padding relative overflow-hidden">
+        <div class="wave-bg" id="waves-who"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="editorial-headline scroll-reveal">Quiénes somos</h2>
+            <h3 class="text-3xl mb-12 text-olive scroll-reveal">Una comunidad que no se anuncia. Se reconoce.</h3>
+            <div class="editorial-body space-y-8 text-black/70 scroll-reveal">
+                <p>Las personas que llegan a Olive Soul no buscan lo mismo, pero comparten algo difícil de articular: una manera de mirar el mundo que prioriza la profundidad sobre la velocidad, la autenticidad sobre la apariencia, la conexión real sobre la presencia digital. Creativos, emprendedores, familias, nómadas con raíces, personas en transición. Lo que los une no es un perfil sociológico. Es una forma de entender el tiempo.</p>
+                <p>La comunidad de Olive Soul se construye día a día, en los caminos del olivar, en las mesas compartidas, en los eventos y en el silencio. No es una red de contactos. Es un círculo de pertenencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 07 — NUESTRA RESPONSABILIDAD -->
+    <section class="section-padding relative overflow-hidden bg-paper">
+        <div class="wave-bg" id="waves-resp"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-24">
+                <div>
+                    <h2 class="editorial-headline text-5xl md:text-7xl mb-8 scroll-reveal">Nuestra responsabilidad</h2>
+                    <h3 class="text-2xl mb-8 text-olive scroll-reveal">Construir aquí es un acto de responsabilidad, no solo de arquitectura.</h3>
+                </div>
+                <div class="editorial-body text-black/70 space-y-6 flex flex-col justify-end scroll-reveal">
+                    <p>Olive Soul opera bajo el principio de que un proyecto que ocupa un territorio de esta singularidad tiene una deuda con él. Una deuda que se paga con criterio constructivo, con autosuficiencia energética, con gestión sostenible del agua y con una implicación activa con los municipios y comunidades del entorno.</p>
+                    <p>La independencia energética no es un argumento de marketing. Es la condición mínima para habitar un entorno protegido con integridad. Los sistemas propios de agua, el drenaje natural, la mínima artificialización del suelo: cada decisión técnica es también una decisión ética.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Energía -->
+                <div class="p-12 border border-olive/10 bg-white/50 scroll-reveal">
+                    <h4 class="text-3xl mb-6 text-olive">Energía</h4>
+                    <p class="editorial-body text-base text-black/60">Autosuficiencia solar fotovoltaica y térmica. Independencia de la red en consumo cotidiano.</p>
+                </div>
+                <!-- Agua -->
+                <div class="p-12 border border-olive/10 bg-white/50 scroll-reveal">
+                    <h4 class="text-3xl mb-6 text-olive">Agua</h4>
+                    <p class="editorial-body text-base text-black/60">Sistemas propios de captación y gestión. Reutilización de aguas pluviales. Drenaje natural integrado en el paisaje.</p>
+                </div>
+                <!-- Territorio -->
+                <div class="p-12 border border-olive/10 bg-white/50 scroll-reveal">
+                    <h4 class="text-3xl mb-6 text-olive">Territorio</h4>
+                    <p class="editorial-body text-base text-black/60">Rescate de olivos en riesgo. Vegetación autóctona. Ocupación mínima del suelo. Integración constructiva con el entorno.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 08 — CIERRE / CTA -->
+    <section class="section-padding relative overflow-hidden bg-olive text-white text-center">
+        <div class="wave-bg" id="waves-cta" style="opacity: 0.1;"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="editorial-headline text-6xl md:text-9xl mb-12 scroll-reveal">Esto no se explica del todo.</h2>
+            <h3 class="text-3xl md:text-5xl mb-16 scroll-reveal">Hay que venir a sentirlo.</h3>
+            <p class="editorial-body mb-20 scroll-reveal">Si algo en esta página ha resonado contigo, el siguiente paso es sencillo. Habla con nuestro equipo, solicita el dossier completo o simplemente cuéntanos qué estás buscando. Olive Soul empieza antes de que llegues.</p>
+            
+            <div class="flex flex-col md:flex-row gap-8 justify-center items-center scroll-reveal">
+                <a href="https://wa.me/34603502986" target="_blank" class="btn bg-white text-olive hover:bg-paper hover:scale-105">Hablar con Nuestro Equipo</a>
+                <button class="btn border border-white/30 text-white hover:border-white hover:bg-white/10">Solicitar Dossier Completo</button>
+                <a href="proyectos.html" class="btn border border-white/30 text-white hover:border-white hover:bg-white/10">Explorar los Proyectos</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-olive text-white/60 py-24 px-[5vw] border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20">
+            <div class="lg:col-span-2">
+                <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="h-12 w-auto mb-10 brightness-0 invert opacity-90" referrerPolicy="no-referrer">
+                <p class="editorial-body text-sm max-w-sm leading-relaxed mb-10 text-white/80" data-i18n="footer_desc">
+                    Un proyecto de vida consciente en el Bajo Maestrazgo. Arquitectura contemporánea, territorio milenario y comunidad regenerativa.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-white text-[0.65rem] font-bold tracking-[0.3em] uppercase mb-10" data-i18n="footer_nav">Navegación</h4>
+                <ul class="space-y-6">
+                    <li><a href="proyectos.html" class="text-sm hover:text-white transition-colors" data-i18n="nav_proyectos">proyectos</a></li>
+                    <li><a href="arquitectura.html" class="text-sm hover:text-white transition-colors" data-i18n="nav_arquitectura">arquitectura</a></li>
+                    <li><a href="ubicacion.html" class="text-sm hover:text-white transition-colors" data-i18n="nav_ubicacion">ubicación</a></li>
+                    <li><a href="alma.html" class="text-sm hover:text-white transition-colors" data-i18n="nav_alma">alma</a></li>
+                    <li><a href="inversion-gestion.html" class="text-sm hover:text-white transition-colors" data-i18n="nav_inversion">inversión</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white text-[0.65rem] font-bold tracking-[0.3em] uppercase mb-10" data-i18n="footer_contact">Contacto</h4>
+                <ul class="space-y-6 text-sm text-white/80">
+                    <li data-i18n="footer_address">Bajo Maestrazgo, Castellón, España</li>
+                    <li>info@olivesoul.com</li>
+                    <li>+34 603 502 986</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-24 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="text-[0.6rem] tracking-[0.2em] uppercase font-bold" data-i18n="footer_rights">© 2026 Olive Soul · Todos los derechos reservados</p>
+            <div class="flex gap-8">
+                <a href="#" class="text-[0.6rem] tracking-[0.2em] uppercase font-bold hover:text-white transition-colors" data-i18n="legal_notice">Aviso Legal</a>
+                <a href="#" class="text-[0.6rem] tracking-[0.2em] uppercase font-bold hover:text-white transition-colors" data-i18n="privacy_policy">Política de Privacidad</a>
+                <a href="#" class="text-[0.6rem] tracking-[0.2em] uppercase font-bold hover:text-white transition-colors" data-i18n="cookies_policy">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const T = {
+            es: {
+                nav_proyectos: 'proyectos', nav_arquitectura: 'arquitectura', nav_ubicacion: 'ubicación', nav_alma: 'alma', nav_inversion: 'inversión',
+                dossier: 'SOLICITAR DOSSIER', footer_desc: 'Un proyecto de vida consciente en el Bajo Maestrazgo. Arquitectura contemporánea, territorio milenario y comunidad regenerativa.',
+                footer_nav: 'Navegación', footer_contact: 'Contacto', footer_address: 'Bajo Maestrazgo, Castellón, España',
+                footer_rights: '© 2026 Olive Soul · Todos los derechos reservados', legal_notice: 'Aviso Legal', privacy_policy: 'Política de Privacidad', cookies_policy: 'Política de Cookies'
+            },
+            en: {
+                nav_proyectos: 'projects', nav_arquitectura: 'architecture', nav_ubicacion: 'location', nav_alma: 'soul', nav_inversion: 'investment',
+                dossier: 'REQUEST DOSSIER', footer_desc: 'A conscious life project in Bajo Maestrazgo. Contemporary architecture, millennial territory and regenerative community.',
+                footer_nav: 'Navigation', footer_contact: 'Contact', footer_address: 'Bajo Maestrazgo, Castellón, Spain',
+                footer_rights: '© 2026 Olive Soul · All rights reserved', legal_notice: 'Legal Notice', privacy_policy: 'Privacy Policy', cookies_policy: 'Cookies Policy'
+            },
+            it: {
+                nav_proyectos: 'progetti', nav_arquitectura: 'architettura', nav_ubicacion: 'posizione', nav_alma: 'anima', nav_inversion: 'investimento',
+                dossier: 'RICHIEDI DOSSIER', footer_desc: 'Un progetto di vita consapevole nel Bajo Maestrazgo. Architettura contemporanea, territorio millenario e comunità rigenerativa.',
+                footer_nav: 'Navigazione', footer_contact: 'Contatto', footer_address: 'Bajo Maestrazgo, Castellón, Spagna',
+                footer_rights: '© 2026 Olive Soul · Tutti i diritti riservati', legal_notice: 'Avviso Legale', privacy_policy: 'Informativa sulla Privacy', cookies_policy: 'Politica sui Cookie'
+            },
+            fr: {
+                nav_proyectos: 'projets', nav_arquitectura: 'architecture', nav_ubicacion: 'emplacement', nav_alma: 'âme', nav_inversion: 'investissement',
+                dossier: 'DEMANDER DOSSIER', footer_desc: 'Un projet de vie consciente dans le Bajo Maestrazgo. Architecture contemporaine, territoire millénaire et communauté régénératrice.',
+                footer_nav: 'Navigation', footer_contact: 'Contact', footer_address: 'Bajo Maestrazgo, Castellón, Espagne',
+                footer_rights: '© 2026 Olive Soul · Tous droits réservés', legal_notice: 'Mentions Légales', privacy_policy: 'Politique de Confidentialité', cookies_policy: 'Politique relative aux Cookies'
+            }
+        };
+
+        function switchLang(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (T[lang][key]) el.textContent = T[lang][key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                const isCurrent = btn.getAttribute('data-lang') === lang;
+                btn.classList.toggle('active', isCurrent);
+                btn.classList.toggle('text-olive', isCurrent);
+                btn.classList.toggle('text-black/30', !isCurrent);
+            });
+            document.documentElement.lang = lang;
+        }
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Header Scroll Effect
+        const header = document.getElementById('site-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Wave Generator
+        function createWaves(containerId, color, opacity) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 1920 1080");
+            svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+            
+            for (let i = 0; i < 4; i++) {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const y = 300 + i * 100;
+                path.setAttribute("d", `M-100,${y} C200,${y-100} 400,${y+100} 700,${y} S1100,${y-150} 1500,${y} S1900,${y+100} 2200,${y}`);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", color);
+                path.setAttribute("stroke-width", 1.5 - i * 0.2);
+                path.setAttribute("opacity", opacity - i * 0.02);
+                svg.appendChild(path);
+                
+                gsap.to(path, {
+                    x: i % 2 === 0 ? -80 : 80,
+                    duration: 10 + i * 5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: i * 2
+                });
+            }
+            container.appendChild(svg);
+        }
+
+        // Initialize Waves
+        const waveConfigs = [
+            { id: 'waves-hero', color: '#6B7B3A', op: 0.15 },
+            { id: 'waves-heart', color: '#6B7B3A', op: 0.1 },
+            { id: 'waves-living', color: '#6B7B3A', op: 0.1 },
+            { id: 'waves-happen', color: '#6B7B3A', op: 0.1 },
+            { id: 'waves-testimony', color: '#F5F0E8', op: 0.1 },
+            { id: 'waves-who', color: '#6B7B3A', op: 0.1 },
+            { id: 'waves-resp', color: '#6B7B3A', op: 0.1 },
+            { id: 'waves-cta', color: '#F5F0E8', op: 0.1 }
+        ];
+
+        waveConfigs.forEach(w => createWaves(w.id, w.color, w.op));
+
+        // Scroll Reveal
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            gsap.from(el, {
+                opacity: 0,
+                y: 40,
+                duration: 1.5,
+                ease: 'power4.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                }
+            });
+        });
+    </script>
+</body>
+</html>
