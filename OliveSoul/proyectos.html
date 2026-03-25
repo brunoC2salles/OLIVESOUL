@@ -6,7 +6,7 @@
     <title>Proyectos — Olive Soul</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,7 +23,7 @@
             --muted: rgba(26,26,24,0.45);
             --line: rgba(26,26,24,0.12);
             --line-strong: rgba(26,26,24,0.25);
-            --font: 'Bebas Neue', sans-serif;
+            --font: 'Aileron', 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,11 +32,13 @@
             background: var(--bg);
             color: var(--text);
             font-family: var(--font);
-            letter-spacing: 0.04em;
+            letter-spacing: 0.01em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             text-transform: lowercase;
         }
+
+        h1, h2, h3, h4, h5, h6 { font-weight: 400; text-transform: lowercase; }
 
         /* Cursor */
         #cursor {
@@ -95,7 +97,7 @@
             letter-spacing: 0.25em;
             color: var(--text);
             text-decoration: none;
-            text-transform: uppercase;
+            text-transform: lowercase;
             display: flex;
             align-items: center;
         }
@@ -108,7 +110,7 @@
             color: var(--muted);
             text-decoration: none;
             transition: color 0.3s;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .header-nav a:hover { color: var(--text); }
         .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
@@ -131,13 +133,13 @@
 
         /* Hero */
         .hero-section {
-            height: 100vh;
+            min-height: 110vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 0 8vw 8vh;
             padding-top: 80px;
-            overflow: hidden;
+            overflow: visible;
         }
         .hero-label-container {
             position: absolute;
@@ -165,16 +167,29 @@
         }
         .hero-anim {
             display: block;
-            overflow: hidden;
-            line-height: 0.85;
+            overflow: visible;
+            line-height: 1.1;
+            padding-bottom: 0.1em;
         }
         .hero-anim span { display: block; }
-        .hero-title-1 { font-size: clamp(8rem, 15vw, 17rem); color: var(--text); }
-        .hero-title-2 { font-size: clamp(8rem, 15vw, 17rem); color: var(--olive); }
-        .hero-title-3 { 
-            font-size: clamp(2.5rem, 4.5vw, 5rem); 
-            letter-spacing: 0.1em; 
-            color: var(--muted); 
+        .hero-logo-corner {
+            position: absolute;
+            bottom: 3rem;
+            right: 5vw;
+            z-index: 2;
+            opacity: 0.22;
+        }
+        .hero-logo-corner img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+        .hero-title-1 { font-size: clamp(4rem, 11vw, 14rem); color: var(--text); }
+        .hero-title-2 { font-size: clamp(4rem, 11vw, 14rem); color: var(--olive); }
+        .hero-title-3 {
+            font-size: clamp(2rem, 4.5vw, 5.5rem);
+            letter-spacing: 0.05em;
+            color: var(--muted);
             margin-top: 1rem;
         }
         .hero-border {
@@ -203,7 +218,7 @@
         .statement-text {
             position: relative;
             z-index: 1;
-            font-size: clamp(1.5rem, 2.5vw, 3rem);
+            font-size: clamp(1rem, 2vw, 2rem);
             letter-spacing: 0.06em;
             color: #F5F0E8;
             line-height: 1.4;
@@ -229,7 +244,7 @@
             z-index: 1;
         }
         .project-number-title {
-            font-size: clamp(3rem, 6vw, 7rem);
+            font-size: clamp(2rem, 4.5vw, 5rem);
             color: var(--text);
         }
         .project-subtitle {
@@ -253,7 +268,7 @@
         .project-grid.reversed .scroll-reveal:last-child { order: 1; }
 
         .project-body {
-            font-size: 1.2rem;
+            font-size: 1rem;
             line-height: 1.6;
             color: var(--text);
             margin-bottom: 3rem;
@@ -400,7 +415,7 @@
             color: rgba(245,240,232,0.4);
             text-decoration: none;
             transition: color 0.3s;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .footer-nav a:hover { color: #F5F0E8; }
         .footer-legal {
@@ -409,7 +424,7 @@
             font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 0.15em;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .footer-legal a {
             color: rgba(245, 240, 232, 0.4);
@@ -592,7 +607,7 @@
             color: rgba(245,240,232,0.4);
             margin-bottom: 1.5rem;
             display: block;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .details-body {
             font-size: 1.1rem;
@@ -657,7 +672,7 @@
         @media (max-width: 768px) {
             #site-header { padding: 1rem 5vw; }
             .header-nav { display: none; }
-            .hero-title-1, .hero-title-2 { font-size: clamp(5rem, 15vw, 8rem); }
+            .hero-title-1, .hero-title-2 { font-size: clamp(2.5rem, 10vw, 5rem); }
             .project-grid { grid-template-columns: 1fr !important; gap: 4rem; }
             .project-grid.reversed .scroll-reveal:first-child { order: 1; }
             .project-grid.reversed .scroll-reveal:last-child { order: 2; }
@@ -715,6 +730,9 @@
         </h1>
         <div class="scroll-indicator" data-i18n="scroll">SCROLL</div>
         <div class="hero-border"></div>
+        <div class="hero-logo-corner">
+            <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="" referrerPolicy="no-referrer">
+        </div>
     </section>
 
     <section class="statement-bar">

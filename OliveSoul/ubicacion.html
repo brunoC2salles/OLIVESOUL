@@ -6,7 +6,7 @@
     <title>Ubicación — Olive Soul</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,7 +27,7 @@
             --muted: rgba(26,26,24,0.5);
             --line: rgba(26,26,24,0.12);
             --line-strong: rgba(26,26,24,0.25);
-            --font: 'Bebas Neue', sans-serif;
+            --font: 'Aileron', 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,11 +35,12 @@
             background: var(--bg); 
             color: var(--text); 
             font-family: var(--font); 
-            letter-spacing: 0.04em;
+            letter-spacing: 0.01em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             text-transform: lowercase;
         }
+        h1, h2, h3, h4, h5, h6 { font-weight: 400; text-transform: lowercase; }
 
         /* Cursor */
         #cursor { 
@@ -98,7 +99,7 @@
             letter-spacing: 0.25em; 
             color: var(--text); 
             text-decoration: none; 
-            text-transform: uppercase;
+            text-transform: lowercase;
             display: flex;
             align-items: center;
         }
@@ -111,7 +112,7 @@
             color: var(--muted); 
             text-decoration: none; 
             transition: color 0.3s; 
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .header-nav a:hover { color: var(--text); }
         .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
@@ -146,15 +147,15 @@
         /* Hero */
         .hero-section {
             display: block;
-            height: 100vh;
+            min-height: 110vh;
             padding-top: 80px;
-            overflow: hidden;
+            overflow: visible;
         }
         .hero-left {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            height: calc(100vh - 80px);
+            min-height: calc(110vh - 80px);
             padding: 0 8vw 12vh 8vw;
             position: relative;
             z-index: 1;
@@ -174,16 +175,29 @@
         }
         .hero-title-line {
             display: block;
-            overflow: hidden;
-            line-height: 0.85;
+            overflow: visible;
+            line-height: 1.1;
+            padding-bottom: 0.1em;
         }
         .hero-title-line span { display: block; }
-        .hero-t1, .hero-t2 { font-size: clamp(6rem, 11vw, 13rem); }
+        .hero-logo-corner {
+            position: absolute;
+            bottom: 3rem;
+            right: 5vw;
+            z-index: 2;
+            opacity: 0.22;
+        }
+        .hero-logo-corner img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+        .hero-t1, .hero-t2 { font-size: clamp(3.5rem, 7vw, 9rem); }
         .hero-t1 { color: var(--text); }
         .hero-t2 { color: var(--olive); }
-        .hero-t3 { 
-            font-size: clamp(3rem, 5.5vw, 6.5rem); 
-            color: var(--terracota); 
+        .hero-t3 {
+            font-size: clamp(1.5rem, 3vw, 4rem);
+            color: var(--terracota);
         }
         .hero-bottom-border {
             position: absolute;
@@ -225,7 +239,7 @@
             color: var(--olive);
             margin-top: 1rem;
             text-align: center;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .hero-stats {
             display: flex;
@@ -246,7 +260,7 @@
             font-size: 0.65rem;
             letter-spacing: 0.2em;
             color: var(--muted);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
 
         /* Statement */
@@ -259,13 +273,13 @@
         .statement-text {
             position: relative;
             z-index: 1;
-            font-size: clamp(1.8rem, 3vw, 3.5rem);
+            font-size: clamp(1rem, 2vw, 2.2rem);
             letter-spacing: 0.06em;
             color: var(--text-light);
             line-height: 1.4;
             max-width: 900px;
             margin: 0 auto;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
 
         /* Big Stats */
@@ -275,13 +289,13 @@
             overflow: hidden;
         }
         .section-title-row {
-            font-size: clamp(3.5rem, 7vw, 8rem);
+            font-size: clamp(2.5rem, 5vw, 6rem);
             border-bottom: 1px solid var(--line);
             padding-bottom: 2rem;
             margin-bottom: 6rem;
             position: relative;
             z-index: 1;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .stats-grid {
             display: grid;
@@ -310,7 +324,7 @@
             color: var(--muted);
             margin-top: 1rem;
             display: block;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
 
         /* Intro Text */
@@ -340,10 +354,10 @@
             letter-spacing: 0.04em;
             line-height: 2;
             color: var(--muted);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .intro-right-title {
-            font-size: clamp(3rem, 5vw, 6rem);
+            font-size: clamp(2rem, 4vw, 5rem);
             color: rgba(26,26,24,0.06);
             line-height: 1;
             letter-spacing: 0.02em;
@@ -361,7 +375,7 @@
             font-size: clamp(0.9rem, 1vw, 1rem);
             letter-spacing: 0.05em;
             color: var(--text);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
 
         /* Large Map */
@@ -381,9 +395,9 @@
             z-index: 1;
         }
         .map-title {
-            font-size: clamp(3.5rem, 7vw, 8rem);
+            font-size: clamp(2.5rem, 5vw, 6rem);
             color: var(--text-light);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .map-label {
             font-size: 0.75rem;
@@ -433,7 +447,7 @@
             margin-top: 1.5rem;
             padding: 0 8vw;
             text-align: center;
-            text-transform: uppercase;
+            text-transform: lowercase;
             position: relative;
             z-index: 1;
         }
@@ -455,8 +469,8 @@
             z-index: 1;
         }
         .conexiones-title {
-            font-size: clamp(4rem, 8vw, 9rem);
-            text-transform: uppercase;
+            font-size: clamp(2.5rem, 5vw, 6rem);
+            text-transform: lowercase;
         }
         .conexiones-label {
             font-size: 0.75rem;
@@ -483,7 +497,7 @@
             font-size: clamp(1rem, 1.1vw, 1.15rem);
             letter-spacing: 0.05em;
             color: var(--text);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .conn-dist {
             font-size: clamp(1.2rem, 1.5vw, 1.6rem);
@@ -556,14 +570,14 @@
             font-size: 0.8rem;
             letter-spacing: 0.1em;
             transition: color 0.3s;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .footer-nav a:hover { color: #F5F0E8; }
         .footer-copy {
             color: rgba(245,240,232,0.2);
             font-size: 0.65rem;
             letter-spacing: 0.1em;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
 
         /* Mobile */
@@ -622,6 +636,9 @@
             </h1>
             <div class="scroll-indicator" data-i18n="scroll">SCROLL</div>
             <div class="hero-bottom-border"></div>
+            <div class="hero-logo-corner">
+                <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="" referrerPolicy="no-referrer">
+            </div>
         </div>
     </section>
 

@@ -6,7 +6,7 @@
     <title>Arquitectura — Olive Soul</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/aileron" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +22,7 @@
             --muted: rgba(26,26,24,0.45);
             --line: rgba(26,26,24,0.12);
             --line-strong: rgba(26,26,24,0.25);
-            --font: 'Bebas Neue', sans-serif;
+            --font: 'Aileron', 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,11 +31,13 @@
             background: var(--bg);
             color: var(--text);
             font-family: var(--font);
-            letter-spacing: 0.04em;
+            letter-spacing: 0.01em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             text-transform: lowercase;
         }
+
+        h1, h2, h3, h4, h5, h6 { font-weight: 400; text-transform: lowercase; }
 
         /* Cursor */
         #cursor {
@@ -95,7 +97,7 @@
             letter-spacing: 0.25em;
             color: var(--text);
             text-decoration: none;
-            text-transform: uppercase;
+            text-transform: lowercase;
             display: flex;
             align-items: center;
         }
@@ -108,7 +110,7 @@
             color: var(--muted);
             text-decoration: none;
             transition: color 0.3s;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .header-nav a:hover { color: var(--text); }
         .lang-switcher { display: flex; align-items: center; gap: 0.4rem; }
@@ -131,7 +133,7 @@
 
         /* Hero */
         .hero-section {
-            height: 100vh;
+            min-height: 110vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -164,16 +166,29 @@
         }
         .hero-anim {
             display: block;
-            overflow: hidden;
-            line-height: 0.85;
+            overflow: visible;
+            line-height: 1.1;
+            padding-bottom: 0.1em;
         }
         .hero-anim span { display: block; }
-        .hero-title-1 { font-size: clamp(5rem, 13vw, 15rem); color: var(--text); }
-        .hero-title-2 { font-size: clamp(5rem, 13vw, 15rem); color: var(--olive); }
-        .hero-title-3 { 
-            font-size: clamp(2rem, 4.5vw, 5rem); 
-            letter-spacing: 0.1em; 
-            color: var(--muted); 
+        .hero-logo-corner {
+            position: absolute;
+            bottom: 3rem;
+            right: 5vw;
+            z-index: 2;
+            opacity: 0.22;
+        }
+        .hero-logo-corner img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+        .hero-title-1 { font-size: clamp(3.5rem, 7vw, 9rem); color: var(--text); }
+        .hero-title-2 { font-size: clamp(3.5rem, 7vw, 9rem); color: var(--olive); }
+        .hero-title-3 {
+            font-size: clamp(1.2rem, 2.5vw, 3rem);
+            letter-spacing: 0.05em;
+            color: var(--muted);
             margin-top: 1rem;
         }
 
@@ -191,7 +206,7 @@
             z-index: 1;
         }
         .quote-text {
-            font-size: clamp(1.8rem, 3vw, 4rem);
+            font-size: clamp(1.4rem, 2.5vw, 3rem);
             line-height: 1.2;
             letter-spacing: 0.02em;
             margin-bottom: 2rem;
@@ -200,7 +215,7 @@
             font-size: 0.9rem;
             letter-spacing: 0.3em;
             color: rgba(245,240,232,0.6);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .quote-body {
             font-size: 1.1rem;
@@ -213,10 +228,10 @@
         /* Carousel Section */
         .carousel-section {
             background: var(--bg2);
-            height: 90vh;
+            padding-top: 7vh;
+            padding-bottom: 5vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             position: relative;
         }
         .carousel-container {
@@ -263,21 +278,25 @@
             z-index: 10;
         }
         .carousel-btn {
-            background: none;
+            background: rgba(0,0,0,0.7);
             border: none;
             font-family: var(--font);
             font-size: 1rem;
             letter-spacing: 0.2em;
-            color: var(--text);
+            color: white;
             cursor: pointer;
-            padding: 0.5rem;
-            transition: opacity 0.3s;
+            padding: 0.4rem 0.8rem;
+            transition: background 0.3s;
+            border-radius: 2px;
         }
-        .carousel-btn:hover { opacity: 0.6; }
+        .carousel-btn:hover { background: rgba(0,0,0,0.9); }
         .carousel-counter {
             font-size: 0.8rem;
             letter-spacing: 0.3em;
-            color: var(--muted);
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2px;
         }
         .carousel-caption {
             position: absolute;
@@ -297,19 +316,16 @@
         }
         .carousel-title {
             font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 0.9;
+            line-height: 1.0;
             color: var(--text);
-            text-transform: uppercase;
-            position: absolute;
-            top: 5vh;
-            left: 8vw;
-            z-index: 20;
-            margin-bottom: 0;
-            padding-left: 0;
+            padding: 0 8vw;
+            margin-bottom: 3vh;
             pointer-events: none;
+            position: relative;
+            z-index: 2;
         }
         .section-title {
-            font-size: clamp(3rem, 6vw, 7rem);
+            font-size: clamp(2.5rem, 5vw, 6rem);
             color: var(--text);
         }
         .section-counter {
@@ -336,7 +352,7 @@
             margin-top: 0.5rem;
         }
         .pilar-content h3 {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             letter-spacing: 0.1em;
             margin-bottom: 1rem;
             color: var(--text);
@@ -518,7 +534,7 @@
             color: rgba(245,240,232,0.4);
             text-decoration: none;
             transition: color 0.3s;
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .footer-nav a:hover { color: #F5F0E8; }
         .footer-copy {
@@ -541,7 +557,7 @@
 
     <!-- Header -->
     <header id="site-header">
-        <a href="/" class="header-logo">
+        <a href="index.html" class="header-logo">
             <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="Olive Soul Logo" class="h-10 w-auto object-contain" referrerPolicy="no-referrer">
         </a>
         <div class="header-right">
@@ -574,6 +590,9 @@
             <div class="hero-anim"><span class="hero-title-1" data-i18n="arch_hero_t1">ARQUITECTURA</span></div>
             <div class="hero-anim"><span class="hero-title-2" data-i18n="arch_hero_t2">EN DIÁLOGO</span></div>
             <div class="hero-anim"><span class="hero-title-3" data-i18n="arch_hero_t3">CON EL PAISAJE</span></div>
+        </div>
+        <div class="hero-logo-corner">
+            <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="" referrerPolicy="no-referrer">
         </div>
     </section>
 
