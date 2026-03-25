@@ -90,8 +90,8 @@
 
     /* SECTIONS */
     section { position:relative; overflow:hidden; }
-    .section-inner { position:relative; z-index:10; max-width:1280px; margin:0 auto; padding:6rem 5vw; }
-    @media(min-width:768px){.section-inner{padding:10rem 5vw;}}
+    .section-inner { position:relative; z-index:10; max-width:1280px; margin:0 auto; padding:4rem 5vw; }
+    @media(min-width:768px){.section-inner{padding:6rem 5vw;}}
     .section-header { margin-bottom:4rem; }
     .section-header h2 { font-size:clamp(2.5rem,7vw,6rem); max-width:900px; margin-top:1.5rem; }
 
@@ -172,6 +172,7 @@
     .lifestyle-header { padding:3rem 5vw 0; max-width:1280px; margin:0 auto; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; gap:2.5rem; }
     @media(min-width:1024px){.lifestyle-header{flex-direction:row; padding:4rem 5vw 0;}}
     #projects .section-inner { padding-bottom:3rem; }
+    #location .section-header h2 { font-size:clamp(1.5rem,2.5vw,3rem); }
     .lifestyle-header h2 { font-size:clamp(1.5rem,3vw,4rem); max-width:none; line-height:1.1; }
     .lifestyle-scroll { display:grid; grid-template-columns:1fr 1fr; gap:2rem; padding:4rem 5vw; }
     .lifestyle-img { aspect-ratio:16/10; border-radius:2px; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.15); transition:transform .5s; }
@@ -196,8 +197,8 @@
     /* COMMITMENT */
     #commitment { background:var(--bg); }
     .commitment-inner { display:flex; flex-direction:column; align-items:center; text-align:center; }
-    .commitment-logo-wrap { width:100%; max-width:900px; aspect-ratio:21/9; border-radius:2px; overflow:hidden; margin-bottom:6rem; box-shadow:0 40px 80px rgba(0,0,0,0.15); background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; padding:3rem; }
-    .commitment-logo-wrap img { width:100%; height:100%; object-fit:contain; }
+    .commitment-logo-wrap { width:100%; max-width:600px; margin-bottom:4rem; }
+    .commitment-logo-wrap img { width:100%; height:auto; object-fit:contain; }
     .commitment-inner h2 { font-size:clamp(1.5rem,2.5vw,2.8rem); max-width:100%; margin:1.5rem 0 2rem; }
     .commitment-inner p { font-size:clamp(0.8rem,1vw,1rem); color:rgba(0,0,0,0.6); max-width:1100px; line-height:1.7; margin-bottom:4rem; }
 
@@ -531,8 +532,8 @@
           </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:1.5rem;" class="reveal delay-3">
-          <button class="btn btn-tertiary" onclick="window.location.href='inversion-gestion.html'">Explorar la Oportunidad</button>
-          <button class="btn btn-secondary" onclick="window.openDossierModal()">Solicitar Dossier</button>
+          <button class="btn btn-primary" onclick="window.location.href='inversion-gestion.html'">Explorar la Oportunidad</button>
+          <button class="btn btn-primary" onclick="window.openDossierModal()">Solicitar Dossier</button>
         </div>
       </div>
     </div>
