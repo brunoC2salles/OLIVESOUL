@@ -133,13 +133,13 @@
 
         /* Hero */
         .hero-section {
-            min-height: 110vh;
+            min-height: 95vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            padding: 0 8vw 8vh;
-            padding-top: 80px;
-            overflow: visible;
+            justify-content: center;
+            padding: 0 8vw;
+            background: var(--bg);
+            overflow: hidden;
         }
         .hero-label-container {
             position: absolute;
@@ -168,14 +168,14 @@
         .hero-anim {
             display: block;
             overflow: visible;
-            line-height: 0.9;
-            padding-bottom: 0.05em;
+            line-height: 1.1;
+            padding-bottom: 0.1em;
         }
         .hero-anim span { display: block; }
         .hero-logo-corner {
             position: absolute;
             bottom: 3rem;
-            right: 5vw;
+            right: 8vw;
             z-index: 2;
             opacity: 0.22;
         }
@@ -184,10 +184,10 @@
             width: auto;
             object-fit: contain;
         }
-        .hero-title-1 { font-size: clamp(4rem, 11vw, 14rem); color: var(--text); }
-        .hero-title-2 { font-size: clamp(4rem, 11vw, 14rem); color: var(--olive); }
+        .hero-title-1 { font-size: clamp(3.5rem, 7vw, 9rem); color: var(--text); }
+        .hero-title-2 { font-size: clamp(3.5rem, 7vw, 9rem); color: var(--olive); }
         .hero-title-3 {
-            font-size: clamp(2rem, 4.5vw, 5.5rem);
+            font-size: clamp(1.2rem, 2.5vw, 3rem);
             letter-spacing: 0.05em;
             color: var(--muted);
             margin-top: 1rem;
@@ -205,7 +205,7 @@
         /* Statement */
         .statement-bar {
             background: var(--olive);
-            padding: 4vh 8vw;
+            padding: 2vh 8vw;
             overflow: hidden;
         }
         .statement-text {
@@ -705,24 +705,16 @@
     </header>
 
     <section class="hero-section">
-        <svg class="wave-bg light-waves" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path class="wave-path" d="M-20,30 C15,15 35,45 55,25 S80,10 110,30" fill="none" stroke="#6B7B3A" opacity="0.18" stroke-width="0.5"></path>
-            <path class="wave-path" d="M-20,45 C15,30 35,60 55,40 S80,25 110,45" fill="none" stroke="#C4714A" opacity="0.13" stroke-width="0.3"></path>
-            <path class="wave-path" d="M-20,60 C15,45 35,75 55,55 S80,40 110,60" fill="none" stroke="#7BA8A4" opacity="0.12" stroke-width="0.3"></path>
-            <path class="wave-path" d="M-20,72 C15,58 35,85 55,68 S80,52 110,72" fill="none" stroke="#6B7B3A" opacity="0.08" stroke-width="0.2"></path>
-        </svg>
-        
+        <div class="wave-bg" id="hero-waves"></div>
         <div class="hero-label-container">
             <span class="hero-label" data-i18n="hero_label">006 — PROYECTOS</span>
             <div class="hero-line"></div>
         </div>
-        <h1 class="hero-titles">
-            <span class="hero-title-1 hero-anim"><span data-i18n="hero_t1">CUATRO</span></span>
-            <span class="hero-title-2 hero-anim"><span data-i18n="hero_t2">FORMAS</span></span>
-            <span class="hero-title-3 hero-anim"><span data-i18n="hero_t3">DE PERTENECER</span></span>
-        </h1>
-        <div class="scroll-indicator" data-i18n="scroll">SCROLL</div>
-        <div class="hero-border"></div>
+        <div class="hero-titles">
+            <div class="hero-anim"><span class="hero-title-1" data-i18n="hero_t1">CUATRO</span></div>
+            <div class="hero-anim"><span class="hero-title-2" data-i18n="hero_t2">FORMAS</span></div>
+            <div class="hero-anim"><span class="hero-title-3" data-i18n="hero_t3">DE PERTENECER</span></div>
+        </div>
         <div class="hero-logo-corner">
             <img src="https://i.postimg.cc/mkLwk1cs/olive-soul-logo-4k.png" alt="" referrerPolicy="no-referrer">
         </div>
@@ -1176,6 +1168,7 @@
             container.appendChild(svg);
         }
 
+        createWaves('hero-waves', lightWaves);
         createWaves('project1-waves', lightWaves);
         createWaves('project2-waves', lightWaves);
         createWaves('project3-waves', lightWaves);

@@ -277,11 +277,10 @@
     <button class="mobile-menu-close" id="mobile-close">&#x2715;</button>
   </div>
   <div class="mobile-menu-links">
-    <a href="alma.html" data-i18n="nav_alma">alma</a>
-    <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
-    <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
     <a href="proyectos.html" data-i18n="nav_proyectos">proyectos</a>
-    <a href="inversion-gestion.html" data-i18n="nav_inversion">inversión</a>
+    <a href="arquitectura.html" data-i18n="nav_arquitectura">arquitectura</a>
+    <a href="ubicacion.html" data-i18n="nav_ubicacion">ubicación</a>
+    <a href="alma.html" data-i18n="nav_alma">alma</a>
   </div>
   <div class="mobile-menu-footer">
     <button class="mobile-dossier-btn" onclick="window.openDossierModal()">Solicitar Dossier Completo</button>
@@ -302,11 +301,10 @@
       <button class="lang-btn" data-lang="fr">fr</button>
     </div>
     <ul class="nav-links">
-      <li><a href="alma.html" data-i18n="nav_alma">ALMA</a></li>
-      <li><a href="ubicacion.html" data-i18n="nav_ubicacion">UBICACIÓN</a></li>
-      <li><a href="arquitectura.html" data-i18n="nav_arquitectura">ARQUITECTURA</a></li>
       <li><a href="proyectos.html" data-i18n="nav_proyectos">PROYECTOS</a></li>
-      <li><a href="inversion-gestion.html" data-i18n="nav_inversion">INVERSIÓN</a></li>
+      <li><a href="arquitectura.html" data-i18n="nav_arquitectura">ARQUITECTURA</a></li>
+      <li><a href="ubicacion.html" data-i18n="nav_ubicacion">UBICACIÓN</a></li>
+      <li><a href="alma.html" data-i18n="nav_alma">ALMA</a></li>
     </ul>
     <button class="nav-dossier-btn" onclick="window.openDossierModal()" data-i18n="dossier">SOLICITAR DOSSIER</button>
     <button class="mobile-menu-btn" id="mobile-open" aria-label="Menu">
@@ -353,7 +351,7 @@
         </a>
       </div>
       <div class="reveal from-right scale-in essence-img img-zoom">
-        <img src="https://revistaoeste.com/oestegeral/wp-content/uploads/2026/03/1-103-750x375.jpg" alt="Ancient olive tree" referrerpolicy="no-referrer">
+        <img src="https://revistaoeste.com/oestegeral/wp-content/uploads/2026/03/1-103.jpg" alt="Ancient olive tree" referrerpolicy="no-referrer">
       </div>
     </div>
   </div>
@@ -494,7 +492,6 @@
       <span class="eyebrow">Cómo se vive aquí</span>
       <h2 class="editorial-headline" style="margin-top:1.5rem;">Seguir el ciclo de las estaciones. Cosechar el propio aceite. Eso es el slow living mediterráneo.</h2>
     </div>
-    <button class="btn btn-secondary reveal" onclick="window.location.href='estilo.html'" style="white-space:nowrap;display:none;" id="lifestyle-btn">Explorar Estilo de Vida</button>
   </div>
   <div class="lifestyle-scroll">
     <div class="lifestyle-img"><img src="https://www.revistanegociorural.com.br/wp-content/uploads/2025/02/Colheita-Olivas-de-Gramado-2023-Foto-de-Sergio-Azevedo241-Capa-1024x768.jpg" alt="Lifestyle 1" referrerpolicy="no-referrer"></div>
@@ -502,6 +499,10 @@
   </div>
   <div class="lifestyle-text">
     <p class="reveal">En Olive Soul el tiempo tiene otra textura. Los días se organizan alrededor de la luz, la cosecha, la mesa y la conversación. La gastronomía del territorio —aceite virgen extra de producción propia, pescado del Mediterráneo, vinos de la comarca— no es un amenity. Es parte estructural de la experiencia.</p>
+    <div class="reveal" style="display:flex;gap:1rem;justify-content:center;margin-top:3rem;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="window.location.href='ubicacion.html'">Explorar el Territorio</button>
+      <button class="btn btn-secondary" onclick="window.open('https://wa.me/34603502986?text=Hola%2C%20me%20gustar%C3%ADa%20hablar%20con%20el%20equipo%20de%20Olive%20Soul','_blank')">Hablar con Nuestro Equipo</button>
+    </div>
   </div>
 </section>
 
@@ -531,9 +532,9 @@
             <div class="invest-metric delay-3"><div class="invest-metric-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="invest-metric-val">POSITIVO</div><div class="invest-metric-label">Impacto cultural</div></div></div>
           </div>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:1.5rem;" class="reveal delay-3">
+        <div style="display:flex;flex-direction:row;gap:1rem;align-items:center;" class="reveal delay-3">
           <button class="btn btn-primary" onclick="window.location.href='inversion-gestion.html'">Explorar la Oportunidad</button>
-          <button class="btn btn-primary" onclick="window.openDossierModal()">Solicitar Dossier</button>
+          <button class="btn btn-secondary" onclick="window.openDossierModal()">Solicitar Dossier</button>
         </div>
       </div>
     </div>
@@ -676,7 +677,6 @@
       document.getElementById('hero-desc').classList.add('visible');
       document.getElementById('hero-ctas').classList.add('visible');
     },200);
-    if(window.innerWidth>=1024)document.getElementById('lifestyle-btn').style.display='';
   });
 
   /* WAVES */

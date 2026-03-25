@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(gh auth status)",
-      "Bash(where gh)"
+      "Bash(where gh)",
+      "Bash(find . -type d -name *olive* -o -type d -name *soul*)",
+      "Bash(cd /c/Users/Bruno/OneDrive/Desktop/Claude Code/OliveSoul)"
     ]
   }
 }
