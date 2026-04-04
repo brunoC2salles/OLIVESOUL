@@ -1,0 +1,14 @@
+node_modules/
+.next/
+public/images/
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.svg
+out/
+dist/
+package-lock.json
+yarn.lock
+*.log
+.git/

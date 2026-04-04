@@ -1,0 +1,205 @@
+{
+  "brand": "VISION ESTATES",
+  "location": "Porto Belo · Santa Catarina",
+
+  "nav": {
+    "properties": "Properties",
+    "region": "Region",
+    "invest": "Investment",
+    "contact": "Contact",
+    "portobelo": "Porto Belo"
+  },
+
+  "hero": {
+    "label": "Porto Belo · Santa Catarina · SC",
+    "headline": "Where the Atlantic meets the future.",
+    "subheadline": "Exclusive curation of the finest luxury properties in Porto Belo — Brazil's fastest-growing coastal city.",
+    "cta_primary": "Explore Properties",
+    "cta_secondary": "Discover the Region",
+    "vgv": "$1.1 B",
+    "vgv_label": "GDV Porto Belo 2025",
+    "appreciation": "+250%",
+    "appreciation_label": "Average appreciation",
+    "rank": "#1",
+    "rank_label": "Coastal city in Brazil"
+  },
+
+  "metrics": {
+    "title": "Numbers That Convince",
+    "vgv": "$1.1 B",
+    "vgv_label": "in GDV",
+    "appreciation": "+250%",
+    "appreciation_label": "appreciation",
+    "beaches": "10 beaches",
+    "beaches_label": "in 15km of coast",
+    "coast": "15 km",
+    "coast_label": "of preserved coast",
+    "works": "$65 M",
+    "works_label": "in public works"
+  },
+
+  "products": {
+    "title": "Selected Assets",
+    "subtitle": "The 4 best developments in Porto Belo for investment.",
+    "cta": "View development",
+    "learn_more": "Learn More",
+    "starting_from": "Starting from",
+    "properties": [
+      {
+        "tag": "PH Empreendimentos",
+        "name": "Dubai Mall",
+        "description": "Integrated shopping with 6 residential towers"
+      },
+      {
+        "tag": "Thozen",
+        "name": "Electra Towers",
+        "description": "AI integrated into entire ecosystem"
+      },
+      {
+        "tag": "Vokkan",
+        "name": "Viva Park",
+        "description": "Brazil's first LEED Platinum park district"
+      },
+      {
+        "tag": "GT Home & ABC",
+        "name": "Lagom Perequê",
+        "description": "Located within Municipal Natural Park"
+      }
+    ]
+  },
+
+  "portobelo": {
+    "section_label": "Porto Belo",
+    "title": "A city that plans itself.",
+    "description": "Masterplan 2025 with $65 million investment in urban infrastructure.",
+    "cta": "Explore the region",
+    "bullets": [
+      "Hard Rock Café on the pier",
+      "Beach expansion",
+      "Marina and scenic viewpoint",
+      "Thozen Hospital under construction"
+    ]
+  },
+
+  "region": {
+    "title": "Porto Belo in Motion",
+    "description": "Brazil's fastest-growing coastal city with world-class infrastructure.",
+    "masterplan": "Porto Belo Masterplan 2025"
+  },
+
+  "beaches": {
+    "label": "10 Beaches · 15km of Coast",
+    "title": "Diversity of coastal scenery.",
+    "perequê": "Closest beach with complete service infrastructure and premium dining",
+    "gravata": "Protected cove, ideal for families, with crystal-clear waters",
+    "bombinhas": "Eco-tourism destination with coastal trails and preserved marine life",
+    "sepultura": "Wild beach with unique rock formations on the southern coast",
+    "mariscal": "Extensive golden sand, perfect for surfing and sunsets",
+    "brava": "Powerful waves and vibrant volcanic rock scenery",
+    "coral": "Natural pools and coral banks within swimming distance",
+    "embau": "River meeting beach, paradisiacal scenery between mountains and ocean",
+    "galheta": "Preserved nudist beach with native forest and exclusive trail access",
+    "penha": "Facing Santa Cruz Fortress, history and nature integrated"
+  },
+
+  "locations": {
+    "airport": "FLN Airport",
+    "airport_dist": "60km",
+    "airport_detail": "~45 minutes",
+    "beach": "Perequê Beach",
+    "beach_dist": "5 min",
+    "beach_detail": "Walking distance",
+    "golf": "Golf Course",
+    "golf_dist": "8km",
+    "golf_detail": "Premium golf",
+    "cruise": "Cruise Terminal",
+    "cruise_dist": "Integrated",
+    "cruise_detail": "Port infrastructure",
+    "camboriú": "Balneário Camboriú",
+    "camboriú_dist": "15km",
+    "camboriú_detail": "SC's largest resort",
+    "florianópolis": "Florianópolis",
+    "florianópolis_dist": "70km",
+    "florianópolis_detail": "State capital",
+    "br101": "BR-101",
+    "br101_dist": "5 min",
+    "br101_detail": "Road access",
+    "beaches": "10 Beaches",
+    "beaches_dist": "15km",
+    "beaches_detail": "Of coast to explore"
+  },
+
+  "investment": {
+    "label": "Investment Thesis",
+    "title": "History speaks for itself.",
+    "subtitle": "Porto Belo has shown consistent appreciation over more than a decade.",
+    "card_badge_1": "PH Empreendimentos",
+    "card_title_1": "Salou Residence",
+    "card_price_1": "$95k",
+    "card_appreciation_1": "$350k",
+    "card_roi_1": "+85.76% in 6 years",
+    "card_badge_2": "Thozen",
+    "card_title_2": "Jardins de Versalhes",
+    "card_price_2": "$170k",
+    "card_appreciation_2": "$530k",
+    "card_roi_2": "202.6% ROI",
+    "card_additional_2": "Down payment $80k",
+    "card_badge_3": "Thozen",
+    "card_title_3": "Mirador de Alicante",
+    "card_price_3": "$370k",
+    "card_appreciation_3": "$860k",
+    "card_roi_3": "+85.6%",
+    "card_additional_3": "Average 36.2% annually",
+    "session_cta": "Want a personalized analysis of your investor profile?",
+    "session_button": "Schedule Strategy Session",
+    "session_disclaimer": "No obligation. 100% advisory."
+  },
+
+  "hospitality": {
+    "label": "Hospitality Investment",
+    "title": "Your property working for you.",
+    "description": "Beyond ownership, you can operate your property generating income with specialized management.",
+    "cta": "Learn more",
+    "features": [
+      "24/7 online booking management",
+      "Housekeeping and maintenance",
+      "Minimum occupancy guarantee"
+    ]
+  },
+
+  "contact": {
+    "label": "Contact",
+    "title": "Ready for the next step?",
+    "description": "Get in touch with our real estate investment specialists.",
+    "phone_label": "WhatsApp",
+    "phone_detail": "+55 47 9 XXXX-XXXX",
+    "email_label": "Email",
+    "email_detail": "contact@visionestates.com",
+    "address_label": "Address",
+    "address_detail": "Porto Belo, Santa Catarina",
+    "form_name": "Full name",
+    "form_email": "Email",
+    "form_whatsapp": "WhatsApp",
+    "form_product": "Property of interest",
+    "form_message": "Message",
+    "form_send": "Send",
+    "form_success": "Form received successfully!",
+    "form_error": "Error sending form. Please try again.",
+    "form_placeholder_product": "Select a property",
+    "product_dubai": "Dubai Mall",
+    "product_electra": "Electra Towers",
+    "product_viva": "Viva Park",
+    "product_lagom": "Lagom Perequê",
+    "product_all": "All",
+    "whatsapp_message": "Hi, I'm interested in properties in Porto Belo"
+  },
+
+  "footer": {
+    "tagline": "Exclusive curation of the finest luxury properties in Porto Belo — Brazil's fastest-growing coastal city.",
+    "rights": "All rights reserved",
+    "nav_properties": "Properties",
+    "nav_region": "Porto Belo",
+    "nav_invest": "Investment",
+    "nav_contact": "Contact"
+  }
+}

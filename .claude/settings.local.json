@@ -4,7 +4,11 @@
       "Bash(gh auth status)",
       "Bash(where gh)",
       "Bash(find . -type d -name *olive* -o -type d -name *soul*)",
-      "Bash(cd /c/Users/Bruno/OneDrive/Desktop/Claude Code/OliveSoul)"
+      "Bash(cd /c/Users/Bruno/OneDrive/Desktop/Claude Code/OliveSoul)",
+      "Bash(rm components/layout/.gitkeep components/ui/.gitkeep)",
+      "Bash(ls -la components/*/)",
+      "Bash(rm components/sections/.gitkeep)",
+      "Bash(wc -l components/sections/*.tsx)"
     ]
   }
 }

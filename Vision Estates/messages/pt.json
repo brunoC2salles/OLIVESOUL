@@ -1,0 +1,205 @@
+{
+  "brand": "VISION ESTATES",
+  "location": "Porto Belo · Santa Catarina",
+
+  "nav": {
+    "properties": "Imóveis",
+    "region": "A Região",
+    "invest": "Investimento",
+    "contact": "Contato",
+    "portobelo": "Porto Belo"
+  },
+
+  "hero": {
+    "label": "Porto Belo · Santa Catarina · SC",
+    "headline": "Onde o Atlântico encontra o futuro.",
+    "subheadline": "Curadoria exclusiva dos melhores imóveis de alto padrão em Porto Belo — a cidade litorânea que mais cresce no Brasil.",
+    "cta_primary": "Explorar Imóveis",
+    "cta_secondary": "Conhecer a Região",
+    "vgv": "R$ 3,8 bi",
+    "vgv_label": "VGV Porto Belo 2025",
+    "appreciation": "+250%",
+    "appreciation_label": "Valorização média",
+    "rank": "#1",
+    "rank_label": "Cidade litorânea BR"
+  },
+
+  "metrics": {
+    "title": "Números que Convencem",
+    "vgv": "R$3,8 bi",
+    "vgv_label": "em VGV",
+    "appreciation": "+250%",
+    "appreciation_label": "valorização",
+    "beaches": "10 praias",
+    "beaches_label": "em 15km de costa",
+    "coast": "15 km",
+    "coast_label": "de costa preservada",
+    "works": "R$200 mi",
+    "works_label": "em obras públicas"
+  },
+
+  "products": {
+    "title": "Ativos Selecionados",
+    "subtitle": "Os 4 melhores empreendimentos de Porto Belo para investimento.",
+    "cta": "Ver empreendimento",
+    "learn_more": "Saiba Mais",
+    "starting_from": "A partir de",
+    "properties": [
+      {
+        "tag": "PH Empreendimentos",
+        "name": "Dubai Mall",
+        "description": "Shopping integrado com 6 torres residenciais"
+      },
+      {
+        "tag": "Thozen",
+        "name": "Electra Towers",
+        "description": "IA integrada em todo ecossistema"
+      },
+      {
+        "tag": "Vokkan",
+        "name": "Viva Park",
+        "description": "1º bairro parque LEED Platinum"
+      },
+      {
+        "tag": "GT Home & ABC",
+        "name": "Lagom Perequê",
+        "description": "Dentro do Parque Natural Municipal"
+      }
+    ]
+  },
+
+  "portobelo": {
+    "section_label": "Porto Belo",
+    "title": "Uma cidade que se planeja.",
+    "description": "Masterplan 2025 com investimento de R$200 milhões em infraestrutura urbana.",
+    "cta": "Explorar a região",
+    "bullets": [
+      "Hard Rock Café sobre o pier",
+      "Alargamento da praia",
+      "Marina e mirante",
+      "Hospital Thozen em construção"
+    ]
+  },
+
+  "region": {
+    "title": "Porto Belo em Movimento",
+    "description": "A cidade litorânea que mais cresce no Brasil com infraestrutura de classe mundial.",
+    "masterplan": "Masterplan Porto Belo 2025"
+  },
+
+  "beaches": {
+    "label": "10 Praias · 15km de Costa",
+    "title": "A diversidade de cenários litorâneos.",
+    "perequê": "Praia mais próxima, com estrutura completa de serviços e gastronomia premium",
+    "gravata": "Cove protegida, ideal para famílias, com águas cristalinas",
+    "bombinhas": "Destino ecoturístico com trilhas costeiras e vida marinha preservada",
+    "sepultura": "Praia selvagem com formações rochosas únicas no litoral catarinense",
+    "mariscal": "Extensa faixa de areia dourada, perfeita para surfe e sunsets",
+    "brava": "Ondas poderosas e vibrante cenário de rochedos vulcânicos",
+    "coral": "Piscinas naturais e banco de corais a poucos metros",
+    "embau": "Rio desaguando na praia, cenário paradisíaco entre serras e oceano",
+    "galheta": "Praia nudista preservada, com mata nativa e acesso por trilha exclusiva",
+    "penha": "Frente à Fortaleza de Santa Cruz, história e natureza integradas"
+  },
+
+  "locations": {
+    "airport": "Aeroporto FLN",
+    "airport_dist": "60km",
+    "airport_detail": "~45 minutos",
+    "beach": "Praia Perequê",
+    "beach_dist": "5min",
+    "beach_detail": "A pé do centro",
+    "golf": "Campo de Golf",
+    "golf_dist": "8km",
+    "golf_detail": "Golfe de classe",
+    "cruise": "Terminal de Cruzeiros",
+    "cruise_dist": "Integrado",
+    "cruise_detail": "Estrutura portuária",
+    "camboriú": "Balneário Camboriú",
+    "camboriú_dist": "15km",
+    "camboriú_detail": "Maior resort de SC",
+    "florianópolis": "Florianópolis",
+    "florianópolis_dist": "70km",
+    "florianópolis_detail": "Capital do Estado",
+    "br101": "BR-101",
+    "br101_dist": "5min",
+    "br101_detail": "Acesso rodoviário",
+    "beaches": "10 Praias",
+    "beaches_dist": "15km",
+    "beaches_detail": "De costa para explorar"
+  },
+
+  "investment": {
+    "label": "Tese de Investimento",
+    "title": "Histórico que fala por si.",
+    "subtitle": "Porto Belo registra valorização consistente há mais de uma década.",
+    "card_badge_1": "PH Empreendimentos",
+    "card_title_1": "Salou Residence",
+    "card_price_1": "R$ 323k",
+    "card_appreciation_1": "R$ 950k",
+    "card_roi_1": "+85,76% em 6 anos",
+    "card_badge_2": "Thozen",
+    "card_title_2": "Jardins de Versalhes",
+    "card_price_2": "R$ 575k",
+    "card_appreciation_2": "R$ 1,12M",
+    "card_roi_2": "ROI 202,6%",
+    "card_additional_2": "Desembolso R$270k",
+    "card_badge_3": "Thozen",
+    "card_title_3": "Mirador de Alicante",
+    "card_price_3": "R$ 1,25M",
+    "card_appreciation_3": "R$ 2,32M",
+    "card_roi_3": "+85,6%",
+    "card_additional_3": "Média 36,2% ao ano",
+    "session_cta": "Quer receber uma análise personalizada do seu perfil de investidor?",
+    "session_button": "Agendar Sessão Estratégica",
+    "session_disclaimer": "Sem compromisso. 100% consultivo."
+  },
+
+  "hospitality": {
+    "label": "Investimento em Hospitalidade",
+    "title": "Seu imóvel trabalhando por você.",
+    "description": "Além de adquirir, você pode operar seu imóvel gerando renda com gestão especializada.",
+    "cta": "Quero saber mais",
+    "features": [
+      "Gestão 24/7 de reservas online",
+      "Housekeeping e manutenção",
+      "Garantia de ocupação mínima"
+    ]
+  },
+
+  "contact": {
+    "label": "Contato",
+    "title": "Pronto para dar o próximo passo?",
+    "description": "Entre em contato com nossos especialistas em investimento imobiliário.",
+    "phone_label": "WhatsApp",
+    "phone_detail": "+55 47 9 XXXX-XXXX",
+    "email_label": "E-mail",
+    "email_detail": "contato@visionestates.com",
+    "address_label": "Endereço",
+    "address_detail": "Porto Belo, Santa Catarina",
+    "form_name": "Nome completo",
+    "form_email": "E-mail",
+    "form_whatsapp": "WhatsApp",
+    "form_product": "Produto de interesse",
+    "form_message": "Mensagem",
+    "form_send": "Enviar",
+    "form_success": "Formulário recebido com sucesso!",
+    "form_error": "Erro ao enviar. Tente novamente.",
+    "form_placeholder_product": "Selecione um produto",
+    "product_dubai": "Dubai Mall",
+    "product_electra": "Electra Towers",
+    "product_viva": "Viva Park",
+    "product_lagom": "Lagom Perequê",
+    "product_all": "Todos",
+    "whatsapp_message": "Olá, tenho interesse em imóveis em Porto Belo"
+  },
+
+  "footer": {
+    "tagline": "Curadoria exclusiva dos melhores imóveis de alto padrão em Porto Belo — a cidade litorânea que mais cresce no Brasil.",
+    "rights": "Todos os direitos reservados",
+    "nav_properties": "Imóveis",
+    "nav_region": "Porto Belo",
+    "nav_invest": "Investimento",
+    "nav_contact": "Contato"
+  }
+}

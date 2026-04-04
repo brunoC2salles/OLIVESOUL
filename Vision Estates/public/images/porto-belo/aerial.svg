@@ -1,0 +1,80 @@
+<svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E3A6E;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0D1F3C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0A1628;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="cityGlow" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ocean -->
+  <rect width="1920" height="1080" fill="url(#oceanGrad)"/>
+
+  <!-- Coastal area lighter -->
+  <path d="M0,600 Q480,580 960,600 T1920,600 L1920,800 Q960,850 0,800 Z" fill="#152B52" opacity="0.6"/>
+
+  <!-- Beach -->
+  <path d="M0,800 Q480,780 960,800 T1920,800 L1920,900 Q960,920 0,900 Z" fill="#4A6FA5" opacity="0.4"/>
+
+  <!-- City grid (buildings) -->
+  <g opacity="0.3">
+    <!-- Left downtown area -->
+    <rect x="100" y="700" width="40" height="80" fill="#E8CC7A"/>
+    <rect x="160" y="680" width="35" height="100" fill="#E8CC7A"/>
+    <rect x="210" y="720" width="38" height="60" fill="#E8CC7A"/>
+    <rect x="270" y="700" width="42" height="80" fill="#E8CC7A"/>
+    <rect x="130" y="690" width="20" height="90" fill="#D4AF37"/>
+    <rect x="190" y="700" width="18" height="80" fill="#D4AF37"/>
+
+    <!-- Center area -->
+    <rect x="800" y="680" width="50" height="120" fill="#E8CC7A"/>
+    <rect x="880" y="700" width="45" height="100" fill="#E8CC7A"/>
+    <rect x="950" y="690" width="48" height="110" fill="#E8CC7A"/>
+    <rect x="1030" y="710" width="40" height="90" fill="#E8CC7A"/>
+    <rect x="830" y="710" width="25" height="90" fill="#D4AF37"/>
+    <rect x="920" y="720" width="22" height="80" fill="#D4AF37"/>
+
+    <!-- Right area -->
+    <rect x="1600" y="720" width="38" height="60" fill="#E8CC7A"/>
+    <rect x="1660" y="700" width="42" height="80" fill="#E8CC7A"/>
+    <rect x="1720" y="710" width="40" height="70" fill="#E8CC7A"/>
+    <rect x="1630" y="730" width="20" height="50" fill="#D4AF37"/>
+  </g>
+
+  <!-- Marina/Port area outline -->
+  <circle cx="1000" cy="750" r="60" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.4"/>
+  <path d="M1000,720 L1050,750 M1000,780 L1050,750" stroke="#D4AF37" stroke-width="2" opacity="0.4"/>
+
+  <!-- Pier structure -->
+  <path d="M500,650 L480,850" stroke="#9B9589" stroke-width="3" opacity="0.4"/>
+  <path d="M560,660 L540,860" stroke="#9B9589" stroke-width="2" opacity="0.3"/>
+
+  <!-- Roads -->
+  <path d="M0,700 Q480,680 960,700 T1920,700" stroke="#5C5750" stroke-width="4" fill="none" opacity="0.3"/>
+  <path d="M0,750 Q480,740 960,750 T1920,750" stroke="#5C5750" stroke-width="3" fill="none" opacity="0.2"/>
+
+  <!-- Beach vegetation hint -->
+  <circle cx="200" cy="850" r="15" fill="#4A6FA5" opacity="0.3"/>
+  <circle cx="280" cy="860" r="18" fill="#4A6FA5" opacity="0.3"/>
+  <circle cx="1400" cy="870" r="20" fill="#4A6FA5" opacity="0.3"/>
+  <circle cx="1550" cy="880" r="16" fill="#4A6FA5" opacity="0.3"/>
+
+  <!-- Water reflections -->
+  <circle cx="500" cy="500" r="30" fill="#D4AF37" opacity="0.1"/>
+  <circle cx="1200" cy="450" r="25" fill="#D4AF37" opacity="0.08"/>
+  <circle cx="300" cy="550" r="20" fill="#D4AF37" opacity="0.07"/>
+
+  <!-- City lights glow -->
+  <circle cx="100" cy="700" r="80" fill="url(#cityGlow)"/>
+  <circle cx="800" cy="700" r="100" fill="url(#cityGlow)"/>
+  <circle cx="1600" cy="750" r="80" fill="url(#cityGlow)"/>
+
+  <!-- Text overlay indicator -->
+  <text x="960" y="300" font-family="Georgia, serif" font-size="48" fill="#D4AF37" opacity="0.2" text-anchor="middle">
+    Porto Belo · SC
+  </text>
+</svg>
